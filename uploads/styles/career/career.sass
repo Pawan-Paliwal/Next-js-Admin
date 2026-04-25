@@ -1,0 +1,383 @@
+@import '../_var' 
+
+.team_info_sec
+    @include before(url(/assets/vector/left_vector.svg))
+    &::before
+        background-repeat: no-repeat
+        background-position: 0 0%
+        z-index: -1
+        @include media(540)
+            background-size: 47%
+            opacity: .4
+    .container
+        position: relative
+        @include after(url(/assets/logo-vector.svg))
+        &::after
+            background-repeat: no-repeat
+            background-position: 95% 0%
+            background-size: 300px 
+            opacity: .3
+            @include media(991)
+                background-size: 230px
+                z-index: -1
+            @include media(768)
+                display: none
+    .heading
+        text-align: center
+        max-width: 650px
+        margin: 0 auto 50px
+        @include before-blur
+        &::before
+            top: 0
+            right: 0
+            z-index: -1
+            @include media(768)
+                width: 150px
+                height: 150px
+        @include media(991)
+            max-width: 490px
+        @include media(768)
+            margin: 0 auto 40px
+        @include media(540)
+            margin: 0 auto 25px
+        h2
+            line-height: 1
+            span
+                display: block
+        p
+            color: $black
+            @include media(540)
+                max-width: 80%
+                margin: auto
+                margin-top: 15px
+    .team_info_wrapper
+        position: relative
+        display: grid
+        grid-template-columns: repeat(2, 1fr)
+        grid-gap: 20px
+        @include media(768)
+            grid-gap: 15px
+        @include media(540)
+            grid-template-columns: repeat(1, 1fr)
+        .team_info_col
+            padding: 20px 20px 30px
+            background: $white
+            border-radius: 15px
+            .upper_sec
+                display: flex
+                align-items: center
+                justify-content: space-between
+                gap: 10px
+                h2
+                    flex: 0 1 70%
+                    width: 100%
+                    font-size: 24px
+                    line-height: 1.1
+                    @include media(991)
+                        font-size: 22px
+                    @include media(768)
+                        font-size: 18px
+                .icon
+                    flex: 0 1 70px
+                    width: 70px
+                    height: 70px
+                    @include media(991)
+                        flex: 0 1 60px
+                        width: 60px
+                        height: 60px
+                    @include media(768)
+                        flex: 0 1 50px
+                        width: 50px
+                        height: 50px
+                    img
+                        object-fit: contain
+            .desc
+                p
+                    @include media(768)
+                        font-size: 14px
+
+.life_org_sec
+    @include before-blur
+    &::before
+        top: 30%
+        left: 5%
+        width: 300px
+        height: 300px
+        z-index: -1
+    .heading
+        text-align: center
+        margin: 0 auto 50px
+        max-width: 571px
+        @include media(991)
+            max-width: 460px
+        @include media(768)
+            margin: 0 auto 40px
+        @include media(540)
+            margin: 0 auto 30px
+        h2
+            line-height: 1
+            span
+                display: block
+        p
+            margin-top: 15px
+            @include media(540)
+                max-width: 85%
+                margin: 15px auto 0
+    .life_wrapper
+        position: relative
+        .life_slider
+            .swiper-slide
+                transition: 1s ease
+                &:not(.swiper-slide-active)
+                    transform: scale(0.8)
+                figure
+                    border-radius: 20px
+                    img
+                        border-radius: 20px
+        .nav_wrapper
+            margin: 50px auto 0
+            display: flex
+            align-items: center
+            gap: 15px
+            justify-content: center
+            position: relative
+            @include media(768)
+                margin: 40px auto 0 
+            @include media(540)
+                margin: 30px auto 0
+            .swiper-prev, .swiper-next
+                flex: 0 1 auto
+            .progressbar
+                flex: 1
+                width: 360px
+                max-width: 360px
+                position: relative
+                @include media(540)
+                    max-width: 180px
+                    height: 2px
+            .swiper-pagination-progressbar
+                --swiper-pagination-color: #000
+                background: #C5C5C5
+
+.open_positions_sec
+    @include before-blur
+    &::before
+        bottom: 5%
+        left: 5%
+        width: 300px
+        height: 300px
+        z-index: -1
+    .main_wrapper
+        position: relative
+        background: linear-gradient(90deg, #000, #233f90)
+        border-radius: 20px
+        padding: 40px 25px 60px
+        @include after(url(/assets/logo-vector.svg))
+        &::after
+            background-repeat: no-repeat
+            background-position: 95% 10%
+            background-size: 140px
+            z-index: 0
+            opacity: .25
+            @include media(768)
+                background-size: 110px
+            @include media(540)
+                background-position: 93% 7%
+                background-size: 60px
+        @include media(540)
+            padding: 30px 20px 40px
+        .heading
+            p, h2, em
+                color: $white
+            em
+                font-size: 18px
+                margin-bottom: 10px
+                margin-top: 0
+                font-weight: 600
+                @include media(768)
+                    font-size: 16px
+                @include media(540)
+                    font-size: 14px
+                    font-weight: 500
+                    display: block
+                    text-align: center
+            h2
+                @include media(768)
+                    max-width: 260px
+                @include media(540)
+                    text-align: center
+                    margin: 0 auto
+            p
+                margin-top: 15px
+                max-width: 740px
+                @include media(540)
+                    text-align: center
+        .open_wrapper
+            margin-top: 30px
+            display: grid
+            grid-template-columns: repeat(4, 1fr)
+            grid-gap: 20px
+            @include media(1280)
+                grid-gap: 15px
+                margin-top: 40px
+            @include media(991)
+                grid-template-columns: repeat(3, 1fr)
+            @include media(768)
+                grid-template-columns: repeat(2, 1fr)
+            @include media(540)
+                grid-template-columns: repeat(1, 1fr)
+                margin-top: 20px
+.future_colleague_sec
+    .future_wrapper
+        display: flex
+        flex-wrap: wrap
+        justify-content: space-between
+        --gap: 50px
+        gap: var(--gap)
+        @include media(991)
+            --gap: 40px
+        @include media(768) 
+            flex-direction: column
+            --gap: 30px
+        @include media(540)
+            --gap: 20px
+        .colA
+            flex: 0 1 30%
+            max-width: 30%
+            width: 100%
+            display: flex
+            flex-direction: column
+            gap: 50px
+            @include media(768)
+                flex: 0 1 100%
+                max-width: 100%
+                gap: 20px
+            .heading
+                @include media(768)
+                    text-align: center
+                h2
+                    span
+                        display: block
+            .career-nav
+                button
+                    background: $black
+                    border-radius: 5px
+                    transition: .5s ease
+                    &:hover
+                        background: #C5C5C5
+                    img
+                        filter: invert(1)
+                @include media(768)
+                    display: none
+            .details
+                margin-top: auto
+                margin-bottom: 50px
+                @include media(768)
+                    text-align: center
+                    margin-bottom: 0
+                h6
+                    font-size: 20px
+                    font-weight: 700
+                    line-height: 1.2
+                    @include media(540)
+                        font-size: 16px 
+                a
+                    display: block
+                    color: $black
+                    &:hover
+                        transform: translateX(5px)
+        .colB
+            flex: 1
+            max-width: calc( 70% - var(--gap) )
+            @include media(768)
+                max-width: 100%
+            .career_slider
+                .future_col
+                    width: 100%
+                    height: 100%
+                    padding: 30px 20px
+                    background: $white
+                    border-radius: 10px
+                    @include media(768)
+                        padding: 20px
+                    .user_icon
+                        width: 85px
+                        height: 85px
+                        @include media(540)
+                            width: 70px
+                            height: 70px
+                        img
+                            border-radius: 50%
+                    .desc
+                        margin: 20px 0 50px
+                        @include media(768)
+                            margin: 20px 0 30px
+                        @include media(540)
+                            margin: 15px 0 20px
+                        p
+                            color: $black
+                            display: -webkit-box
+                            -webkit-line-clamp: 4.6
+                            -webkit-box-orient: vertical
+                            overflow: hidden
+                            text-overflow: ellipsis
+                            margin-bottom: 15px
+                            @include media(768)
+                                -webkit-line-clamp: 5
+                        .read-more-btn
+                            --height: 31px
+                            font-size: 14px
+                            margin-left: 0
+                    .details
+                        h6
+                            font-size: 22px
+                            line-height: 1.2
+                            @include media(768)
+                                font-size: 20px
+                            @include media(540)
+                                font-size: 18px
+                        p
+                            line-height: 1.2
+
+.positons_col
+    width: 100%
+    height: 100%
+    padding: 20px 30px
+    background: #F3F3F3
+    border-radius: 10px
+    cursor: pointer
+    position: relative
+    @include media(1280)
+        padding: 20px 25px
+    &:hover
+        .check_pos
+            background: $black
+            color: $white
+    .pos_name
+        font-weight: 600
+        color: #070606
+    .pos_loc
+        font-weight: 600
+        color: #737373
+        margin-top: 50px
+        @include media(540)
+            margin-top: 20px    
+    .check_pos
+        width: 35px
+        height: 30px
+        position: absolute
+        bottom: 10px
+        right: 10px
+        background: $white
+        border-radius: 7px
+        display: flex
+        align-items: center
+        justify-content: center
+        transition: .5s ease
+
+.sec-pad_career
+    padding: 50px 0 
+    @include media(768)
+        padding: 40px 0 
+    @include media(540)
+        padding: 30px 0 

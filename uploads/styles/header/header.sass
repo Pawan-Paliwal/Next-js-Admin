@@ -1,0 +1,1739 @@
+@import '../_common'
+    
+header
+    position: fixed    
+    top: 25px
+    left: 50%
+    bottom: 0
+    height: var(--headerheight)
+    max-width: 85%
+    width: 100%
+    background: $white
+    border-radius: 10px
+    transform: translate(-50%, 0)
+    z-index: 5  
+    transition: .5s ease
+    @include media(1336) 
+        max-width: 92%
+    &.ham-open
+        max-width: 100%
+        top: 0
+        z-index: 6
+    .container, .container-fluid
+        height: 100%
+        @include media(540)
+            padding: 0 10px
+    .header-container
+        height: 100%
+        transition: .5s ease
+        display: flex
+        flex-wrap: wrap
+        align-items: center 
+        transition: .5s ease
+        gap: 2rem
+        @include media(1280) 
+            gap: 1.5rem 
+        @include media(1100) 
+            gap: .5rem
+        @include media(991) 
+            justify-content: space-between
+        @include media(540)
+            gap: .5rem
+        .colB, .colC
+            height: 100%
+            display: flex
+        .colA
+            flex: 0 1 200px
+            @include media(768)
+                flex: 0 1 150px
+            @include media(540)
+                flex: 0 1 120px
+            @include media(360)
+                flex: 0 1 100px
+            .logo
+                height: 100%
+                width: 100%
+                img
+                    width: 100%
+                    height: 100%
+        .colB
+            flex: 1
+            align-items: center
+            justify-content: end
+            @include media(1280) 
+                justify-content: center
+            @include media(991)
+                flex: 1
+                position: fixed
+                display: block
+                align-items: unset
+                justify-content: unset
+                top: 0
+                left: 0
+                width: 100vw
+                max-width: 100vw
+                min-height: 100vh
+                border-radius: 0
+                transform-origin: unset
+                background: url(/assets/logo-vector.svg) no-repeat, linear-gradient(0deg, #e2e8f8 0%, #fff 100%) 
+                background-size: 40%
+                background-position: 90% 100%
+                opacity: 1
+                transform: translateY(100%)
+                box-shadow: none
+                visibility: visible
+                transition: .5s ease
+            &.is-open
+                transform: translateY(0px)
+                pointer-events: auto
+                user-select: auto
+            button.close
+                display: none
+                width: 20px
+                height: 20px
+                position: absolute
+                top: 20px
+                right: 20px
+                svg, img
+                    width: 100%
+                    height: 100%
+                    path
+                        stroke-width: 2
+                @include media(991)
+                    display: block
+            .nav-items
+                display: flex
+                align-items: center
+                justify-content: center
+                gap: 35px
+                height: 100%
+                @include media(1280)
+                    gap: 25px
+                @include media(1170)
+                    gap: 15px
+                    width: 100%
+                @include media(991) 
+                    gap: 20px
+                    flex-direction: column
+                    align-items: start
+                    justify-content: start
+                    padding: 0 20px 30px
+                    margin-top: 50px
+                    overflow-y: auto
+                    height: 90%
+                @include media(540)
+                    padding: 0 20px 60px
+                >li
+                    transition: .5s ease
+                    position: relative
+                    height: 100%
+                    &:not(.hasDropdown)
+                        // @include media(991) 
+                        //     display: none
+                    @include media(991) 
+                        height: auto
+                        width: 100%
+                    >a, button.link
+                        display: flex
+                        align-items: center
+                        color: $black
+                        height: 100%
+                        font-weight: 500
+                        @include media(991)    
+                            position: relative
+                            font-size: 22px
+                            height: auto
+                        &:hover
+                            color: var(--elementhover)
+                            @include media(991)
+                                color: $black
+                    &.hasDropdown
+                        &.is_open 
+                            .btnnav
+                                button.link
+                                    color: var(--elementhover)
+                                .icon
+                                    &::before
+                                        background: var(--elementhover)
+                                    &::after
+                                        transform: scaleY(0)
+                            .dropdown-menu
+                                display: block
+                        &.active
+                            .btnnav
+                                &::before
+                                    width: 100%
+                                button.link
+                                    color: var(--elementhover)
+                                    @include media(991)
+                                        color: $black
+                                .icon
+                                    @include media-min(991)
+                                        &::before
+                                            background: var(--elementhover)
+                                        &::after
+                                            transform: scaleY(0)
+                            @include media-min(991)
+                                .dropdown-menu
+                                    transform: translate(-30%, 0px)
+                                    opacity: 1
+                                    pointer-events: auto
+                                    user-select: auto
+                                    visibility: visible
+                                    display: block
+                        .btnnav
+                            position: relative
+                            display: flex
+                            align-items: center
+                            gap: 10px
+                            height: 100%
+                            @include media(991)
+                                justify-content: space-between
+                                height: auto
+                            &::before
+                               content: "" 
+                               position: absolute
+                               left: 0
+                               bottom: 0
+                               height: 2px
+                               width: 0
+                               background: $secondary
+                               transition: .4s ease
+                               @include media(991)
+                                    display: none
+                            button.link
+                                display: block
+                            .icon
+                                --size: 10px
+                                --border: 2px
+                                --bgcolor: var(--black)
+                                width: var(--size)
+                                height: var(--size)
+                                @include before(var(--bgcolor))
+                                @include after(var(--bgcolor))
+                                &::before,&::after
+                                    transition: .5s ease
+                                &::before
+                                    top: calc(var(--size) / 2 - var(--border) / 2)
+                                    bottom: auto
+                                    height: var(--border)
+                                    width: 100%
+                                &::after
+                                    left: calc(var(--size) / 2)
+                                    translate: -50% 0 
+                                    right: auto
+                                    width: var(--border)
+                                    height: 100%
+                                @include media(991) 
+                                    --size: 16px
+                        .dropdown-menu
+                            position: absolute
+                            background: url(/assets/logo-vector.svg) no-repeat, linear-gradient(0deg, #e2e8f8 0%, #fff 100%) 
+                            background-position: 5% 100%
+                            background-size: 130px
+                            top: 100%
+                            width: max-content
+                            height: 470px
+                            border-bottom-left-radius: 10px
+                            border-bottom-right-radius: 10px
+                            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px
+                            left: -100%
+                            transform: translate(-30%, 30px)
+                            transform-origin: top
+                            transition: .4s ease
+                            pointer-events: none
+                            user-select: none
+                            visibility: hidden
+                            --triangle: 10px
+                            opacity: 0
+                            display: none
+                            @include media(1280) 
+                                left: -60%
+                            @include media(991) 
+                                display: none
+                                position: static
+                                left: 0
+                                top: 0
+                                border-radius: 0
+                                transform-origin: unset
+                                opacity: 1
+                                transform: unset
+                                opacity: 1
+                                box-shadow: none
+                                visibility: visible
+                                pointer-events: auto
+                                user-select: auto
+                                background: none
+                                width: 100%
+                                height: 100%
+                            // @include media(991)
+                            //     position: fixed
+                            //     display: block
+                            //     top: 0
+                            //     left: 0
+                            //     width: 100vw
+                            //     max-width: 100vw
+                            //     height: 100vh
+                            //     // background: url(/assets/logo-vector.svg) no-repeat, $white  
+                            //     border-radius: 0
+                            //     transform-origin: unset
+                            //     opacity: 1
+                            //     transform: translateY(100%)
+                            //     box-shadow: none
+                            //     visibility: visible
+                            // &.is-open
+                            //     transform: translateY(0px)
+                            //     pointer-events: auto
+                            //     user-select: auto
+                            // button.close
+                            //     display: none
+                            //     width: 20px
+                            //     height: 20px
+                            //     position: absolute
+                            //     top: 20px
+                            //     right: 20px
+                            //     svg, img
+                            //         width: 100%
+                            //         height: 100%
+                            //     @include media(991)
+                            //         display: block
+                            .dropdown-menu-wrap
+                                height: 100%
+                                width: 1100px
+                                @include media(1280) 
+                                    width: 920px
+                                @include media(991)
+                                    width: 100%
+                                .colA-md
+                                    position: relative
+                                    --leftwidth: 27%
+                                    --ulpadding: 15px 10px 20px
+                                    height: 100%
+                                    @include media(1280) 
+                                        --leftwidth: 30%
+                                    @include media(991)
+                                        --leftwidth: 100%
+                                    .solutions_ul
+                                        width: var(--leftwidth)
+                                        height: 100%
+                                        overflow-y: auto
+                                        padding: var(--ulpadding)
+                                        padding-left: 15px
+                                        padding-right: 20px
+                                        border-right: 1px solid #D5D5D5
+                                        @include media(991)
+                                            margin-top: 20px
+                                            padding: 0
+                                            border-right: none
+                                        .solutions_li
+                                            &.active
+                                                .solution_cat
+                                                    background: linear-gradient(270deg, #233f90, #000)
+                                                    .cat_ico
+                                                        img
+                                                            filter: brightness(0) invert(1)
+                                                    p
+                                                        color: $white
+                                                    svg
+                                                        @include media(991)
+                                                            rotate: 90deg
+                                                        path 
+                                                            fill: $white
+                                                .solution_submenu
+                                                    opacity: 1
+                                                    visibility: visible
+                                                    user-select: auto
+                                                    pointer-events: auto
+                                                    @include media(991)
+                                                        display: block
+                                                    .submenu_grid
+                                                        transform: translateY(0px)
+                                                        opacity: 1
+                                                        @include media(991)
+                                                            display: grid
+                                                            pointer-events: auto
+                                                            user-select: auto
+                                                        .service_col
+                                                            @include media(991)
+                                                                user-select: auto
+                                                                pointer-events: auto
+                                            .solution_cat
+                                                display: flex
+                                                flex-wrap: wrap
+                                                gap: 15px
+                                                align-items: center
+                                                padding: 8px 12px
+                                                border-radius: 10px
+                                                cursor: pointer
+                                                transition: .5s ease
+                                                @include media(991) 
+                                                    border-radius: 5px
+                                                .cat_ico
+                                                    flex: 0 1 36px
+                                                    @include media(991) 
+                                                        flex: 0 1 25px
+                                                        width: 25px
+                                                        height: 25px
+                                                p
+                                                    flex: 1
+                                                    font-size: 14px
+                                                    font-weight: 500
+                                                    line-height: 1.3
+                                                    color: $black
+                                                    transition: .5s ease
+                                                svg
+                                                    flex: 0 1 30px
+                                                    transition: .5s ease
+                                            .solution_submenu
+                                                position: absolute
+                                                top: 0
+                                                left: var(--leftwidth)
+                                                width: calc(100% - var(--leftwidth))
+                                                height: max-content
+                                                padding: 35px 25px
+                                                transition: .5s ease
+                                                opacity: 0
+                                                visibility: hidden
+                                                user-select: none
+                                                pointer-events: none
+                                                @include media(1280) 
+                                                    padding: 30px 20px
+                                                @include media(991)
+                                                    position: relative
+                                                    left: 0
+                                                    width: 100%
+                                                    height: 100%
+                                                    opacity: 1
+                                                    visibility: visible
+                                                    pointer-events: auto
+                                                    user-select: auto
+                                                    padding: 20px 12px
+                                                    display: none
+                                                @include media(540)
+                                                    padding: 20px 10px
+                                                .heading
+                                                    h2
+                                                        font-size: 24px
+                                                        @include media(991) 
+                                                            font-size: 18px
+                                                        @include media(540)
+                                                            font-size: 16px
+                                                    p
+                                                        font-size: 14px
+                                                        max-width: 500px
+                                                        margin-top: 10px
+                                                .submenu_grid
+                                                    margin-top: 20px
+                                                    display: grid
+                                                    grid-template-columns: repeat(3, 1fr)
+                                                    grid-gap: 10px
+                                                    transform: translateY(30px)
+                                                    opacity: 0
+                                                    transition: .5s ease
+                                                    @include media(991)
+                                                        opacity: 1
+                                                        transform: translateY(0)
+                                                        display: none
+                                                        margin-top: 15px 
+                                                        user-select: none
+                                                        pointer-events: none
+                                                    @include media(768)
+                                                        grid-template-columns: repeat(2, 1fr)
+                                                    .service_col
+                                                        border-radius: 10px
+                                                        max-height: 140px
+                                                        @include media(991)
+                                                            user-select: none
+                                                            pointer-events: none
+                                                        @include media(768)
+                                                            border-radius: 5px
+                                                        &::before
+                                                            border-radius: 10px
+                                                            @include media(768)
+                                                                border-radius: 5px
+                                                        figure
+                                                            border-radius: 10px
+                                                            @include media(768)
+                                                                border-radius: 5px
+                                                            video, img
+                                                                border-radius: 10px
+                                                                @include media(768)
+                                                                    border-radius: 5px
+                                                        figcaption
+                                                            padding: 0 10px 15px
+                                                            h4
+                                                                font-size: 14px
+                                                            p
+                                                                font-size: 12px
+                                                                margin: 5px 0 0px
+                                                                @include media(991)
+                                                                    display: none
+        .colC
+            flex: 0 1 auto
+            align-items: center
+            justify-content: end 
+            gap: 30px
+            @include media(1280)
+                gap: 15px
+            @include media(991)
+                flex: 0 1 auto
+            @include media(768) 
+                flex: 1
+            @include media(540)
+                gap: 10px
+            @include media(360)
+                gap: 8px
+            .lang_select
+                position: relative
+                display: flex
+                align-items: center
+                margin-left: 20px
+                height: 100%
+                @include media(1280)
+                    margin-left: 0
+                &.open
+                    .dropdown_list
+                        opacity: 1
+                        transform: scale(1)
+                .selected_lang
+                    display: flex
+                    align-items: center
+                    cursor: pointer
+                    gap: 10px
+                    @include media(540)
+                        gap: 5px
+                    .icon
+                        flex: 0 1 20px
+                        width: 20px
+                        height: 20px
+                        @include media(540)
+                            flex: 0 1 16px
+                            width: 16px
+                            height: 16px
+                        &:last-child
+                            flex: 0 1 15px
+                            width: 15px
+                            height: 15px
+                            line-height: 1.2
+                            @include media(540)
+                                flex: 0 1 13px
+                                width: 13px
+                                height: 13px
+                        svg, img
+                            width: 100%
+                            height: 100%
+                    .show_lan
+                        flex: 1
+                        line-height: 1
+                        font-weight: 400
+                        color: $black
+                        text-transform: uppercase
+                        font-size: 14px
+                .dropdown_list
+                    position: absolute
+                    width: 100%
+                    min-width: 150px
+                    left: -50%
+                    top: 100%
+                    z-index: 6
+                    padding: 5px 0
+                    background-color: #fff
+                    border-bottom-left-radius: 5px
+                    border-bottom-right-radius: 5px
+                    transform-origin: top
+                    transition: all .4s
+                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2)
+                    overflow-y: auto
+                    overflow-x: hidden
+                    opacity: 0
+                    transform: perspective(2000px)translateZ(50px)rotateX(-90deg)scale(.86,.75)translateY(50px)
+                    @include scrollbar($background: var(--primary))
+                    li
+                        width: 100%
+                        padding: 5px 10px
+                        cursor: pointer
+                        color: $text 
+                        font-size: 14px
+                        background-color: #fff
+                        transition: .3s ease
+                        &:hover
+                            background: #EBEBEB
+                            color: $black
+                            transform: translateX(3px)
+            .btn
+                @include media(540)
+                    --padding: 10px
+                    margin: 0
+            button.ham-btn
+                font-size: 14px
+                color: var(--primary)
+                vertical-align: middle
+                margin-left: 10px
+                display: none
+                @include media(991)
+                    display: block
+                span
+                    display: block
+                    width: 25px
+                    height: 2px
+                    background-color: var(--primary)
+                    transition: 0.5s ease
+                    &:not(:last-child) 
+                        margin-bottom: 4px
+
+header
+    &.header-fixed
+        transition: .5s ease
+        height: var(--headerfixed)
+        max-width: 100%
+        top: 0
+        border-radius: 0
+        &::after 
+            height: 100%
+    &.header-fit
+        transition: .5s ease
+        &::after 
+            height: 100%
+        .header-container
+            .colA
+                .logo
+                    transition: none !important
+    &.header-shadow
+        box-shadow: 0px 2px 8px 0px #63636333
+
+.login-pop
+    max-width: 550px
+    background: $white
+    right: 0
+    transform: translateX(100%)
+    transition: .7s ease
+    background: $white
+    &.is-open
+        transform: translateX(0%)
+    .close
+        top: 25px
+        right: 25px
+        @include media(675)
+            top: 20px
+            right: 20px
+        path
+            stroke: $black
+    .model-body
+        padding: 0px 70px 50px
+        margin-top: 60px
+        height: 100%
+        overflow-y: auto
+        @include scrollbar(6px,none,$primary,25px)
+        @include media(675)
+            padding: 40px 25px 50px
+        .title
+            margin-bottom: 2.5rem
+            .ico
+                width: 70px
+                line-height: 0
+                margin: 0 auto 30px
+                img
+                    width: 100%
+            h4
+                text-align: center
+                font-size: 20px
+                font-weight: 500
+                line-height: 1.282
+                letter-spacing: 2px
+                text-transform: uppercase
+        .form-group-login
+            border-bottom: 1px solid $text
+            display: flex
+            gap: 10px
+            position: relative
+            align-items: center
+            .wefeewf
+                position: absolute
+                left: 0
+                right: 0
+                color: red
+                font-weight: bold
+                font-size: 14px
+                top: calc(100% + 10px)
+            .mobile-input,.dial-code
+                border: none
+                width: 100%
+                height: 42px
+                color: $black
+                &:focus
+                    outline: none
+            .dial-code
+                flex: 0
+                min-width: 20px
+                caret-color: transparent
+                display: flex
+                align-items: center
+                justify-content: center
+                svg
+                    width: 100%
+                    height: auto
+            .mobile-input
+                flex: 1
+        .sbmt-btn-div
+            margin: 40px 0 
+            text-align: center
+            .btn 
+                max-width: 100%
+        .split-sec
+            overflow: hidden
+            p
+                text-align: center
+                position: relative
+                width: fit-content
+                margin: 0 auto
+                color: $text
+                @include font(500)
+                &::before,&::after
+                    content: ''
+                    position: absolute
+                    top: 50%
+                    translate: 0 -50%
+                    width: 200px
+                    height: 1px
+                    background: #ECECEC
+                &::before
+                    left: calc(100% + 12px)
+                &::after
+                    right: calc(100% + 12px)
+        .btm-social-wrp
+            display: flex
+            align-items: center
+            gap: 0 30px
+            margin-top: 40px
+            .btn
+                background-color: transparent 
+                border: 1px solid $text
+                max-width: 100%
+                color: $text
+                &:hover
+                    border-color: $primary
+                    color: $white
+                    background-color: var(--primary)
+                    svg
+                        path 
+                            fill: $white
+                svg
+                    path 
+                        fill: $text
+            > *
+                flex: 1
+            svg
+                width: auto
+        .register
+            text-align: center
+            color: $text
+            margin-top: 46px
+            .reg-btn
+                color: $primary
+                font-weight: bold
+        &.otp-verify
+            .otp-verify-wrap
+                padding-top: 3rem
+            .back-to-login
+                display: inline-flex
+                align-items: center
+                gap: 0 8px
+                color: $primary
+                @include font(500)
+                &:hover
+                    color: $primary
+                img
+                    width: 13px
+                    transform: rotate(90deg)
+            .enter-nm-erww
+                margin-top: 1rem
+                margin-bottom: 3rem
+            .txtVr
+                font-size: 20px
+                color: $text
+                text-align: center
+                span
+                    display: block
+                    font-size: 16px
+                    margin-top: 5px
+                    font-weight: 500
+            .cojm-wrap
+                position: relative
+                .otp-error-ozrj
+                    color: red
+                    position: absolute
+                    font-size: 14px
+                    bottom: 20px
+                    left: 0
+                    right: 0
+                    text-align: center
+            .verify-button
+                width: 100%
+                text-align: center
+                a
+                    text-transform: uppercase
+                    max-width: 100%
+            .enter_new 
+                margin-bottom: 40px
+                .form-group-login
+                    &::before
+                        display: none
+            .otpInput
+                padding: 50px 0 60px
+                max-width: 230px
+                margin: 0 auto
+                @include flex
+                gap: 0 21px
+                input
+                    flex: 1
+                    height: 40px
+                    width: 100%
+                    border: none
+                    @include font(500)
+                    border: 1px solid #D9D9D9
+                    border-radius: 5px  
+                    text-align: center
+                    &:focus
+                        outline: none
+
+.loanOffer-pop
+    max-width: 500px
+    background: $white
+    right: 0
+    transform: translateX(100%)
+    transition: .7s ease
+    background: $white
+    &.is-open
+        transform: translateX(0%)
+    .close
+        top: 25px
+        right: 25px
+        @include media(675)
+            top: 20px
+            right: 20px
+        path
+            stroke: $black
+    .model-body
+        padding: 0px 70px 50px
+        margin-top: 30px
+        height: 100%
+        overflow-y: auto
+        @include scrollbar(6px,none,$primary,25px)
+        @include media(675)
+            padding: 40px 25px 50px
+        .title
+            margin-bottom: 1rem
+            text-align: center
+            .ico
+                line-height: 0
+                margin: 0 auto 20px
+                img
+                    width: 100%
+            h4
+                text-align: center
+                font-size: 20px
+                font-weight: 500
+                line-height: 1.282
+                letter-spacing: 1px
+                text-transform: uppercase
+            p
+                font-weight: 400
+        .form
+            --gaptb: 15px
+            .sbmt-btn-div
+                .btn
+                    max-width: 100%
+
+
+
+.model.filter_model
+    left: 0
+    max-width: 480px
+    transform: translateX(-100%)
+    transition: .5s ease
+    z-index: 10
+    &.is-open
+        transform: translateX(0%)
+    .close
+        top: 17px
+        right: 22px
+        svg
+            width: 18px
+            path
+                stroke: $black !important
+                stroke-width: 2 !important
+    .model-body
+        padding: 0px 40px 30px
+        margin-top: 60px
+        height: calc(100% - 60px)
+        overflow-y: auto
+        display: flex
+        flex-direction: column
+        position: relative
+        @include scrollbar(0px,$black,#fff,0px)
+        @include media(540)
+            padding: 0 20px 40px
+        .icon
+            display: flex
+            align-items: center
+            gap: 15px
+            margin-bottom: 30px
+            line-height: 0
+            font-weight: 600
+            letter-spacing: 4px
+            font-size: 30px
+            color: #000
+            img,svg
+                width: 50px
+                height: auto
+                @include media(540)
+                    width: 30px
+                path 
+                    fill: #000
+        .nav-list
+            width: 100%
+            >li
+                cursor: pointer
+                &:not(:last-child)
+                    margin-bottom: 15px
+                &.desktop-non
+                    display: none
+                &.hasDropdown
+                    position: relative
+                    &:hover
+                        .title 
+                            h5
+                                color: #666
+                    .title
+                        display: flex
+                        justify-content: space-between
+                        align-items: center
+                        &.active
+                            svg
+                                transform: rotate(90deg)
+                        h5
+                            font-size: 22px
+                            color: #000
+                            transition: .5s ease 
+                        .arrow
+                            width: 30px
+                            transition: .5s ease
+                        svg
+                            transition: .5s ease
+                            width: 16px
+                    .dropdown-menu-ham
+                        display: none
+                        padding-top: 15px
+                        ul
+                            border-top: 1px solid #dadada   
+                            border-bottom: 1px solid #dadada   
+                            padding: 15px 10px
+                            li
+                                a
+                                    display: block
+                                    font-size: 18px
+                                    color: #666
+                                    padding: 5px 0
+                                    transition: .5s ease
+                                    &:hover
+                                        color: #000
+                >a
+                    font-size: 20px
+                    line-height: 1.06
+                    color: #000
+                    display: inline-block
+                    @include font(500)
+                    &:hover
+                        color: #666
+        .bottom-list
+            margin-top: 2rem
+            padding-top: 1rem
+            display: flex
+            align-items: center 
+            gap: 1rem
+            .social-icons
+                a
+                    display: inline-flex
+                    vertical-align: middle
+                    align-items: center
+                    justify-content: center
+                    height: 40px
+                    width: 40px
+                    border-radius: 50%
+                    color: #000
+                    line-height: 0
+                    overflow: hidden
+                    &:not(:last-child)
+                        margin-right: 4px
+                    svg
+                        width: 24px
+                        height: 24px
+                        path
+                            transition: none
+                            &[stroke],&[fill="none"]
+                                stroke: currentColor
+                            &[fill]
+                                fill: currentColor
+                    &:hover
+                        color: #666
+                        &::before
+                            transition: .5s ease
+                            opacity: 1
+                            transform: scale(1)
+
+
+.message-pop
+    position: fixed
+    top: calc(var(--headerheight) + 12px)
+    right: 30px
+    background: $primary
+    z-index: 7
+    padding: 8px 15px
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px
+    border-radius: 5px
+    *
+        color: $white
+
+.model-full
+    left: 0
+    right: 0
+    max-width: 100%
+    width: 100%
+    background: none
+    pointer-events: none
+    display: flex
+    align-items: center
+    transform: translateY(100%)
+    transition: .5s ease
+    overflow: hidden
+    &.is-open
+        transform: translateY(0%)
+    .dialog-wrapper
+        width: 100%
+        background: $white
+        margin: 0 auto
+        pointer-events: all
+        border-radius: 10px
+        overflow: hidden
+        position: relative
+        .title
+            padding: 8px 20px
+            border-bottom: 1px solid #e7e7e7
+            font-size: 20px
+            @include font(600)
+            color: $black
+            &:has(.close)
+                position: relative
+            .close
+                right: 20px
+                top: 50%
+                translate: 0 -50%
+                line-height: 0
+                z-index: 2
+                svg
+                    width: 20px
+                    height: auto
+                path
+                    stroke: $black
+        .content
+            padding: 12px 20px
+    &.cancel-order-pop
+        .dialog-wrapper
+            max-width: 540px
+            .close
+                right: 18px
+                top: 28px
+                svg
+                    width: 18px
+            .model-body
+                padding: 35px 30px 55px
+                .ksxif
+                    margin-bottom: 50px
+                    h4
+                        color: $black
+                        font-size: 20px
+                        line-height: 24px
+                .form
+                    --gaptb: 18px
+    &.add-address-pop
+        .dialog-wrapper
+            max-width: 470px
+            @include media(540)
+                height: 100%
+                border-radius: 0
+        .close
+            right: 18px
+            top: 28px
+        .model-body
+            padding: 36px 38px 60px
+            @include media(1366)
+                max-height: 530px
+                overflow-y: auto
+                @include scrollbar($width: 6px)
+            @include media(540)
+                height: 90%
+            .pilce
+                display: flex
+                gap: 1rem
+                margin-bottom: 50px
+                h4
+                    flex: 1
+                    font-size: 20px
+                    line-height: 25.64px
+                    font-weight: 500
+                    text-transform: uppercase
+                .close
+                    svg
+                        width: 18px
+            .form
+                --item: 2
+                --borderbefore: var(--text)
+                --gaptb: 16px
+                --gaplr: 16px
+                --labelfontbefore: 14px
+                --labelfontafter: 12px
+                .label-tzooz
+                    color: $black
+                .chckbx-tkfrb
+                    margin-top: 12px
+                    p
+                        font-size: var(--labelfontbefore)
+                .btn-grp
+                    margin-top: 20px
+
+.video-pop
+    left: 0
+    right: 0
+    background: #0000007a
+    z-index: 9
+    max-width: 100%
+    transform: translateY(100%)
+    transition: .5s ease
+    &.is-open
+        transform: translateY(0%)
+    .close-video
+        position: absolute
+        bottom: calc(100% + 20px)
+        top: auto
+        right: -40px
+        height: 50px
+        width: 50px
+        border-radius: 50%
+        background: $black
+        display: flex
+        align-items: center
+        justify-content: center
+        @include media(675)
+            right: 0
+        &:hover
+            background: $black
+        svg
+            height: 35%
+            width: 35%
+        path
+            stroke-width: 2
+            stroke: $white
+    .model-body
+        position: absolute
+        top: 50%
+        left: 50%
+        translate: -50% -50%
+        width: 100%
+        max-width: 50%
+        @include media(675)
+            max-width: 95%
+        iframe
+            width: 100%
+            aspect-ratio: 1.9
+            border: 2px solid $white
+
+.product-not-found
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    width: 100%
+    z-index: 1
+    &.not-found2
+        position: relative
+    .nt-fnd-wrp
+        text-align: center
+        .ico
+            width: 120px
+            margin-left: auto
+            margin-right: auto
+            filter: grayscale(1)
+        p
+            font-size: 24px
+            margin: 10px 0 3rem 
+            color: $black
+
+
+footer
+    .container-fluid
+        padding-bottom: 50px
+        @include media(768)
+            padding-bottom: 40px
+        .footer_wrapper
+            background: #000000E5
+            border-radius: 20px
+            padding: 70px 60px 50px
+            @include before(url(/assets/vector/footer_bg.svg)) 
+            &::before
+                background-repeat: no-repeat
+                background-position: 50% 100%
+                background-size: 70%
+                opacity: .8
+                @include media(540)
+                    background-size: 100%
+            @include media(1280) 
+                padding: 60px 40px 40px
+            @include media(991)
+                padding: 50px 40px 40px
+            @include media(540)
+                padding: 30px 20px
+                border-radius: 15px
+            .upper-footer
+                display: flex
+                flex-wrap: wrap
+                --gap: 100px
+                gap: var(--gap)
+                padding-bottom: 50px
+                border-bottom: 1px solid #666464
+                @include media(1280) 
+                    --gap: 70px
+                    padding-bottom: 40px
+                @include media(991)
+                    --gap: 40px
+                @include media(540)
+                    padding-bottom: 30px
+                    --gap: 30px
+                .colA
+                    flex: 0 1 auto
+                    @include media(991)
+                        margin: 0 auto
+                    @include media(540)
+                        width: 100%
+                    .logo
+                        display: block
+                        width: 240px
+                        @include media(1280) 
+                            width: 200px
+                        @include media(540)
+                            margin: 0 auto
+                    .list
+                        margin-top: 40px
+                        @include media(540)
+                            margin-top: 30px
+                        h6
+                            font-size: 16px
+                            color: $white
+                            padding-bottom: 10px
+                            border-bottom: 1px solid #666464
+                            @include media(540)
+                                text-align: center
+                        .social_icons
+                            display: flex
+                            flex-wrap: wrap
+                            align-items: center
+                            gap: 15px
+                            margin-top: 20px
+                            @include media(540)
+                                justify-content: center
+                            li
+                                a
+                                    display: flex
+                                    align-items: center
+                                    justify-content: center
+                                    width: 41px
+                                    height: 41px
+                                    border: 1px solid #FFFFFF
+                                    border-radius: 50%
+                                    &:hover
+                                        background: $white
+                                        color: $black
+                .colB
+                    flex: 1
+                    display: flex
+                    flex-wrap: wrap
+                    justify-content: space-around
+                    @include media(991)
+                        flex: 0 1 100%
+                        justify-content: space-between
+                    @include media(768)
+                        gap: 30px
+                    .list
+                        flex: 0 1 auto
+                        @include media(768)
+                            &:last-child
+                                flex: 0 1 100%
+                        h6
+                            font-size: 22px
+                            color: $white
+                            padding-bottom: 10px
+                            border-bottom: 1px solid #666464
+                            @include media(540)
+                                font-size: 18px
+                        ul
+                            margin-top: 15px
+                            li
+                                display: flex
+                                align-items: center
+                                gap: 10px
+                                color: $white
+                                &:not(:last-child)
+                                    margin-bottom: 8px
+                                .icon
+                                    flex: 0 1 25px
+                                    width: 25px
+                                    svg 
+                                        width: 100%
+                                        height: 100%
+                                a
+                                    flex: 1
+                                    display: block
+                                    font-size: 16px
+                                    font-weight: 400
+                                    @include media(540)
+                                        font-size: 14px
+                                    &:hover
+                                        transform: translateX(5px)
+            .lower-footer
+                margin-top: 20px
+                display: flex
+                align-items: center
+                justify-content: center
+                gap: 10px
+                @include media(768)
+                    flex-direction: column
+                p
+                    font-size: 14px
+                    color: $white
+                    font-weight: 600
+                .links
+                    display: flex
+                    align-items: center
+                    gap: 10px
+                    a
+                        padding-left: 8px
+                        border-left: 1px solid $white
+                        font-size: 14px
+                        font-weight: 600
+                        &:first-child
+                            @include media(768)
+                                border-left: none
+
+.thanks_banner
+    margin-top: var(--headerheight)
+    .bg
+        height: calc( 100vh - var(--headerfixed) )
+        .banner-wrapper
+            .content
+                text-align: center
+                figure
+                    width: 50px
+                    margin: 0 auto
+                    padding-bottom: 20px
+                    img
+                        height: 100%      
+                h1
+                    font-size: 60px
+                    color: $white
+                    font-weight: 500         
+                    line-height: 1.5
+                p
+                    font-size: 20px
+                    color: $white
+                    padding-bottom: 50px
+
+.model.ham-pop
+    right: 0
+    max-width: 480px
+    transform: translateX(100%)
+    transition: .5s ease
+    z-index: 10
+    &::before
+        content: ""
+        position: absolute
+        left: 0
+        bottom: 0
+        width: 100%
+        height: 100%
+        // background: url(../../images/logo-dark.svg) no-repeat $white
+        background-position: 190% 110%
+        opacity: 0.1
+        @include media(540)
+            background-size: 80%
+    &.is-open
+        transform: translateX(0%)
+    .close
+        top: 17px
+        right: 22px
+        &:hover
+            svg
+                path
+                    stroke: $black !important
+        svg
+            width: 25px
+            path
+                stroke: $text !important
+                stroke-width: 2 !important
+    .model-body
+        padding: 0px 40px 30px
+        margin-top: 60px
+        height: calc(100% - 60px)
+        overflow-y: auto
+        display: flex
+        flex-direction: column
+        position: relative
+        @include scrollbar(0px,$black,#fff,0px)
+        @include media(540)
+            padding: 0 20px 20px
+            margin-top: 40px
+        .icon
+            margin-bottom: 30px
+            line-height: 0
+            img,svg
+                width: 100px
+                height: 100px
+                animation: rotateicon 20s ease infinite forwards
+                @keyframes rotateicon
+                    0%
+                        transform: rotate(0)
+                    100%
+                        transform: rotate(360deg)
+        .nav-list
+            width: 100%
+            >li
+                &:not(:last-child)
+                    margin-bottom: 15px
+                &:hover
+                    h5, >a 
+                        transform: translateX(5px)
+                        transition: .5s ease
+                        @include media(540)
+                            transform: translateX(0px)
+                &.desktop-non
+                    display: none
+                &.hasDropdown
+                    position: relative
+                    cursor: pointer
+                    &:hover
+                        .title
+                            h5
+                                color: $primary
+                    .title
+                        display: flex
+                        justify-content: space-between
+                        align-items: center
+                        &.active
+                            h5 
+                                color: var(--primary)
+                            svg
+                                transform: rotate(90deg)
+                        h5
+                            font-size: 22px
+                            color: #000
+                            font-family: $Poppins
+                            transition: .3s ease
+                        .arrow
+                            width: 30px
+                            transition: .5s ease
+                        svg
+                            transition: .5s ease
+                            width: 16px
+                    .dropdown-menu-ham
+                        display: none
+                        padding-top: 15px
+                        ul
+                            border-top: 1px solid #dadada   
+                            border-bottom: 1px solid #dadada   
+                            padding: 10px
+                            li
+                                a
+                                    display: block
+                                    font-size: 16px
+                                    color: #666
+                                    padding: 3px 0
+                                    transition: .5s ease
+                                    &:hover
+                                        color: $primary
+                >a
+                    display: block
+                    font-size: 22px
+                    font-family: $Poppins
+                    color: #000
+                    text-transform: uppercase
+                    transition: .3s ease
+                    @include font(500)
+                    &:hover
+                        color: $primary
+        .bottom-list
+            margin-top: 2rem
+            padding-top: 1rem
+            display: flex
+            align-items: center 
+            gap: 1rem
+            border-top: 1px solid #dadada   
+            .social-icons
+                a
+                    display: inline-flex
+                    vertical-align: middle
+                    align-items: center
+                    justify-content: center
+                    height: 40px
+                    width: 40px
+                    border-radius: 50%
+                    color: #000
+                    line-height: 0
+                    overflow: hidden
+                    &:not(:last-child)
+                        margin-right: 4px
+                    svg
+                        width: 20px
+                        height: 20px
+                        path
+                            transition: none
+                            &[stroke],&[fill="none"]
+                                stroke: currentColor
+                            &[fill]
+                                fill: currentColor
+                    &:hover
+                        background-color: $primary
+                        color: $white
+
+.enquire-pop
+    right: 0
+    transform: translateX(100%)
+    transition: .5s ease
+    &::before
+        content: ""
+        position: absolute
+        left: 0
+        bottom: 0
+        width: 100%
+        height: 100%
+        // background: url(../../images/logo-dark.svg) no-repeat var(--white)
+        background-position: 190% 110%
+        z-index: -1
+        opacity: 0.1
+        @include media(540)
+            background-size: 85%
+    &.is-open
+        transform: translateX(0%)
+    .close
+        &:not(.btn)
+            top: 20px
+            right: 20px
+    .model-body
+        padding: 0px 35px 30px
+        margin-top: 50px
+        height: 100%
+        overflow-y: auto
+        @include scrollbar(3px,$white,#5e5e5e,8px)
+        @include media(768)
+            padding: 0px 15px 20px
+        .title
+            text-align: center
+            margin-bottom: 1.5rem
+            h4
+                font-size: 32px
+                color: $black
+                font-family: $Poppins
+                @include font(500)
+            p
+                color: $text
+                font-size: 14px
+                max-width: 317px
+                margin: 5px auto 0
+                @include media(675)
+                    font-size: 14px
+                    max-width: 300px
+        .form
+            --gaptb: 25px
+            --labelbefore: $black
+            --labelafter: $black
+            --borderbefore: $black
+            --color: $black
+            --borderbefore: var(--black)
+            .sbmt-grp
+                margin-top: 1rem
+                .btn
+                    margin: 0 auto
+
+.sticky_action
+    align-items: center
+    gap: 15px
+    position: fixed
+    bottom: 3%
+    right: 3%
+    translate: 3% 3%
+    z-index: 5
+    @include media(675)
+        display: none
+    .whatsapp
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 40px
+        height: 40px
+        padding: 0
+        max-width: 100%
+        border-radius: 50%
+        box-shadow: 0 5px 15px 0 #00000059
+        &:hover
+            border-color: $primary
+            background: $primary
+            svg
+                path 
+                    fill: #fff
+    .call_action
+        display: flex
+        align-items: center
+        gap: 5px
+        box-shadow: 0 5px 15px 0 #00000059
+        font-size: 14px
+        height: 36px 
+        &:hover
+            border-color: $primary 
+            background: $primary
+
+.list-filter-wrap
+    --filterheight: 45px
+    --bordercolor: #66666638
+    border-bottom: 1px solid var(--bordercolor)
+    border-top: 1px solid var(--bordercolor)
+    position: sticky
+    top: var(--headerfixed)
+    left: 0
+    right: 0 
+    background: $white
+    height: 100%
+    z-index: 4
+    @include media(768)
+        --filterheight: 35px
+    .list-filter
+        display: flex
+        @include media(991)
+            justify-content: space-between
+        .colA
+            padding: 0 25px
+            border-right: 1px solid var(--bordercolor)
+            pointer-events: none
+            @include media(991)
+                pointer-events: all
+                padding-left: 0
+            @include media(675)
+                padding-right: 15px
+            @include media(345)
+                padding-right: 13px   
+            @include media(320)
+                padding-right: 10px
+            .filter-btn
+                height: var(--filterheight)
+                line-height: 0
+        .colB
+            flex: 1
+            @include media(991)
+                right: 0
+                transform: translateX(100%)
+                transition: .5s ease
+            &.is-open
+                @include media(991)
+                    transform: translateX(0%)
+            .close
+                @include media(991)
+                    top: 30px
+                    left: 25px
+                    right: auto
+            .filter-options
+                display: flex
+                align-items: center
+                @include media(991)
+                    display: block
+                    padding: 70px 0 0
+                    height: 100%
+                    overflow-y: auto
+                    position: relative
+                .btn-mbl-btm
+                    display: flex
+                    position: absolute
+                    bottom: 0
+                    left: 0
+                    right: 0
+                    z-index: 2
+                    @include media-min(991)
+                        display: none
+                    .aplly-btn,.clr-btn
+                        flex: 1
+                        --height: 44px
+                        background: $black
+                        color: $white
+                        border-radius: 0px
+                    >*
+                        border: none
+                        &:not(:last-child)
+                            border-right: 1px solid rgb(256 256 256 / .6)
+                .selected-filters-div
+                    margin-left: 30px
+                    display: flex
+                    align-items: center
+                    gap: 8px
+                    width: 100%
+                    white-space: nowrap
+                    overflow-x: auto
+                    @include media(1280)
+                        margin-left: 20px
+                    @include media(991)
+                        margin-top: 30px
+                    .filter-item
+                        display: inline-block
+                        vertical-align: middle
+                        white-space: nowrap
+                        background: $white
+                        font-size: 12px
+                        padding: 2px 9px
+                        caret-color: transparent
+                        border: 1px solid $text
+                        border-radius: 25px
+                        color: $text
+                        .close-btn
+                            margin-left: 3px
+                            cursor: pointer
+                            color: $text
+        .adi-select-wrap
+            --labelheight: var(--filterheight)
+            padding: 0 20px
+            @include media(991)
+                width: 100%
+            &:not(.sort_by)
+                @include media-min(991)
+                    border-right: 1px solid var(--bordercolor)
+                @include media(991)
+                    border-top: 1px solid var(--bordercolor)
+                .label
+                    @include media(991)
+                        @include font(500)
+                .adi-select-menu
+                    @include media(991)
+                        position: unset
+                        width: 100%
+                        box-shadow: none
+                        padding-top: 8px
+                        padding-bottom: 8px
+            &.sort_by
+                @include media(991)
+                    padding-right: 0
+
+#google_translate_element
+    display: none !important
+    .goog-te-gadget
+        img, span
+            display: none !important
+.skiptranslate, .VIpgJd-ZVi9od-aZ2wEe-wOHMyf.VIpgJd-ZVi9od-aZ2wEe-wOHMyf-ti6hGc
+    display: none !important
+
+.goog-te-banner-frame
+    display: none !important
+    .skiptranslate
+        display: none !important

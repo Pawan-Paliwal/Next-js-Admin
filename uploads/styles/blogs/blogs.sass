@@ -1,0 +1,196 @@
+@import '../_var'
+
+.blog-secA
+    .heading
+        text-align: center
+        max-width: 450px
+        margin: 0 auto 60px
+        @include media(1280)
+            margin: 0 auto 50px
+        @include media(768)
+            margin: 0 auto 40px
+        @include media(540)
+            margin: 0 auto 30px
+        h2
+            line-height: 1
+        p
+            color: $text
+            margin-top: 0
+            @include media(540)
+                line-height: 1.2
+                margin-top: 10px
+    .blogs_wrapper
+        width: 100%
+        display: grid
+        grid-template-columns: repeat(3, 1fr)
+        grid-gap: 40px 20px
+        @include media(991)
+            grid-template-columns: repeat(2, 1fr)
+            grid-gap: 30px 20px
+        @include media(768)
+            grid-gap: 20px 15px
+        @include media(540)
+            grid-template-columns: repeat(1, 1fr)
+
+.blogs_col
+    display: block
+    width: 100%
+    height: 100%
+    &:hover
+        figure
+            img
+                transform: scale(1.1)
+    figure
+        line-height: 0
+        transition: .5s ease
+        overflow: hidden
+        @include shine()
+    figcaption
+        background: var(--bglight)
+        padding: 25px 20px
+        h6
+            color: $black
+            line-height: 1.2
+            margin-bottom: 5px
+            @include media(768)
+                font-size: 18px
+        p
+            color: #352C26B2
+            line-height: 1.3
+        .btn
+            position: relative
+            z-index: 1
+            margin-top: 15px
+            @include media(768)
+                font-size: 14px
+.btn-div
+    width: 100%
+    max-width: fit-content
+    margin: 50px auto 0
+    cursor: pointer
+    @include media(540)
+        margin: 40px auto 0
+    &:hover
+        img
+            transform: rotate(90deg)
+    img
+        display: block
+        width: 80px
+        margin: 0 auto
+        transition: 1s ease
+        @include media(768)
+            width: 70px
+    button
+        font-size: 16px
+        color: var(--primary)
+        margin-top: 10px
+        transition: .5s ease
+
+.banner
+    &.blog-detail-banner
+        &::before
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.8) 100%), linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%)
+        .bg
+            height: calc(100vh - var(--headerfixed))
+            @include media(768) 
+                height: 80vh
+            .banner-wrapper
+                top: unset
+                bottom: 20%
+                translate: 0 20%
+                @include media(540) 
+                    bottom: 30%
+                    translate: 0 30%
+                .container
+                    position: relative
+                .content
+                    max-width: 640px
+                    @include media(991)
+                        max-width: 567px
+                    @include media(768)
+                        max-width: 430px
+                    h2
+                        font-size: 36px
+                        font-family: $Poppins
+                        text-transform: capitalize
+                        line-height: 1.1
+                        margin-bottom: 10px
+                        @include media(768)
+                            font-size: 32px
+                        @include media(540)
+                            font-size: 24px
+                    p
+                        max-width: 500px
+                        @include media(540)
+                            font-size: 14px
+                .share_btn
+                    position: absolute
+                    bottom: 12%
+                    right: 4rem
+                    z-index: 1
+                    @include media(675) 
+                        right: 15px
+                        bottom: 10%
+                    @include media(540) 
+                        bottom: -60%
+                    .share-btn-ico
+                        img, svg
+                            @include media(675) 
+                                width: 25px
+                            @include media(360)
+                                width: 20px
+                    .side_ico-m
+                        position: absolute
+                        bottom: 100%
+                        margin-bottom: 20px
+                        left: 50%
+                        translate: -50% 0
+                        display: flex
+                        gap: 20px
+                        flex-direction: column
+                        border-radius: 5px
+                        opacity: 0
+                        transform: scale(0.75) translateY(21px)
+                        transition: all .2s cubic-bezier(0.5, 0, 0, 1.25),opacity .15s ease-out
+                        transform-origin: bottom
+                        pointer-events: none
+                        user-select: none
+                        @include media(540) 
+                            flex-direction: row
+                            left: -100%
+                            margin-bottom: 0
+                            bottom: 50%
+                            translate: -100% 50%
+                            transform: scale(0.75) translateX(21px)
+                        &.open
+                            opacity: 1
+                            transform: scale(1) translateY(0)
+                            pointer-events: all
+                            user-select: auto
+                            @include media(540) 
+                                transform: scale(1) translateX(0)
+                        li
+                            svg
+                                fill: $white
+                                width: 25px
+                                @include media(768)
+                                    width: 20px
+                                &:hover
+                                    fill: $primary
+
+.blog-detail-secA
+    .website-content
+        max-width: 800px
+        margin: 0 auto
+        h1, h2, h3, h4, h5, h6
+            font-family: $Helvetica 
+            text-transform: none
+
+.blog-detail-secB
+    .upper-sec
+        text-align: center
+        h2
+            text-transform: capitalize
+            font-family: $Poppins
+        .swiper-nav
+            gap: 20px

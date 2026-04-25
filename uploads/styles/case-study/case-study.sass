@@ -1,0 +1,460 @@
+@import '../_var'
+
+.challenge_sec
+    .main_wrapper
+        background: linear-gradient(90deg, #000, #233f90)
+        border-radius: 20px
+        padding: 50px 40px
+        position: relative
+        display: flex
+        flex-wrap: wrap
+        align-items: center
+        --gap: 80px
+        gap: var(--gap)
+        @include media(1280)
+            --gap: 60px
+        @include media(991)
+            flex-direction: column
+            --gap: 30px
+        @include media(768)
+            padding: 40px 30px
+        @include media(540)
+            padding: 20px
+            border-radius: 10px
+            --gap: 20px
+        figure
+            flex: 0 1 45%
+            max-width: 45%
+            width: 100%
+            @include media(991)
+                flex: 0 1 100%
+                max-width: 100%
+            img
+                border-radius: 15px
+                @include media(540)
+                    border-radius: 10px
+        figcaption
+            flex: 1
+            max-width: calc( 55% - var(--gap) )
+            width: 100%
+            @include media(991)
+                max-width: 100%
+            @include media(540)
+                text-align: center
+            h2
+                margin-bottom: 30px
+                font-size: 48px
+                font-weight: 700
+                line-height: 1.1
+                color: $white
+                @include media(1280)
+                    font-size: 42px 
+                @include media(768)
+                    font-size: 36px
+                    margin-bottom: 20px
+                @include media(540)
+                    font-size: 30px
+                    margin-bottom: 10px
+                span
+                    font-weight: 300
+                    font-family: $IvyPresto
+                    // letter-spacing: -1px
+                    // font-style: italic
+            .desc
+                color: #FFFFFFB2
+                > *
+                    color: #FFFFFFB2
+                h1, h2, h3, h4, h5, h6
+                    line-height: 1
+                h1
+                    font-size: 36px
+                    @include media(768)
+                        font-size: 30px
+                    @include media(540)
+                        font-size: 24px
+                h2
+                    font-size: 28px
+                    @include media(768)
+                        font-size: 24px
+                    @include media(540)
+                        font-size: 24px
+                h3
+                    font-size: 24px
+                    line-height: 1.1
+                    @include media(768)
+                        font-size: 22px
+                    @include media(540)
+                        font-size: 20px
+                h4
+                    font-size: 22px
+                    @include media(540)
+                        font-size: 20px
+                h5
+                    font-size: 20px
+                    @include media(768)
+                        font-size: 22px
+                    @include media(540)
+                        font-size: 18px
+                h6
+                    font-size: 18px
+                    @include media(540)
+                        font-size: 16px
+                h2,h3,h4
+                    margin: 20px 0 18px
+                    @include media(768)
+                        margin: 15px 0 10px
+                h5,h6
+                    margin: 15px 0 10px
+                    @include media(768)
+                        margin: 10px 0 
+                p,li
+                    @include media(540)
+                        font-size: 14px
+                    b
+                        font-weight: normal
+                a
+                    &:hover
+                        text-decoration: underline
+                p,ul
+                    margin-bottom: 15px
+                ul
+                    padding-left: 18px
+                    @include media(675)
+                        padding-left: 10px
+                    li
+                        position: relative
+                        padding-left: 20px
+                        @include media(675)
+                            padding-left: 15px 
+                        &:not(:last-child)
+                            margin-bottom: 5px
+                        &::before
+                            content: ''
+                            position: absolute
+                            top: 8px
+                            left: 0
+                            width: 10px
+                            aspect-ratio: 1
+                            border-radius: 50%
+                            background: $white
+
+.solution_sec
+    overflow: hidden
+    @include before(url(/assets/images/home/circular-vector.svg))
+    &::before
+        background-repeat: no-repeat
+        background-position: 100% 50%
+        right: -20%
+        background-size: 30%
+        z-index: -1
+        @include media(1280)
+            background-size: 40%
+        @include media(540)
+            background-size: 60%
+            background-position: 100% 20%
+    .main_wrapper
+        display: flex
+        flex-wrap: wrap
+        align-items: center
+        --gap: 80px
+        gap: var(--gap)
+        @include media(1280)
+            --gap: 60px
+        @include media(991)
+            flex-direction: column
+            --gap: 30px
+        @include media(540)
+            text-align: center
+            --gap: 20px
+        // @include media(768)
+        //     padding: 0 20px
+        figure
+            flex: 0 1 45%
+            max-width: 45%
+            width: 100%
+            @include media(991)
+                flex: 0 1 100%
+                max-width: 100%
+            img
+                border-radius: 15px
+        figcaption
+            flex: 1
+            max-width: calc( 55% - var(--gap) )
+            width: 100%
+            @include media(991)
+                max-width: 100%
+            h2
+                margin-bottom: 30px
+                font-size: 48px
+                font-weight: 700
+                line-height: 1.1
+                @include media(1280)
+                    font-size: 42px 
+                @include media(768)
+                    font-size: 36px
+                    margin-bottom: 20px
+                @include media(540)
+                    font-size: 30px
+                    margin-bottom: 10px
+                span
+                    font-weight: 300
+                    font-family: $IvyPresto
+                    // font-style: italic
+                    // letter-spacing: -1px
+            .desc
+                color: $black
+                > p
+                    @include media(540)
+                        text-align: center
+                > *
+                    color: $black
+                    @include media(540)
+                        text-align: left
+                h1, h2, h3, h4, h5, h6
+                    line-height: 1
+                h1
+                    font-size: 36px
+                    @include media(768)
+                        font-size: 30px
+                    @include media(540)
+                        font-size: 24px
+                h2
+                    font-size: 28px
+                    @include media(768)
+                        font-size: 24px
+                    @include media(540)
+                        font-size: 24px
+                h3
+                    font-size: 24px
+                    line-height: 1.1
+                    @include media(768)
+                        font-size: 22px
+                    @include media(540)
+                        font-size: 20px
+                h4
+                    font-size: 22px
+                    @include media(540)
+                        font-size: 20px
+                h5
+                    font-size: 20px
+                    @include media(768)
+                        font-size: 22px
+                    @include media(540)
+                        font-size: 18px
+                h6
+                    font-size: 18px
+                    @include media(540)
+                        font-size: 16px
+                h2,h3,h4
+                    margin: 20px 0 18px
+                    @include media(768)
+                        margin: 15px 0 10px
+                h5,h6
+                    margin: 15px 0 10px
+                    @include media(768)
+                        margin: 10px 0 
+                p,li
+                    @include media(540)
+                        font-size: 14px
+                    b
+                        font-weight: normal
+                a
+                    &:hover
+                        text-decoration: underline
+                p,ul
+                    margin-bottom: 15px
+                ul
+                    padding-left: 18px
+                    @include media(675)
+                        padding-left: 10px
+                    li
+                        position: relative
+                        padding-left: 20px
+                        @include media(675)
+                            padding-left: 15px
+                        &:not(:last-child)
+                            margin-bottom: 5px
+                        &::before
+                            content: ''
+                            position: absolute
+                            top: 8px
+                            left: 0
+                            width: 6px
+                            aspect-ratio: 1
+                            border-radius: 50%
+                            background: $primary
+
+.key_results
+    .main_wrapper
+        background: linear-gradient(90deg, #000, #233f90)
+        border-radius: 20px
+        padding: 60px 40px
+        position: relative
+        display: flex
+        flex-wrap: wrap
+        align-items: end
+        --gap: 60px
+        gap: var(--gap)
+        @include media(1280)
+            padding: 50px 40px
+            --gap: 50px
+        @include media(991)
+            flex-direction: column
+        @include media(768)
+            padding: 40px 30px
+            --gap: 40px
+        @include media(540)
+            --gap: 20px
+            padding: 20px
+            border-radius: 10px
+            text-align: center
+        .colA
+            flex: 1
+            max-width: calc( 50% - var(--gap) )
+            width: 100%
+            @include media(991)
+                max-width: 100%
+            .heading
+                h2
+                    margin-bottom: 30px
+                    color: $white
+                    @include media(768)
+                        margin-bottom: 20px
+                    @include media(540)
+                        font-size: 30px
+                .desc
+                    color: #FFFFFFB2
+                    > p
+                        @include media(540)
+                            text-align: center
+                    > *
+                        color: #FFFFFFB2
+                        @include media(540)
+                            text-align: left
+                    h1, h2, h3, h4, h5, h6
+                        line-height: 1
+                    h1
+                        font-size: 36px
+                        @include media(768)
+                            font-size: 30px
+                        @include media(540)
+                            font-size: 24px
+                    h2
+                        font-size: 28px
+                        @include media(768)
+                            font-size: 24px
+                        @include media(540)
+                            font-size: 24px
+                    h3
+                        font-size: 24px
+                        line-height: 1.1
+                        @include media(768)
+                            font-size: 22px
+                        @include media(540)
+                            font-size: 20px
+                    h4
+                        font-size: 22px
+                        @include media(540)
+                            font-size: 20px
+                    h5
+                        font-size: 20px
+                        @include media(768)
+                            font-size: 22px
+                        @include media(540)
+                            font-size: 18px
+                    h6
+                        font-size: 18px
+                        @include media(540)
+                            font-size: 16px
+                    h2,h3,h4
+                        margin: 20px 0 18px
+                        @include media(768)
+                            margin: 15px 0 10px
+                    h5,h6
+                        margin: 15px 0 10px
+                        @include media(768)
+                            margin: 10px 0 
+                    p,li
+                        @include media(540)
+                            font-size: 14px
+                        b
+                            font-weight: normal
+                    a
+                        &:hover
+                            text-decoration: underline
+                    p,ul
+                        margin-bottom: 15px
+                    ul
+                        padding-left: 18px
+                        @include media(675)
+                            padding-left: 10px
+                        li
+                            position: relative
+                            padding-left: 20px
+                            @include media(675)
+                                padding-left: 15px 
+                            &:not(:last-child) 
+                                margin-bottom: 5px
+                            &::before
+                                content: ''
+                                position: absolute
+                                top: 8px
+                                left: 0
+                                width: 6px
+                                aspect-ratio: 1
+                                border-radius: 50%
+                                background: $white
+                
+        .colB
+            flex: 1
+            max-width: 50%
+            width: 100%
+            @include media(991)
+                max-width: 100%
+            .info_wrap
+                display: grid
+                grid-template-columns: repeat(3, 1fr)
+                grid-gap: 10px
+                @include media(540)
+                    grid-template-columns: repeat(1, 1fr)
+                .info_col
+                    padding: 15px
+                    background: #FFFFFF33
+                    backdrop-filter: blur(10)
+                    border-radius: 10px
+                    text-align: center
+                    @include media(540)
+                        border-radius: 5px
+                    .icon
+                        width: 35px
+                        height: 35px
+                        margin: 0 auto 10px
+                        @include media(540)
+                            width: 30px
+                            height: 30px
+                    .count
+                        color: $white
+                        font-size: 20px
+                        line-height: 1.2
+                        margin-bottom: 5px
+                        @include media(540)
+                            font-size: 18px
+                    p
+                        font-size: 12px
+                        line-height: 1.3
+                        color: #FFFFFFB2
+        .logo-vector
+            width: 100px
+            position: absolute
+            top: 15%
+            right: 50px
+            @include media(991)
+                top: 40px
+                right: 30px
+                width: 80px
+            @include media(768)
+                top: 20px
+                right: 20px
+                width: 70px
+            @include media(540)
+                display: none

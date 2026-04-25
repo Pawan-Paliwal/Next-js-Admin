@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'IvyPresto';
+    src: url('IvyPrestoDisplay-LightItalic.woff2') format('woff2'),
+        url('IvyPrestoDisplay-LightItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica';
+    src: url('HelveticaNowText-Bold.woff2') format('woff2'),
+        url('HelveticaNowText-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Helvetica-bd';
+    src: url('HelveticaNowText-Medium.woff2') format('woff2'),
+        url('HelveticaNowText-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+

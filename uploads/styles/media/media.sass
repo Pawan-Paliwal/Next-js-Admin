@@ -1,0 +1,237 @@
+@import '../_var' 
+
+.trends_sec
+    padding-top: 12rem
+    padding-bottom: 2rem
+    overflow: hidden
+    @include before()
+    &::before
+        background: url(/assets/images/home/circular-light-vector.svg) no-repeat
+        inset: -30% 0% 0 0
+        z-index: -1
+        background-position: 100% 0%
+        background-size: 50%
+        @include media-min(1336)
+            background-size: 30%
+            background-position: 100% 50%
+        @include media(540)
+            opacity: .4
+            inset: -5% 0% 0 0
+            background-size: 60%
+    @include after-blur
+    &::after
+        top: 0%
+        right: 2%
+        transform: translate(30%, 0)
+        filter: blur(150px)
+        width: 250px
+        height: 250px
+        z-index: -1
+    @include media(1280)
+        padding-top: 10rem
+    @include media(768)
+        padding-top: 9rem
+    @include media(540)
+        padding-top: 8rem
+    .heading
+        margin-bottom: 60px
+        @include media(1280)
+            margin-bottom: 50px
+        @include media(991)
+            margin-bottom: 40px
+        @include media(768)
+            margin-bottom: 30px
+        @include media(540)
+            text-align: center
+            max-width: 80%
+            margin: 0 auto 30px
+        h2
+            max-width: 530px
+        p
+            @include media(540)
+                max-width: 80%
+                margin: auto
+                margin-top: 10px                                                                                                                                          
+    .container-fluid, .container
+        .trends_wrapper
+            position: relative
+            .trends-nav
+                position: absolute
+                bottom: 10%
+                right: 5%
+                transform: translate(5%, 10%)
+                z-index: 2
+                @include media(540)
+                    display: none
+                button
+                    background: $black
+                    border-radius: 5px
+                    transition: .5s ease
+                    &:hover
+                        background: #C5C5C5
+                    img
+                        filter: invert(1)
+            .trends_slider
+                .trends_col
+                    width: 100%
+                    height: 100%
+                    display: flex
+                    flex-wrap: wrap
+                    border-radius: 20px
+                    @include media(991)
+                        border-radius: 15px
+                    figure
+                        flex: 0 1 40%
+                        max-width: 40%
+                        width: 100%
+                        line-height: 0
+                        @include media(540)
+                            flex: 0 1 100%
+                            max-width: 100%
+                        img
+                            border-top-left-radius: 20px
+                            border-bottom-left-radius: 20px
+                            @include media(991)
+                                border-top-left-radius: 15px
+                                border-bottom-left-radius: 15px
+                            @include media(540)
+                                border-radius: 0
+                                border-top-left-radius: 5px
+                                border-top-right-radius: 5px
+                    figcaption
+                        flex: 1
+                        background: linear-gradient(90deg, #000000, #233F90)
+                        border-top-right-radius: 20px
+                        border-bottom-right-radius: 20px
+                        padding: 40px
+                        display: flex
+                        align-items: center
+                        @include before(url(/assets/logo-vector-light.svg)) 
+                        &::before
+                            background-repeat: no-repeat
+                            background-size: 200px
+                            background-position: 60% 100% 
+                            @include media(991)
+                                background-size: 150px
+                                background-position: 70% 100%
+                            @include media(540)
+                                background-size: 100px
+                                background-position: 90% 100%
+                        @include media(1280)
+                            padding: 30px
+                        @include media(991)
+                            padding: 25px 20px
+                            border-top-right-radius: 15px
+                            border-bottom-right-radius: 15px
+                        @include media(540)
+                            padding: 20px 15px
+                            border-radius: 0
+                            border-bottom-left-radius: 5px
+                            border-bottom-right-radius: 5px
+                        .desc
+                            h6, p
+                                color: $white
+                            h6
+                                font-size: 24px
+                                line-height: 1.4
+                                @include media(1280)
+                                    font-size: 22px
+                                @include media(991)
+                                    font-size: 20px
+                                @include media(768)
+                                    font-size: 18px
+                                @include media(540)
+                                    font-size: 16px
+                            p
+                                margin-top: 50px
+                                font-family: $IvyPresto
+                                // font-style: italic
+                                // letter-spacing: -1px
+                                @include media(1280)
+                                    margin-top: 40px
+                                @include media(768)
+                                    margin-top: 30px
+                                @include media(540)
+                                    margin-top: 20px
+
+.more_trends_sec
+    padding-top: 0
+    .more_trends
+        display: grid
+        grid-template-columns: repeat(3, 1fr)
+        grid-gap: 20px
+        @include media(991)
+            grid-gap: 15px
+        @include media(768)
+            grid-template-columns: repeat(2, 1fr)
+        @include media(540)
+            grid-template-columns: repeat(1, 1fr)
+        .more_trends_col
+            display: block
+            border-radius: 20px
+            background: $white
+            width: 100%
+            height: 100%
+            @include media(991)
+                border-radius: 15px
+            &:hover
+                figure
+                    img
+                        transform: scale(1.1)
+            figure
+                border-top-left-radius: 20px
+                border-top-right-radius: 20px
+                overflow: hidden
+                line-height: 0
+                @include shine()
+                @include media(991)
+                    border-top-left-radius: 15px
+                    border-top-right-radius: 15px
+                img
+                    border-top-left-radius: 20px
+                    border-top-right-radius: 20px
+                    @include media(991)
+                        border-top-left-radius: 15px
+                        border-top-right-radius: 15px
+            figcaption
+                padding: 25px 20px 30px
+                @include media(991)
+                    padding: 20px 15px 
+                @include media(540)
+                    padding: 20px
+                h6
+                    font-size: 20px
+                    line-height: 1.4
+                    min-height: 84px
+                    @include line-clamp(3)
+                    @include media(991)
+                        font-size: 18px
+                        min-height: 78px
+                    @include media(540)
+                        font-size: 16px
+                .date
+                    margin-top: 30px
+                    font-family: $IvyPresto
+                    // font-style: italic
+                    // letter-spacing: -1px
+                    @include media(991)
+                        margin-top: 20px
+    .btn_wrap
+        margin: 50px auto 0
+        flex-direction: column
+        justify-content: center
+        gap: 5px
+        width: max-content
+        cursor: pointer
+        @include media(768)
+            margin: 40px auto 0
+        @include media(540)
+            margin: 30px auto 0
+        img
+            width: 80px
+            transition: .5s ease
+        &:hover
+            img, svg
+                transform: translateY(5px)
+        .load_btn
+            font-weight: 500
