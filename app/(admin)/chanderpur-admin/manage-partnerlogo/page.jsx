@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useCheckLoginQuery } from "@/store/backendSlice/authAPISlice";
-import { useGetAllTestimonialsQuery, useDeleteTestimonialMutation, useUpdateTestimonialStatusMutation, useUpdateDisplayOrderMutation } from "@/store/backendSlice/testimonialAPISlice";
+import { useGetAllPartnerLogosQuery, useDeletePartnerLogoMutation, useUpdatePartnerLogoStatusMutation, useUpdateDisplayOrderMutation } from "@/store/backendSlice/partnerLogoAPISlice";
 import TestimonialSkeleton from "@/components/backendcomponents/listskeleton";
 import { usePagePermission } from "../usePagePermission";
 
@@ -25,7 +25,7 @@ const getStorageKey = (pathname) => {
   return null;
 };
 
-export default function ManageTestimonialData() {
+export default function ManagePartnerLogoData() {
   const router = useRouter();
   const { data: checkData, isSuccess } = useCheckLoginQuery(undefined, {
     refetchOnMountOrArgChange: true,
@@ -34,26 +34,26 @@ export default function ManageTestimonialData() {
   const pagePermission = usePagePermission(checkData);
   const [filterText, setFilterText] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
-  const { data: testimonialData = [], refetch, isLoading } = useGetAllTestimonialsQuery();
-  const testimonials = testimonialData || [];
-  const [deleteTestimonial] = useDeleteTestimonialMutation();
-  const [updateStatus] = useUpdateTestimonialStatusMutation();
+  const { data: partnerLogoData = [], refetch, isLoading } = useGetAllPartnerLogosQuery();
+  const partnerLogos = partnerLogoData || [];
+  const [deletePartnerLogo] = useDeletePartnerLogoMutation();
+  const [updateStatus] = useUpdatePartnerLogoStatusMutation();
   const [updateDisplayOrder, { isLoading: isUpdatingOrder }] = useUpdateDisplayOrderMutation();
 
   const [displayOrders, setDisplayOrders] = useState({});
 
   useEffect(() => {
-    if (testimonials.length > 0) {
+    if (partnerLogos.length > 0) {
       const initialOrders = {};
-      testimonials.forEach(s => {
-        initialOrders[s.TestimonialID] = s.DisplayOrder;
+      partnerLogos.forEach(b => {
+        initialOrders[b.PartnerLogoID] = b.DisplayOrder;
       });
       setDisplayOrders(prev => {
         if (JSON.stringify(prev) === JSON.stringify(initialOrders)) return prev;
         return initialOrders;
       });
     }
-  }, [testimonials]);
+  }, [partnerLogos]);
 
   const handleDisplayOrderChange = (id, value) => {
     setDisplayOrders(prev => ({ ...prev, [id]: value }));
@@ -65,7 +65,7 @@ export default function ManageTestimonialData() {
       return;
     }
     const updates = Object.entries(displayOrders).map(([id, order]) => ({
-      TestimonialID: parseInt(id),
+      PartnerLogoID: parseInt(id),
       DisplayOrder: parseInt(order) || 0,
     }));
     try {
@@ -141,16 +141,20 @@ export default function ManageTestimonialData() {
     }
   }, [checkData, pagePermission, router]);
 
-  const handleDelete = async (TestimonialID) => {
-    const confirmed = confirm("Are you sure you want to delete this Testimonial?");
+  const handleDelete = async (PartnerLogoID) => {
+    if (pagePermission?.CanDelete !== 1) {
+      toast.error("You do not have permission to delete partner logo");
+      return;
+    }
+    const confirmed = confirm("Are you sure you want to delete this Partner Logo?");
     if (!confirmed) return;
     try {
-      const res = await deleteTestimonial(TestimonialID).unwrap();
+      const res = await deletePartnerLogo(PartnerLogoID).unwrap();
       if (res.success) {
-        toast.success("Testimonial deleted successfully");
+        toast.success("Partner Logo deleted successfully");
         refetch();
       } else {
-        toast.error("Error deleting Testimonial.");
+        toast.error("Error deleting Partner Logo.");
       }
     } catch (error) {
       console.error(error);
@@ -158,7 +162,7 @@ export default function ManageTestimonialData() {
     }
   };
 
-  const handleApprove = async (TestimonialID, currentStatus) => {
+  const handleApprove = async (PartnerLogoID, currentStatus) => {
     if (pagePermission?.CanWrite !== 1) {
       toast.error("You do not have permission to update status");
       return;
@@ -168,7 +172,7 @@ export default function ManageTestimonialData() {
 
     try {
       const updatedStatus = currentStatus === 1 ? 0 : 1;
-      const res = await updateStatus({ TestimonialID, ActiveStatus: updatedStatus }).unwrap();
+      const res = await updateStatus({ PartnerLogoID, ActiveStatus: updatedStatus }).unwrap();
       if (res.success) {
         toast.success("Status updated successfully");
         refetch();
@@ -183,31 +187,31 @@ export default function ManageTestimonialData() {
 
   const columns = [
     {
-      name: "Title",
-      selector: (row) => row.TestimonialName,
+      name: "Partner Logo",
+      selector: (row) => row.PartnerLogoID,
       sortable: true,
       cell: (row) =>
         isLoading ? (
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Skeleton circle width={40} height={40} />
-            <Skeleton width={200} />
+            <Skeleton width={100} height={50} />
           </div>
         ) : (
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            {row.TestimonialImage ? (
-              <img
-                src={`/OnlineImages/TestimonialImages/${row.TestimonialImage}`}
-                alt={row.TestimonialName}
-                className="user-image"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.style.display = "none";
-                }}
-              />
+            {row.PartnerLogoImage ? (
+              <div className="user-image-none">
+                <img
+                  src={`/OnlineImages/PartnerLogos/${row.PartnerLogoImage}`}
+                  alt="Partner Logo"
+                  className="user-image"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.style.display = "none";
+                  }}
+                />
+              </div>
             ) : (
               <div className="user-image-none">{row.SerialNo}</div>
             )}
-            <span>{row.TestimonialName ?? ""}</span>
           </div>
         ),
       width: "68%",
@@ -218,8 +222,8 @@ export default function ManageTestimonialData() {
       cell: (row) => (
         <input
           type="number"
-          value={displayOrders[row.TestimonialID] ?? ""}
-          onChange={(e) => handleDisplayOrderChange(row.TestimonialID, e.target.value)}
+          value={displayOrders[row.PartnerLogoID] ?? ""}
+          onChange={(e) => handleDisplayOrderChange(row.PartnerLogoID, e.target.value)}
           className="form-control"
           style={{ width: "65px", textAlign: "center" }}
         />
@@ -241,7 +245,7 @@ export default function ManageTestimonialData() {
               <button
                 className="approve-btn"
                 style={{ color: row.ActiveStatus ? "red" : "green", marginLeft: "8px" }}
-                onClick={() => handleApprove(row.TestimonialID, row.ActiveStatus)}
+                onClick={() => handleApprove(row.PartnerLogoID, row.ActiveStatus)}
               >
                 {row.ActiveStatus ? (
                   <svg
@@ -278,7 +282,7 @@ export default function ManageTestimonialData() {
             <Skeleton circle width={24} height={24} />
           ) : (
             <Link
-              href={`/chanderpur-admin/addupd-testimonial?ID=${row.TestimonialID}`}
+              href={`/chanderpur-admin/addupd-partnerlogo?ID=${row.PartnerLogoID}`}
               className="edit-icon"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
@@ -303,7 +307,7 @@ export default function ManageTestimonialData() {
           isLoading ? (
             <Skeleton circle width={24} height={24} />
           ) : (
-            <button onClick={() => handleDelete(row.TestimonialID)} className="edit-icon">
+            <button onClick={() => handleDelete(row.PartnerLogoID)} className="edit-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path
                   fill="currentColor"
@@ -317,11 +321,9 @@ export default function ManageTestimonialData() {
       : []),
   ];
 
-  const filteredData = testimonials.filter((item) => {
-    const searchText = filterText.toLowerCase();
-    const matchesText = item.TestimonialName?.toLowerCase().includes(searchText);
+  const filteredData = partnerLogos.filter((item) => {
     const matchesOption = !selectedOption || item.ActiveStatus.toString() === selectedOption;
-    return matchesText && matchesOption;
+    return matchesOption;
   });
 
   const subHeaderComponent = (
@@ -332,14 +334,13 @@ export default function ManageTestimonialData() {
           <option value="1">Active</option>
           <option value="0">Inactive</option>
         </select>
-        <input type="text" placeholder="Search Keywords" value={filterText} onChange={(e) => setFilterText(e.target.value)} className="searchinput" />
       </div>
       <div className="colB">
         <button className="update-display" onClick={handleUpdateDisplayOrder}>
           {isUpdatingOrder ? "Updating..." : "Update Display"}
         </button>
         {pagePermission?.CanAdd === 1 && (
-          <Link href={"/chanderpur-admin/addupd-testimonial"} className="addnew-btn" style={{ width: "110px" }}>
+          <Link href={"/chanderpur-admin/addupd-partnerlogo"} className="addnew-btn" style={{ width: "110px" }}>
             <span>+</span> Add New
           </Link>
         )}
@@ -354,7 +355,7 @@ export default function ManageTestimonialData() {
   return (
     <main>
       <DataTable
-        title="Manage Testimonial Data"
+        title="Manage Partner Logos"
         columns={columns}
         data={filteredData}
         striped

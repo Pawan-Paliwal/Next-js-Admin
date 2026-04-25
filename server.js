@@ -18,6 +18,7 @@ const directorRoutes = require('./routes/directorRoutes');
 const companyRoutes = require('./routes/companyRoutes');
 const milestoneRoutes = require('./routes/milestoneRoutes');
 const blogRoutes = require('./routes/blogRoutes');
+const partnerLogoRoutes = require('./routes/partnerLogoRoutes');
 
 // CORS Configuration
 app.use(
@@ -47,6 +48,7 @@ app.use('/api/director', directorRoutes);
 app.use('/api/company', companyRoutes);
 app.use('/api/milestone', milestoneRoutes);
 app.use('/api/blog', blogRoutes);
+app.use('/api/partnerlogo', partnerLogoRoutes);
 
 
 app.listen(PORT, (err) => {

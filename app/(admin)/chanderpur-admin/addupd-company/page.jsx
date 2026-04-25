@@ -18,9 +18,13 @@ export default function AddUpdCompanyData() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const CompanyID = searchParams.get("ID");
-  const { data: checkData, isSuccess } = useCheckLoginQuery();
+  const { data: checkData, isSuccess } = useCheckLoginQuery(undefined, { refetchOnMountOrArgChange: true, pollingInterval: 10000 });
   const pagePermission = usePagePermission(checkData);
-  const { data: maxOrderData } = useGetMaxDisplayOrderQuery(undefined, { refetchOnMountOrArgChange: true });
+  const isPermissionsReady = checkData?.loggedIn && pagePermission?.PageID !== 0;
+
+  const { data: maxOrderData } = useGetMaxDisplayOrderQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
 
   useEffect(() => {
     if (isSuccess && !checkData?.loggedIn) {
@@ -29,11 +33,14 @@ export default function AddUpdCompanyData() {
   }, [isSuccess, checkData, router]);
 
   useEffect(() => {
-    if (checkData?.loggedIn && pagePermission && pagePermission.CanWrite !== 1) {
-      toast.error("You do not have permission to access this page");
-      router.push("/chanderpur-admin/dashboard");
+    if (isPermissionsReady) {
+      const requiredPermission = CompanyID ? pagePermission.CanWrite : pagePermission.CanAdd;
+      if (requiredPermission !== 1) {
+        toast.error(`You do not have permission to ${CompanyID ? 'edit' : 'add'} company`);
+        router.push("/chanderpur-admin/manage-company");
+      }
     }
-  }, [checkData, pagePermission, router]);
+  }, [isPermissionsReady, pagePermission, CompanyID, router]);
 
   const { data: companyData } = useGetCompanyByIdQuery(CompanyID, {
     skip: !CompanyID,
@@ -108,6 +115,12 @@ export default function AddUpdCompanyData() {
   };
 
   const handleSubmit = async () => {
+    const requiredPermission = CompanyID ? pagePermission.CanWrite : pagePermission.CanAdd;
+    if (requiredPermission !== 1) {
+      toast.error(`You do not have permission to ${CompanyID ? 'edit' : 'add'} company`);
+      return;
+    }
+
     const errors = validateFields(formData, validationRules);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -170,7 +183,7 @@ export default function AddUpdCompanyData() {
             <input
               type="text"
               placeholder="e.g. Christian Pfeiffer"
-              value={formData.CompanyName}
+              value={formData.CompanyName ?? ""}
               onChange={(e) => {
                 const val = e.target.value;
                 handleInput("CompanyName", val);
@@ -189,7 +202,7 @@ export default function AddUpdCompanyData() {
             <input
               type="text"
               placeholder="Enter tagline"
-              value={formData.Tagline}
+              value={formData.Tagline ?? ""}
               onChange={(e) => handleInput("Tagline", e.target.value)}
             />
           </div>
@@ -199,7 +212,7 @@ export default function AddUpdCompanyData() {
             <input
               type="text"
               placeholder="Short introductory text..."
-              value={formData.SmallDescription}
+              value={formData.SmallDescription ?? ""}
               onChange={(e) => handleInput("SmallDescription", e.target.value)}
             />
           </div>
@@ -207,7 +220,7 @@ export default function AddUpdCompanyData() {
 
         <div className="form-group" style={{ display: "none" }}>
           <label>Name URL*</label>
-          <input type="text" value={formData.CompanyNameURL} onChange={(e) => handleInput("CompanyNameURL", e.target.value)} />
+          <input type="text" value={formData.CompanyNameURL ?? ""} onChange={(e) => handleInput("CompanyNameURL", e.target.value)} />
         </div>
 
         <div className="form-group-row file-uploade-sec" style={{ marginBottom: "18px", display: "flex", alignItems: "center", gap: "20px" }}>
@@ -274,7 +287,7 @@ export default function AddUpdCompanyData() {
             <input
               type="number"
               placeholder="0"
-              value={formData.DisplayOrder || ""}
+              value={formData.DisplayOrder ?? ""}
               onChange={(e) =>
                 handleInput("DisplayOrder", e.target.value === "" ? "" : Number(e.target.value))
               }
@@ -292,7 +305,7 @@ export default function AddUpdCompanyData() {
           <label className="block-label">Meta Title</label>
           <input
             type="text"
-            value={formData.MetaTitle}
+            value={formData.MetaTitle ?? ""}
             onChange={(e) => handleInput("MetaTitle", e.target.value)}
           />
         </div>
@@ -300,7 +313,7 @@ export default function AddUpdCompanyData() {
           <label className="block-label">Meta Keywords</label>
           <input
             type="text"
-            value={formData.MetaKeywords}
+            value={formData.MetaKeywords ?? ""}
             onChange={(e) => handleInput("MetaKeywords", e.target.value)}
           />
         </div>
@@ -308,7 +321,7 @@ export default function AddUpdCompanyData() {
           <label className="block-label">Meta Descriptions</label>
           <input
             type="text"
-            value={formData.MetaDescriptions}
+            value={formData.MetaDescriptions ?? ""}
             onChange={(e) => handleInput("MetaDescriptions", e.target.value)}
           />
         </div>
@@ -316,7 +329,7 @@ export default function AddUpdCompanyData() {
           <label className="block-label">Meta Schema</label>
           <input
             type="text"
-            value={formData.MetaSchema}
+            value={formData.MetaSchema ?? ""}
             onChange={(e) => handleInput("MetaSchema", e.target.value)}
           />
         </div>

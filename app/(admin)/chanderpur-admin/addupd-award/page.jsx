@@ -15,12 +15,12 @@ export default function AddUpdAwardLogoData() {
     const searchParams = useSearchParams();
     const AwardLogoID = searchParams.get("ID");
     const { data: checkData, isSuccess } = useCheckLoginQuery(undefined, { refetchOnMountOrArgChange: true, pollingInterval: 10000, });
-    const { data: awardLogoData } = useGetAwardLogoByIdQuery(AwardLogoID, { skip: !AwardLogoID, refetchOnMountOrArgChange: true, refetchOnFocus: true, });
-    const { data: maxOrderData, isLoading: isMaxOrderLoading } = useGetMaxDisplayOrderQuery(undefined, { refetchOnMountOrArgChange: true, });
-    const [previewImage, setPreviewImage] = useState("");
-    const [saveOrUpdateAwardLogo, { isLoading }] = useSaveOrUpdateAwardLogoMutation();
     const pagePermission = usePagePermission(checkData);
+    const isPermissionsReady = checkData?.loggedIn && pagePermission?.PageID !== 0;
 
+    const { data: awardLogoData } = useGetAwardLogoByIdQuery(AwardLogoID, { skip: !AwardLogoID, refetchOnMountOrArgChange: true });
+    const { data: maxOrderData } = useGetMaxDisplayOrderQuery(undefined, { refetchOnMountOrArgChange: true, });
+    
     useEffect(() => {
         if (isSuccess && !checkData?.loggedIn) {
             router.push("/chanderpur-admin/login");
@@ -28,11 +28,17 @@ export default function AddUpdAwardLogoData() {
     }, [isSuccess, checkData, router]);
 
     useEffect(() => {
-        if (checkData?.loggedIn && pagePermission && pagePermission.CanWrite !== 1) {
-            toast.error("You do not have permission to access this page");
-            router.push("/chanderpur-admin/dashboard");
+        if (isPermissionsReady) {
+            const requiredPermission = AwardLogoID ? pagePermission.CanWrite : pagePermission.CanAdd;
+            if (requiredPermission !== 1) {
+                toast.error(`You do not have permission to ${AwardLogoID ? 'edit' : 'add'} award logo`);
+                router.push("/chanderpur-admin/manage-award");
+            }
         }
-    }, [checkData, pagePermission, router]);
+    }, [isPermissionsReady, pagePermission, AwardLogoID, router]);
+
+    const [previewImage, setPreviewImage] = useState("");
+    const [saveOrUpdateAwardLogo, { isLoading }] = useSaveOrUpdateAwardLogoMutation();
 
     const [formErrors, setFormErrors] = useState({});
     const [formData, setFormData] = useState({
@@ -46,7 +52,7 @@ export default function AddUpdAwardLogoData() {
             const data = awardLogoData.data;
             setFormData({
                 AwardLogoImage: data.AwardLogoImage,
-                ActiveStatus: data.ActiveStatus,
+                ActiveStatus: data.ActiveStatus === 1,
                 DisplayOrder: data.DisplayOrder
             });
             setPreviewImage(data.AwardLogoImage ? `/OnlineImages/AwardImages/${data.AwardLogoImage}` : "");
@@ -63,7 +69,6 @@ export default function AddUpdAwardLogoData() {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
-
     const validationRules = {
         AwardLogoImage: {
             required: !AwardLogoID,
@@ -74,15 +79,17 @@ export default function AddUpdAwardLogoData() {
     const handleFileRename = (file) => {
         if (!file || !file.name) return null;
         const ext = file.name.split('.').pop();
-        const uniqueName =
-            "award-logo-" +
-            Date.now() +
-            "-" +
-            Math.floor(Math.random() * 1000000);
+        const uniqueName = "award-logo-" + Date.now() + "-" + Math.floor(Math.random() * 1000000);
         return new File([file], `${uniqueName}.${ext}`, { type: file.type });
     };
 
     const handleSubmit = async () => {
+        const requiredPermission = AwardLogoID ? pagePermission.CanWrite : pagePermission.CanAdd;
+        if (requiredPermission !== 1) {
+            toast.error(`You do not have permission to ${AwardLogoID ? 'edit' : 'add'} award logo`);
+            return;
+        }
+
         const errors = validateFields(formData, validationRules);
         if (Object.keys(errors).length > 0) {
             setFormErrors(errors);
@@ -91,14 +98,11 @@ export default function AddUpdAwardLogoData() {
         setFormErrors({});
 
         const data = new FormData();
-
         if (formData.AwardLogoImage instanceof File) {
-            const renamedFile = handleFileRename(formData.AwardLogoImage, "award-logo");
+            const renamedFile = handleFileRename(formData.AwardLogoImage);
             if (renamedFile) {
                 data.append("AwardLogoImage", renamedFile);
             }
-        } else if (AwardLogoID && typeof formData.AwardLogoImage === "string" && formData.AwardLogoImage.trim() !== "") {
-            data.append("AwardLogoImage", formData.AwardLogoImage);
         }
         data.append("ActiveStatus", formData.ActiveStatus ? 1 : 0);
         data.append("DisplayOrder", formData.DisplayOrder);
@@ -122,7 +126,7 @@ export default function AddUpdAwardLogoData() {
     return (
         <main className="add_update container">
             <div className="form-box">
-                <h1>Add/Update Award Logo Data</h1>
+                <h1>Add/Update Award Logo</h1>
                 <div className="form-group-row file-uploade-sec" style={{ marginBottom: "18px" }}>
                     <div className="colA">
                         <div className="form-group">
@@ -153,9 +157,9 @@ export default function AddUpdAwardLogoData() {
                         <input
                             type="number"
                             placeholder="0"
-                            value={formData.DisplayOrder || ""}
+                            value={formData.DisplayOrder ?? ""}
                             onChange={(e) =>
-                                handleInput("DisplayOrder", Number(e.target.value))
+                                handleInput("DisplayOrder", e.target.value === "" ? "" : Number(e.target.value))
                             }
                         />
                     </div>

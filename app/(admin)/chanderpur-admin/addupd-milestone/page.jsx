@@ -18,8 +18,10 @@ export default function AddUpdMilestoneData() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const MilestoneID = searchParams.get("ID");
-  const { data: checkData, isSuccess } = useCheckLoginQuery();
+  const { data: checkData, isSuccess } = useCheckLoginQuery(undefined, { refetchOnMountOrArgChange: true, pollingInterval: 10000 });
   const pagePermission = usePagePermission(checkData);
+  const isPermissionsReady = checkData?.loggedIn && pagePermission?.PageID !== 0;
+
   const { data: maxOrderData } = useGetMaxDisplayOrderQuery(undefined, { refetchOnMountOrArgChange: true });
 
   useEffect(() => {
@@ -29,11 +31,14 @@ export default function AddUpdMilestoneData() {
   }, [isSuccess, checkData, router]);
 
   useEffect(() => {
-    if (checkData?.loggedIn && pagePermission && pagePermission.CanWrite !== 1) {
-      toast.error("You do not have permission to access this page");
-      router.push("/chanderpur-admin/dashboard");
+    if (isPermissionsReady) {
+      const requiredPermission = MilestoneID ? pagePermission.CanWrite : pagePermission.CanAdd;
+      if (requiredPermission !== 1) {
+        toast.error(`You do not have permission to ${MilestoneID ? 'edit' : 'add'} milestone`);
+        router.push("/chanderpur-admin/manage-milestone");
+      }
     }
-  }, [checkData, pagePermission, router]);
+  }, [isPermissionsReady, pagePermission, MilestoneID, router]);
 
   const { data: milestoneData } = useGetMilestoneByIdQuery(MilestoneID, {
     skip: !MilestoneID,
@@ -94,6 +99,12 @@ export default function AddUpdMilestoneData() {
   };
 
   const handleSubmit = async () => {
+    const requiredPermission = MilestoneID ? pagePermission.CanWrite : pagePermission.CanAdd;
+    if (requiredPermission !== 1) {
+      toast.error(`You do not have permission to ${MilestoneID ? 'edit' : 'add'} milestone`);
+      return;
+    }
+
     const errors = validateFields(formData, validationRules);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -154,7 +165,7 @@ export default function AddUpdMilestoneData() {
             <input
               type="text"
               placeholder="e.g. Started new facility"
-              value={formData.MilestoneName}
+              value={formData.MilestoneName ?? ""}
               onChange={(e) => {
                 const val = e.target.value;
                 handleInput("MilestoneName", val);
@@ -170,7 +181,7 @@ export default function AddUpdMilestoneData() {
             <input
               type="text"
               placeholder="e.g. 1999"
-              value={formData.MilestoneYear}
+              value={formData.MilestoneYear ?? ""}
               onChange={(e) => {
                 handleInput("MilestoneYear", e.target.value);
                 setFormErrors(prev => ({ ...prev, MilestoneYear: "" }));
@@ -181,7 +192,7 @@ export default function AddUpdMilestoneData() {
 
           <div className="form-group" style={{ display: "none" }}>
             <label>Name URL*</label>
-            <input type="text" value={formData.MilestoneNameURL} onChange={(e) => handleInput("MilestoneNameURL", e.target.value)} />
+            <input type="text" value={formData.MilestoneNameURL ?? ""} onChange={(e) => handleInput("MilestoneNameURL", e.target.value)} />
           </div>
 
           <div className="colA">
@@ -227,7 +238,7 @@ export default function AddUpdMilestoneData() {
             <input
               type="number"
               placeholder="0"
-              value={formData.DisplayOrder || ""}
+              value={formData.DisplayOrder ?? ""}
               onChange={(e) =>
                 handleInput("DisplayOrder", e.target.value === "" ? "" : Number(e.target.value))
               }

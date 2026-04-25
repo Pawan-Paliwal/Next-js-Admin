@@ -18,8 +18,10 @@ export default function AddUpdDirectorData() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const DirectorID = searchParams.get("ID");
-  const { data: checkData, isSuccess } = useCheckLoginQuery();
+  const { data: checkData, isSuccess } = useCheckLoginQuery(undefined, { refetchOnMountOrArgChange: true, pollingInterval: 10000 });
   const pagePermission = usePagePermission(checkData);
+  const isPermissionsReady = checkData?.loggedIn && pagePermission?.PageID !== 0;
+
   const { data: maxOrderData } = useGetMaxDisplayOrderQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
@@ -31,11 +33,14 @@ export default function AddUpdDirectorData() {
   }, [isSuccess, checkData, router]);
 
   useEffect(() => {
-    if (checkData?.loggedIn && pagePermission && pagePermission.CanWrite !== 1) {
-      toast.error("You do not have permission to access this page");
-      router.push("/chanderpur-admin/dashboard");
+    if (isPermissionsReady) {
+      const requiredPermission = DirectorID ? pagePermission.CanWrite : pagePermission.CanAdd;
+      if (requiredPermission !== 1) {
+        toast.error(`You do not have permission to ${DirectorID ? 'edit' : 'add'} director`);
+        router.push("/chanderpur-admin/manage-director");
+      }
     }
-  }, [checkData, pagePermission, router]);
+  }, [isPermissionsReady, pagePermission, DirectorID, router]);
 
   const { data: directorData } = useGetDirectorByIdQuery(DirectorID, {
     skip: !DirectorID,
@@ -107,6 +112,12 @@ export default function AddUpdDirectorData() {
   };
 
   const handleSubmit = async () => {
+    const requiredPermission = DirectorID ? pagePermission.CanWrite : pagePermission.CanAdd;
+    if (requiredPermission !== 1) {
+      toast.error(`You do not have permission to ${DirectorID ? 'edit' : 'add'} director`);
+      return;
+    }
+
     const errors = validateFields(formData, validationRules);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -206,7 +217,7 @@ export default function AddUpdDirectorData() {
             <input
               type="number"
               placeholder="0"
-              value={formData.DisplayOrder || ""}
+              value={formData.DisplayOrder ?? ""}
               onChange={(e) =>
                 handleInput("DisplayOrder", e.target.value === "" ? "" : Number(e.target.value))
               }

@@ -18,11 +18,14 @@ export default function AddUpdTestimonialData() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const TestimonialID = searchParams.get("ID");
-  const { data: checkData, isSuccess } = useCheckLoginQuery();
+  const { data: checkData, isSuccess } = useCheckLoginQuery(undefined, { refetchOnMountOrArgChange: true, pollingInterval: 10000 });
   const pagePermission = usePagePermission(checkData);
-  const { data: maxOrderData, isLoading: isMaxOrderLoading } = useGetMaxDisplayOrderQuery(undefined, {
+  const isPermissionsReady = checkData?.loggedIn && pagePermission?.PageID !== 0;
+
+  const { data: maxOrderData } = useGetMaxDisplayOrderQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
+
   useEffect(() => {
     if (isSuccess && !checkData?.loggedIn) {
       router.push("/chanderpur-admin/login");
@@ -30,12 +33,16 @@ export default function AddUpdTestimonialData() {
   }, [isSuccess, checkData, router]);
 
   useEffect(() => {
-    if (checkData?.loggedIn && pagePermission && pagePermission.CanWrite !== 1) {
-      toast.error("You do not have permission to access this page");
-      router.push("/chanderpur-admin/dashboard");
+    if (isPermissionsReady) {
+      const requiredPermission = TestimonialID ? pagePermission.CanWrite : pagePermission.CanAdd;
+      if (requiredPermission !== 1) {
+        toast.error(`You do not have permission to ${TestimonialID ? 'edit' : 'add'} testimonial`);
+        router.push("/chanderpur-admin/manage-testimonial");
+      }
     }
-  }, [checkData, pagePermission, router]);
-  const { data: testimonialData, error } = useGetTestimonialByIdQuery(TestimonialID, {
+  }, [isPermissionsReady, pagePermission, TestimonialID, router]);
+
+  const { data: testimonialData } = useGetTestimonialByIdQuery(TestimonialID, {
     skip: !TestimonialID,
     refetchOnMountOrArgChange: true,
   });
@@ -53,7 +60,6 @@ export default function AddUpdTestimonialData() {
   });
 
   const [previewImage, setPreviewImage] = useState("");
-
 
   useEffect(() => {
     if (testimonialData?.success) {
@@ -90,27 +96,24 @@ export default function AddUpdTestimonialData() {
 
   const handleFileRename = (file, nameSuffix) => {
     const ext = file.name.split(".").pop();
-    const slug = formData.TestimonialNameURL?.replace(/\s+/g, "-");
+    const slug = formData.TestimonialNameURL?.replace(/\s+/g, "-") || "testimonial";
     const newName = `${slug}${nameSuffix}.${ext}`;
     return new File([file], newName, { type: file.type });
   };
 
   const validationRules = {
-    TestimonialName: {
-      required: true,
-      requiredMessage: "Please enter title."
-    },
-    TestimonialImage: {
-      required: !TestimonialID,
-      requiredMessage: "Please upload image."
-    },
-    TestimonialDescription: {
-      required: true,
-      requiredMessage: "Please enter description."
-    }
+    TestimonialName: { required: true, requiredMessage: "Please enter title." },
+    TestimonialImage: { required: !TestimonialID, requiredMessage: "Please upload image." },
+    TestimonialDescription: { required: true, requiredMessage: "Please enter description." }
   };
 
   const handleSubmit = async () => {
+    const requiredPermission = TestimonialID ? pagePermission.CanWrite : pagePermission.CanAdd;
+    if (requiredPermission !== 1) {
+      toast.error(`You do not have permission to ${TestimonialID ? 'edit' : 'add'} testimonial`);
+      return;
+    }
+
     const errors = validateFields(formData, validationRules);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -118,7 +121,6 @@ export default function AddUpdTestimonialData() {
     }
     setFormErrors({});
 
-    const { TestimonialName, TestimonialNameURL, TestimonialDescription, TestimonialImage, DisplayOnHome, ActiveStatus, DisplayOrder } = formData;
     const data = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       if (key === "TestimonialImage" && value instanceof File) {
@@ -133,6 +135,7 @@ export default function AddUpdTestimonialData() {
     data.append("UpdatedBy", "Admin Panel");
     data.append("type", "testimonial");
     if (TestimonialID) data.append("TestimonialID", TestimonialID);
+    
     try {
       const res = await saveOrUpdateTestimonial(data).unwrap();
       if (res.success) {
@@ -147,24 +150,22 @@ export default function AddUpdTestimonialData() {
     }
   };
 
-
   return (
     <main className="add_update container">
       <div className="form-box">
-        <h1>Add/Update Testimonial Data</h1>
+        <h1>Add/Update Testimonial</h1>
         <div className="form-group-row file-uploade-sec" style={{ marginBottom: "18px" }}>
           <div className="form-group displayorder">
             <label>Title*</label>
             <input
               type="text"
               placeholder="Sulux Phosphate Ltd."
-              value={formData.TestimonialName}
+              value={formData.TestimonialName ?? ""}
               onChange={(e) => {
                 const val = e.target.value;
                 handleInput("TestimonialName", val);
                 if (!TestimonialID) {
                   handleInput("TestimonialNameURL", generateSlug(val));
-                  handleInput("MetaTitle", `${val} | Chanderpur`);
                 }
                 setFormErrors(prev => ({ ...prev, TestimonialName: "" }));
               }}
@@ -175,7 +176,7 @@ export default function AddUpdTestimonialData() {
             <label>Title URL*</label>
             <input
               type="text"
-              value={formData.TestimonialNameURL}
+              value={formData.TestimonialNameURL ?? ""}
               onChange={(e) => handleInput("TestimonialNameURL", e.target.value)}
             />
           </div>
@@ -206,14 +207,11 @@ export default function AddUpdTestimonialData() {
           <div className="form-group displayorder">
             <label>Display Order</label>
             <input
-              type="text"
+              type="number"
               placeholder="0"
-              value={formData.DisplayOrder || ""}
+              value={formData.DisplayOrder ?? ""}
               onChange={(e) =>
-                handleInput(
-                  "DisplayOrder",
-                  e.target.value === "" ? "" : Number(e.target.value)
-                )
+                handleInput("DisplayOrder", e.target.value === "" ? "" : Number(e.target.value))
               }
             />
           </div>

@@ -11,6 +11,7 @@ import { directorAPISlice } from "./backendSlice/directorAPISlice";
 import { companyAPISlice } from "./backendSlice/companyAPISlice";
 import { milestoneAPISlice } from "./backendSlice/milestoneAPISlice";
 import { blogAPISlice } from "./backendSlice/blogAPISlice";
+import { partnerLogoAPI } from "./backendSlice/partnerLogoAPISlice";
 
 export const backendStore = configureStore({
   reducer: {
@@ -24,7 +25,8 @@ export const backendStore = configureStore({
     [directorAPISlice.reducerPath]: directorAPISlice.reducer,
     [companyAPISlice.reducerPath]: companyAPISlice.reducer,
     [milestoneAPISlice.reducerPath]: milestoneAPISlice.reducer,
-    [blogAPISlice.reducerPath]: blogAPISlice.reducer
+    [blogAPISlice.reducerPath]: blogAPISlice.reducer,
+    [partnerLogoAPI.reducerPath]: partnerLogoAPI.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -38,5 +40,6 @@ export const backendStore = configureStore({
       companyAPISlice.middleware,
       milestoneAPISlice.middleware,
       blogAPISlice.middleware,
+      partnerLogoAPI.middleware,
     ),
 });

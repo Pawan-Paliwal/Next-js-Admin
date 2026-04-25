@@ -1,4 +1,6 @@
 'use client';
+export const dynamic = 'force-dynamic';
+
 import { useEffect, useState } from "react";
 import dynamic from 'next/dynamic';
 import 'suneditor/dist/css/suneditor.min.css';
@@ -11,14 +13,14 @@ import Loader from "@/app/loading";
 import { useCheckLoginQuery } from "@/store/backendSlice/authAPISlice";
 import { usePagePermission } from "../usePagePermission";
 
-
 export default function AddUpdStaticData() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const StaticID = searchParams.get("ID");
 
-  const { data: checkData, isSuccess: isAuthSuccess } = useCheckLoginQuery(undefined, { refetchOnMountOrArgChange: true, pollingInterval: 10000, });
+  const { data: checkData, isSuccess: isAuthSuccess } = useCheckLoginQuery(undefined, { refetchOnMountOrArgChange: true, pollingInterval: 10000 });
   const pagePermission = usePagePermission(checkData);
+  const isPermissionsReady = checkData?.loggedIn && pagePermission?.PageID !== 0;
 
   const { data: staticResponse, isSuccess } = useGetStaticByIdQuery(StaticID, { skip: !StaticID, refetchOnMountOrArgChange: true, });
   const [saveOrUpdateStatic, { isLoading: isSaving }] = useSaveOrUpdateStaticMutation();
@@ -30,11 +32,14 @@ export default function AddUpdStaticData() {
   }, [isAuthSuccess, checkData, router]);
 
   useEffect(() => {
-    if (checkData?.loggedIn && pagePermission && pagePermission.CanWrite !== 1) {
-      toast.error("You do not have permission to access this page");
-      router.push("/chanderpur-admin/dashboard");
+    if (isPermissionsReady) {
+      const requiredPermission = StaticID ? pagePermission.CanWrite : pagePermission.CanAdd;
+      if (requiredPermission !== 1) {
+        toast.error(`You do not have permission to ${StaticID ? 'edit' : 'add'} page`);
+        router.push("/chanderpur-admin/manage-page");
+      }
     }
-  }, [checkData, pagePermission, router]);
+  }, [isPermissionsReady, pagePermission, StaticID, router]);
 
   const [previewImage, setPreviewImage] = useState("");
   const [previewBanner, setPreviewBanner] = useState("");
@@ -108,20 +113,23 @@ export default function AddUpdStaticData() {
 
   const handleFileRename = (file, nameSuffix) => {
     const ext = file.name.split(".").pop();
-    const slug = formData.StaticNameURL?.replace(/\s+/g, "-");
+    const slug = formData.StaticNameURL?.replace(/\s+/g, "-") || "static";
     const newName = `${slug}${nameSuffix}.${ext}`;
     return new File([file], newName, { type: file.type });
   };
 
   const handleSubmit = async () => {
+    const requiredPermission = StaticID ? pagePermission.CanWrite : pagePermission.CanAdd;
+    if (requiredPermission !== 1) {
+      toast.error(`You do not have permission to ${StaticID ? 'edit' : 'add'} page`);
+      return;
+    }
+
     const { StaticName, StaticNameURL } = formData;
-    if (!StaticName.trim())
-      return toast.error("Please enter static title.");
-    if (!StaticNameURL.trim())
-      return toast.error("Please enter static title url.");
+    if (!StaticName.trim()) return toast.error("Please enter static title.");
+    if (!StaticNameURL.trim()) return toast.error("Please enter static title url.");
 
     const data = new FormData();
-
     Object.entries(formData).forEach(([key, value]) => {
       if (key === "StaticImage" && value instanceof File) {
         data.append("StaticImage", handleFileRename(value, ""));
@@ -136,9 +144,7 @@ export default function AddUpdStaticData() {
 
     data.append("UpdatedBy", "Admin Panel");
     data.append("type", "static");
-    if (StaticID && !isNaN(parseInt(StaticID))) {
-      data.append("StaticID", StaticID);
-    }
+    if (StaticID) data.append("StaticID", StaticID);
 
     try {
       const result = await saveOrUpdateStatic(data).unwrap();
@@ -166,7 +172,7 @@ export default function AddUpdStaticData() {
               type="text"
               name="StaticName"
               placeholder="e.g. About Us"
-              value={formData.StaticName}
+              value={formData.StaticName ?? ""}
               onChange={(e) => {
                 const val = e.target.value;
                 handleInput("StaticName", val);
@@ -182,7 +188,7 @@ export default function AddUpdStaticData() {
             <input
               type="text"
               placeholder="about-us"
-              value={formData.StaticNameURL}
+              value={formData.StaticNameURL ?? ""}
               onChange={(e) => handleInput("StaticNameURL", e.target.value)}
             />
           </div>
@@ -191,7 +197,7 @@ export default function AddUpdStaticData() {
             <input
               type="text"
               placeholder="Short description here..."
-              value={formData.SmallDescription}
+              value={formData.SmallDescription ?? ""}
               onChange={(e) => handleInput("SmallDescription", e.target.value)}
             />
           </div>
@@ -230,9 +236,13 @@ export default function AddUpdStaticData() {
               <input
                 type="file"
                 accept="image/*"
-                onChange={(e) =>
-                  handleInput("StaticImage", e.target.files?.[0] || null)
-                }
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    handleInput("StaticImage", file);
+                    setPreviewImage(URL.createObjectURL(file));
+                  }
+                }}
               />
               <span className="hint-text">(Upload appropriate image file)</span>
             </div>
@@ -248,23 +258,23 @@ export default function AddUpdStaticData() {
               <input
                 type="file"
                 accept="video/*"
-                onChange={(e) =>
-                  handleInput("StaticBannerVideo", e.target.files?.[0] || null)
-                }
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    handleInput("StaticBannerVideo", file);
+                    setPreviewBanner(URL.createObjectURL(file));
+                  }
+                }}
               />
               <span className="hint-text">(Upload MP4 format)</span>
             </div>
             {previewBanner && (
               <div className="file-image-sec">
-                <video
-                  src={`/OnlineImages/PageImages/${previewBanner}`}
-                  width="90"
-                  height="80"
-                  autoPlay
-                  muted
-                  loop
-                  controls
-                />
+                {formData.StaticBannerVideo instanceof File ? (
+                  <video src={previewBanner} width="90" height="80" autoPlay muted loop controls />
+                ) : (
+                  <video src={`/OnlineImages/PageImages/${previewBanner}`} width="90" height="80" autoPlay muted loop controls />
+                )}
               </div>
             )}
           </div>
@@ -275,51 +285,26 @@ export default function AddUpdStaticData() {
         <div className="form-group-row">
           <div className="form-group">
             <label>Address 1</label>
-            <input
-              type="text"
-              placeholder="Enter primary address"
-              value={formData.StaticAddress}
-              onChange={(e) => handleInput("StaticAddress", e.target.value)}
-            />
+            <input type="text" placeholder="Enter primary address" value={formData.StaticAddress ?? ""} onChange={(e) => handleInput("StaticAddress", e.target.value)} />
           </div>
           <div className="form-group">
             <label>Address 2</label>
-            <input
-              type="text"
-              placeholder="Enter secondary address"
-              value={formData.StaticAddress2}
-              onChange={(e) => handleInput("StaticAddress2", e.target.value)}
-            />
+            <input type="text" placeholder="Enter secondary address" value={formData.StaticAddress2 ?? ""} onChange={(e) => handleInput("StaticAddress2", e.target.value)} />
           </div>
           <div className="form-group">
             <label>Email</label>
-            <input
-              type="email"
-              placeholder="Enter primary email"
-              value={formData.StaticEmail}
-              onChange={(e) => handleInput("StaticEmail", e.target.value)}
-            />
+            <input type="email" placeholder="Enter primary email" value={formData.StaticEmail ?? ""} onChange={(e) => handleInput("StaticEmail", e.target.value)} />
           </div>
         </div>
 
         <div className="form-group-row">
           <div className="form-group">
             <label>Phone Number 1</label>
-            <input
-              type="text"
-              placeholder="Enter main phone"
-              value={formData.StaticPhoneNumber}
-              onChange={(e) => handleInput("StaticPhoneNumber", e.target.value)}
-            />
+            <input type="text" placeholder="Enter main phone" value={formData.StaticPhoneNumber ?? ""} onChange={(e) => handleInput("StaticPhoneNumber", e.target.value)} />
           </div>
           <div className="form-group">
             <label>Phone Number 2</label>
-            <input
-              type="text"
-              placeholder="Enter alternate phone"
-              value={formData.StaticPhoneNumber2}
-              onChange={(e) => handleInput("StaticPhoneNumber2", e.target.value)}
-            />
+            <input type="text" placeholder="Enter alternate phone" value={formData.StaticPhoneNumber2 ?? ""} onChange={(e) => handleInput("StaticPhoneNumber2", e.target.value)} />
           </div>
         </div>
 
@@ -328,80 +313,40 @@ export default function AddUpdStaticData() {
         <div className="form-group-row">
           <div className="form-group">
             <label>LinkedIn</label>
-            <input
-              type="text"
-              placeholder="LinkedIn URL"
-              value={formData.StaticLinkedInLink}
-              onChange={(e) => handleInput("StaticLinkedInLink", e.target.value)}
-            />
+            <input type="text" placeholder="LinkedIn URL" value={formData.StaticLinkedInLink ?? ""} onChange={(e) => handleInput("StaticLinkedInLink", e.target.value)} />
           </div>
           <div className="form-group">
             <label>Twitter</label>
-            <input
-              type="text"
-              placeholder="Twitter URL"
-              value={formData.StaticTwitterLink}
-              onChange={(e) => handleInput("StaticTwitterLink", e.target.value)}
-            />
+            <input type="text" placeholder="Twitter URL" value={formData.StaticTwitterLink ?? ""} onChange={(e) => handleInput("StaticTwitterLink", e.target.value)} />
           </div>
           <div className="form-group">
             <label>Instagram</label>
-            <input
-              type="text"
-              placeholder="Instagram URL"
-              value={formData.StaticInstagramLink}
-              onChange={(e) => handleInput("StaticInstagramLink", e.target.value)}
-            />
+            <input type="text" placeholder="Instagram URL" value={formData.StaticInstagramLink ?? ""} onChange={(e) => handleInput("StaticInstagramLink", e.target.value)} />
           </div>
         </div>
         <div className="form-group-row">
           <div className="form-group">
             <label>Facebook</label>
-            <input
-              type="text"
-              placeholder="Facebook URL"
-              value={formData.StaticFacebookLink}
-              onChange={(e) => handleInput("StaticFacebookLink", e.target.value)}
-            />
+            <input type="text" placeholder="Facebook URL" value={formData.StaticFacebookLink ?? ""} onChange={(e) => handleInput("StaticFacebookLink", e.target.value)} />
           </div>
           <div className="form-group">
             <label>YouTube</label>
-            <input
-              type="text"
-              placeholder="YouTube URL"
-              value={formData.StaticYouTubeLink}
-              onChange={(e) => handleInput("StaticYouTubeLink", e.target.value)}
-            />
+            <input type="text" placeholder="YouTube URL" value={formData.StaticYouTubeLink ?? ""} onChange={(e) => handleInput("StaticYouTubeLink", e.target.value)} />
           </div>
           <div className="form-group">
             <label>WhatsApp</label>
-            <input
-              type="text"
-              placeholder="WhatsApp URL"
-              value={formData.StaticWhatsAppLink}
-              onChange={(e) => handleInput("StaticWhatsAppLink", e.target.value)}
-            />
+            <input type="text" placeholder="WhatsApp URL" value={formData.StaticWhatsAppLink ?? ""} onChange={(e) => handleInput("StaticWhatsAppLink", e.target.value)} />
           </div>
         </div>
         <div className="form-group-row">
           <div className="form-group">
             <label>Pinterest</label>
-            <input
-              type="text"
-              placeholder="Pinterest URL"
-              value={formData.StaticPinterestLink}
-              onChange={(e) => handleInput("StaticPinterestLink", e.target.value)}
-            />
+            <input type="text" placeholder="Pinterest URL" value={formData.StaticPinterestLink ?? ""} onChange={(e) => handleInput("StaticPinterestLink", e.target.value)} />
           </div>
         </div>
 
         <div className="form-group-row statusac mt-3 mb-4">
-          <input
-            type="checkbox"
-            id="chkActiveStatus"
-            checked={formData.ActiveStatus}
-            onChange={(e) => handleInput("ActiveStatus", e.target.checked)}
-          />
+          <input type="checkbox" id="chkActiveStatus" checked={formData.ActiveStatus} onChange={(e) => handleInput("ActiveStatus", e.target.checked)} />
           <label htmlFor="chkActiveStatus">Status (Active/Inactive)</label>
         </div>
 
@@ -409,42 +354,22 @@ export default function AddUpdStaticData() {
         <hr />
         <div className="form-group">
           <label className="block-label">Meta Title</label>
-          <input
-            type="text"
-            value={formData.MetaTitle}
-            onChange={(e) => handleInput("MetaTitle", e.target.value)}
-          />
+          <input type="text" value={formData.MetaTitle ?? ""} onChange={(e) => handleInput("MetaTitle", e.target.value)} />
         </div>
         <div className="form-group">
           <label className="block-label">Meta Keywords</label>
-          <input
-            type="text"
-            value={formData.MetaKeywords}
-            onChange={(e) => handleInput("MetaKeywords", e.target.value)}
-          />
+          <input type="text" value={formData.MetaKeywords ?? ""} onChange={(e) => handleInput("MetaKeywords", e.target.value)} />
         </div>
         <div className="form-group">
           <label className="block-label">Meta Descriptions</label>
-          <input
-            type="text"
-            value={formData.MetaDescriptions}
-            onChange={(e) => handleInput("MetaDescriptions", e.target.value)}
-          />
+          <input type="text" value={formData.MetaDescriptions ?? ""} onChange={(e) => handleInput("MetaDescriptions", e.target.value)} />
         </div>
         <div className="form-group">
           <label className="block-label">Meta Schema</label>
-          <input
-            type="text"
-            value={formData.MetaSchema}
-            onChange={(e) => handleInput("MetaSchema", e.target.value)}
-          />
+          <input type="text" value={formData.MetaSchema ?? ""} onChange={(e) => handleInput("MetaSchema", e.target.value)} />
         </div>
 
-        <button
-          className="submit-btn"
-          onClick={handleSubmit}
-          disabled={isSaving}
-        >
+        <button className="submit-btn" onClick={handleSubmit} disabled={isSaving}>
           {isSaving && <Loader />} Submit
         </button>
         <Link href="/chanderpur-admin/manage-page" className="back-btn">

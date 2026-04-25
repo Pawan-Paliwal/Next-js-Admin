@@ -31,15 +31,51 @@ export default function ManageCollaborationData() {
     refetchOnMountOrArgChange: true,
     pollingInterval: 10000,
   });
+  const pagePermission = usePagePermission(checkData);
   const [filterText, setFilterText] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
-  const [displayOrders, setDisplayOrders] = useState({});
   const { data: collaborationData = [], refetch, isLoading } = useGetAllCollaborationsQuery();
   const collaborations = collaborationData || [];
-  const [updateDisplayOrder] = useUpdateDisplayOrderMutation();
   const [deleteCollaboration] = useDeleteCollaborationMutation();
   const [updateStatus] = useUpdateCollaborationStatusMutation();
-  const pagePermission = usePagePermission(checkData);
+  const [updateDisplayOrder, { isLoading: isUpdatingOrder }] = useUpdateDisplayOrderMutation();
+
+  const [displayOrders, setDisplayOrders] = useState({});
+
+  useEffect(() => {
+    if (collaborations.length > 0) {
+      const initialOrders = {};
+      collaborations.forEach(s => {
+        initialOrders[s.CollaborationID] = s.DisplayOrder;
+      });
+      setDisplayOrders(prev => {
+        if (JSON.stringify(prev) === JSON.stringify(initialOrders)) return prev;
+        return initialOrders;
+      });
+    }
+  }, [collaborations]);
+
+  const handleDisplayOrderChange = (id, value) => {
+    setDisplayOrders(prev => ({ ...prev, [id]: value }));
+  };
+
+  const handleUpdateDisplayOrder = async () => {
+    if (pagePermission?.CanWrite !== 1) {
+      toast.error("You do not have permission to update display order");
+      return;
+    }
+    const updates = Object.entries(displayOrders).map(([id, order]) => ({
+      CollaborationID: parseInt(id),
+      DisplayOrder: parseInt(order) || 0,
+    }));
+    try {
+      const res = await updateDisplayOrder(updates).unwrap();
+      if (res.success) toast.success("Display orders updated successfully");
+      else toast.error("Failed to update display orders");
+    } catch (err) {
+      toast.error("Error updating display orders");
+    }
+  };
 
   const [rowsPerPage, setRowsPerPage] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -105,21 +141,6 @@ export default function ManageCollaborationData() {
     }
   }, [checkData, pagePermission, router]);
 
-  useEffect(() => {
-    if (Array.isArray(collaborations)) {
-      const initialOrders = {};
-      collaborations.forEach(s => {
-        initialOrders[s.CollaborationID] = s.DisplayOrder;
-      });
-      setDisplayOrders(prev => {
-          if (JSON.stringify(prev) === JSON.stringify(initialOrders)) {
-              return prev;
-          }
-          return initialOrders;
-      });
-    }
-  }, [collaborations]);
-
   const handleDelete = async (CollaborationID) => {
     const confirmed = confirm("Are you sure you want to delete this Collaboration?");
     if (!confirmed) return;
@@ -137,30 +158,11 @@ export default function ManageCollaborationData() {
     }
   };
 
-  const handleDisplayOrderChange = (CollaborationID, value) => {
-    setDisplayOrders(prev => ({
-      ...prev,
-      [CollaborationID]: value === "" ? "" : parseInt(value, 10)
-    }));
-  };
-
-  const handleUpdateDisplayOrder = async () => {
-    const confirmed = confirm("Are you sure you want to update the display orders?");
-    if (!confirmed) return;
-    const data = Object.entries(displayOrders).map(([CollaborationID, DisplayOrder]) => ({
-      CollaborationID,
-      DisplayOrder
-    }));
-    try {
-      const res = await updateDisplayOrder(data).unwrap();
-      toast.success(res?.message || "Display order updated successfully");
-    } catch (err) {
-      console.error(err);
-      toast.error("An error occurred while updating display order.");
-    }
-  };
-
   const handleApprove = async (CollaborationID, currentStatus) => {
+    if (pagePermission?.CanWrite !== 1) {
+      toast.error("You do not have permission to update status");
+      return;
+    }
     const confirmed = confirm("Are you sure you want to update this status?");
     if (!confirmed) return;
 
@@ -205,7 +207,7 @@ export default function ManageCollaborationData() {
             ) : (
               <div className="user-image-none">{row.SerialNo}</div>
             )}
-            <span>{row.CollaborationName}</span>
+            <span>{row.CollaborationName ?? ""}</span>
           </div>
         ),
       width: "68%",
@@ -216,7 +218,7 @@ export default function ManageCollaborationData() {
       cell: (row) => (
         <input
           type="number"
-          value={displayOrders[row.CollaborationID] !== undefined ? displayOrders[row.CollaborationID] : ""}
+          value={displayOrders[row.CollaborationID] ?? ""}
           onChange={(e) => handleDisplayOrderChange(row.CollaborationID, e.target.value)}
           className="form-control"
           style={{ width: "65px", textAlign: "center" }}
@@ -235,129 +237,118 @@ export default function ManageCollaborationData() {
             <span style={{ color: row.ActiveStatus ? "green" : "red" }}>
               {row.ActiveStatus ? "Active" : "Inactive"}
             </span>
-            <button
-              className="approve-btn"
-              style={{ color: row.ActiveStatus ? "red" : "green", marginLeft: "8px" }}
-              onClick={() => handleApprove(row.CollaborationID, row.ActiveStatus)}
-            >
-              {row.ActiveStatus ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15l-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152l2.758 3.15a1.2 1.2 0 0 1 0 1.698" />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M21 7L9 19l-5.5-5.5l1.41-1.41L9 16.17L19.59 5.59z" />
-                </svg>
-              )}
-            </button>
+            {pagePermission?.CanWrite === 1 && (
+              <button
+                className="approve-btn"
+                style={{ color: row.ActiveStatus ? "red" : "green", marginLeft: "8px" }}
+                onClick={() => handleApprove(row.CollaborationID, row.ActiveStatus)}
+              >
+                {row.ActiveStatus ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15l-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152l2.758 3.15a1.2 1.2 0 0 1 0 1.698" />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M21 7L9 19l-5.5-5.5l1.41-1.41L9 16.17L19.59 5.59z" />
+                  </svg>
+                )}
+              </button>
+            )}
           </>
         ),
       width: "150px",
     },
-    {
-      name: "Action",
-      cell: (row) =>
-        isLoading ? (
-          <Skeleton circle width={24} height={24} />
-        ) : (
-          <Link
-            href={`/chanderpur-admin/addupd-collaboration?ID=${row.CollaborationID}`}
-            className="edit-icon"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-              <g fill="currentColor">
+    ...(pagePermission?.CanWrite === 1
+      ? [{
+        name: "Action",
+        cell: (row) =>
+          isLoading ? (
+            <Skeleton circle width={24} height={24} />
+          ) : (
+            <Link
+              href={`/chanderpur-admin/addupd-collaboration?ID=${row.CollaborationID}`}
+              className="edit-icon"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                <g fill="currentColor">
+                  <path
+                    fillRule="evenodd"
+                    d="M13.198 1.22L3.12 11.298a1 1 0 0 0-.282.555l-.705 4.594a1 1 0 0 0 1.14 1.14l4.595-.705a1 1 0 0 0 .555-.281L18.501 6.523a1 1 0 0 0 0-1.414l-3.89-3.89a1 1 0 0 0-1.413 0M4.317 15.404l.448-2.924l9.14-9.14l2.475 2.476l-9.14 9.14z"
+                    clipRule="evenodd"
+                  />
+                  <path d="m11.442 5.247l1.06-1.061l3.242 3.24l-1.061 1.061z" />
+                </g>
+              </svg>
+            </Link>
+          ),
+        width: "120px",
+      }]
+      : []),
+    ...(pagePermission?.CanDelete === 1
+      ? [{
+        name: "Delete",
+        cell: (row) =>
+          isLoading ? (
+            <Skeleton circle width={24} height={24} />
+          ) : (
+            <button onClick={() => handleDelete(row.CollaborationID)} className="edit-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path
-                  fillRule="evenodd"
-                  d="M13.198 1.22L3.12 11.298a1 1 0 0 0-.282.555l-.705 4.594a1 1 0 0 0 1.14 1.14l4.595-.705a1 1 0 0 0 .555-.281L18.501 6.523a1 1 0 0 0 0-1.414l-3.89-3.89a1 1 0 0 0-1.413 0M4.317 15.404l.448-2.924l9.14-9.14l2.475 2.476l-9.14 9.14z"
-                  clipRule="evenodd"
+                  fill="currentColor"
+                  d="M7.616 20q-.672 0-1.144-.472T6 18.385V6H5V5h4v-.77h6V5h4v1h-1v12.385q0 .69-.462 1.153T16.384 20zM17 6H7v12.385q0 .269.173.442t.443.173h8.769q.23 0 .423-.192t.192-.424zM9.808 17h1V8h-1zm3.384 0h1V8h-1zM7 6v13z"
                 />
-                <path d="m11.442 5.247l1.06-1.061l3.242 3.24l-1.061 1.061z" />
-              </g>
-            </svg>
-          </Link>
-        ),
-      width: "120px",
-    },
-    {
-      name: "Delete",
-      cell: (row) =>
-        isLoading ? (
-          <Skeleton circle width={24} height={24} />
-        ) : (
-          <button onClick={() => handleDelete(row.CollaborationID)} className="edit-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-              <path
-                fill="currentColor"
-                d="M7.616 20q-.672 0-1.144-.472T6 18.385V6H5V5h4v-.77h6V5h4v1h-1v12.385q0 .69-.462 1.153T16.384 20zM17 6H7v12.385q0 .269.173.442t.443.173h8.769q.23 0 .423-.192t.192-.424zM9.808 17h1V8h-1zm3.384 0h1V8h-1zM7 6v13z"
-              />
-            </svg>
-          </button>
-        ),
-      width: "80px",
-    },
+              </svg>
+            </button>
+          ),
+        width: "80px",
+      }]
+      : []),
   ];
 
   const filteredData = collaborations.filter((item) => {
     const searchText = filterText.toLowerCase();
     const matchesText = item.CollaborationName?.toLowerCase().includes(searchText);
-    const matchesOption =
-      !selectedOption || item.ActiveStatus.toString() === selectedOption;
+    const matchesOption = !selectedOption || item.ActiveStatus.toString() === selectedOption;
     return matchesText && matchesOption;
   });
 
   const subHeaderComponent = (
     <div className="subheader-container">
       <div className="colA">
-        <select
-          value={selectedOption}
-          onChange={(e) => setSelectedOption(e.target.value)}
-          className="dropdown"
-        >
+        <select value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)} className="dropdown">
           <option value="">Select Status</option>
           <option value="1">Active</option>
           <option value="0">Inactive</option>
         </select>
-        <input
-          type="text"
-          placeholder="Search Keywords"
-          value={filterText}
-          onChange={(e) => setFilterText(e.target.value)}
-          className="searchinput"
-        />
+        <input type="text" placeholder="Search Keywords" value={filterText} onChange={(e) => setFilterText(e.target.value)} className="searchinput" />
       </div>
-
       <div className="colB">
         <button className="update-display" onClick={handleUpdateDisplayOrder}>
-          Update Display
+          {isUpdatingOrder ? "Updating..." : "Update Display"}
         </button>
-        <Link
-          href={"/chanderpur-admin/addupd-collaboration"}
-          className="addnew-btn"
-          style={{ width: "110px" }}
-        >
-          <span>+</span> Add New
-        </Link>
+        {pagePermission?.CanAdd === 1 && (
+          <Link href={"/chanderpur-admin/addupd-collaboration"} className="addnew-btn" style={{ width: "110px" }}>
+            <span>+</span> Add New
+          </Link>
+        )}
       </div>
     </div>
   );
+
   const SkeletonLoader = () => (
-    <div>
-      {[...Array(10)].map((_, i) => (
-        <TestimonialSkeleton key={i} />
-      ))}
-    </div>
+    <div>{[...Array(10)].map((_, i) => (<TestimonialSkeleton key={i} />))}</div>
   );
 
   return (

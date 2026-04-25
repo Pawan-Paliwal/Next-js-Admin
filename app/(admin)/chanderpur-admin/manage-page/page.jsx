@@ -8,10 +8,11 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import ServiceSkeleton from "@/components/backendcomponents/listskeleton";
 import { useCheckLoginQuery } from "@/store/backendSlice/authAPISlice";
-import { useGetStaticsQuery, useDeleteStaticMutation } from "@/store/backendSlice/staticAPISlice";
+import { useGetStaticsQuery } from "@/store/backendSlice/staticAPISlice";
+import { usePagePermission } from "../usePagePermission";
+
 const PAGE_STORAGE_KEY = 'current_page_name';
 const PAGINATION_PREFIX = 'pagination_';
-import { usePagePermission } from "../usePagePermission";
 
 const getStorageKey = (pathname) => {
   const [path] = pathname.split('?');
@@ -24,15 +25,13 @@ const getStorageKey = (pathname) => {
   return null;
 };
 
-
 export default function ManageStaticData() {
   const router = useRouter();
   const { data: checkData, isSuccess } = useCheckLoginQuery(undefined, { refetchOnMountOrArgChange: true, pollingInterval: 10000, });
+  const pagePermission = usePagePermission(checkData);
   const [filterText, setFilterText] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
-  const { data: staticData = [], isLoading, isError } = useGetStaticsQuery();
-  const pagePermission = usePagePermission(checkData);
-
+  const { data: staticData = [], isLoading } = useGetStaticsQuery();
 
   const [rowsPerPage, setRowsPerPage] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -45,6 +44,7 @@ export default function ManageStaticData() {
     }
     return 10;
   });
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const currentPath = window.location.pathname;
@@ -156,8 +156,7 @@ export default function ManageStaticData() {
       const searchText = filterText.toLowerCase();
       const fullName = item.StaticName?.toLowerCase() || "";
       const matchesText = fullName.includes(searchText);
-      const matchesOption =
-        !selectedOption || item.ActiveStatus.toString() === selectedOption;
+      const matchesOption = !selectedOption || item.ActiveStatus.toString() === selectedOption;
       return matchesText && matchesOption;
     });
   }, [staticData, filterText, selectedOption]);
@@ -165,16 +164,6 @@ export default function ManageStaticData() {
   const subHeaderComponent = (
     <div className="subheader-container">
       <div className="colA">
-        <select
-          value={selectedOption}
-          onChange={(e) => setSelectedOption(e.target.value)}
-          className="dropdown"
-          style={{ display: "none" }}
-        >
-          <option value="">Select Status</option>
-          <option value="1">Active</option>
-          <option value="0">In Active</option>
-        </select>
         <input
           type="text"
           placeholder="Search Keywords"
@@ -183,31 +172,24 @@ export default function ManageStaticData() {
           className="searchinput"
         />
       </div>
-
       <div className="colB">
-        <Link
-          href={"/chanderpur-admin/addupd-page"}
-          className="addnew-btn"
-          style={{ width: "110px" }}
-        >
-          <span>+</span> Add New
-        </Link>
+        {pagePermission?.CanAdd === 1 && (
+          <Link href={"/chanderpur-admin/addupd-page"} className="addnew-btn" style={{ width: "110px" }}>
+            <span>+</span> Add New
+          </Link>
+        )}
       </div>
     </div>
   );
 
   const SkeletonLoader = () => (
-    <div>
-      {[...Array(10)].map((_, i) => (
-        <ServiceSkeleton key={i} />
-      ))}
-    </div>
+    <div>{[...Array(10)].map((_, i) => (<ServiceSkeleton key={i} />))}</div>
   );
 
   return (
     <main>
       <DataTable
-        title="Manage Static Data"
+        title="Manage Page Data"
         columns={columns}
         data={filteredData}
         striped

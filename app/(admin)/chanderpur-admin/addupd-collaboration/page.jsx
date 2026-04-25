@@ -18,8 +18,10 @@ export default function AddUpdCollaborationData() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const CollaborationID = searchParams.get("ID");
-  const { data: checkData, isSuccess } = useCheckLoginQuery();
+  const { data: checkData, isSuccess } = useCheckLoginQuery(undefined, { refetchOnMountOrArgChange: true, pollingInterval: 10000 });
   const pagePermission = usePagePermission(checkData);
+  const isPermissionsReady = checkData?.loggedIn && pagePermission?.PageID !== 0;
+
   const { data: maxOrderData } = useGetMaxDisplayOrderQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
@@ -31,11 +33,14 @@ export default function AddUpdCollaborationData() {
   }, [isSuccess, checkData, router]);
 
   useEffect(() => {
-    if (checkData?.loggedIn && pagePermission && pagePermission.CanWrite !== 1) {
-      toast.error("You do not have permission to access this page");
-      router.push("/chanderpur-admin/dashboard");
+    if (isPermissionsReady) {
+      const requiredPermission = CollaborationID ? pagePermission.CanWrite : pagePermission.CanAdd;
+      if (requiredPermission !== 1) {
+        toast.error(`You do not have permission to ${CollaborationID ? 'edit' : 'add'} collaboration`);
+        router.push("/chanderpur-admin/manage-collaboration");
+      }
     }
-  }, [checkData, pagePermission, router]);
+  }, [isPermissionsReady, pagePermission, CollaborationID, router]);
 
   const { data: collaborationData } = useGetCollaborationByIdQuery(CollaborationID, {
     skip: !CollaborationID,
@@ -95,21 +100,18 @@ export default function AddUpdCollaborationData() {
   };
 
   const validationRules = {
-    CollaborationName: {
-      required: true,
-      requiredMessage: "Please enter a name."
-    },
-    CollaborationImage: {
-      required: !CollaborationID,
-      requiredMessage: "Please upload an image."
-    },
-    Description: {
-      required: true,
-      requiredMessage: "Please enter a description."
-    }
+    CollaborationName: { required: true, requiredMessage: "Please enter a name." },
+    CollaborationImage: { required: !CollaborationID, requiredMessage: "Please upload an image." },
+    Description: { required: true, requiredMessage: "Please enter a description." }
   };
 
   const handleSubmit = async () => {
+    const requiredPermission = CollaborationID ? pagePermission.CanWrite : pagePermission.CanAdd;
+    if (requiredPermission !== 1) {
+      toast.error(`You do not have permission to ${CollaborationID ? 'edit' : 'add'} collaboration`);
+      return;
+    }
+
     const errors = validateFields(formData, validationRules);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -155,7 +157,7 @@ export default function AddUpdCollaborationData() {
             <input
               type="text"
               placeholder="2010: Joint Venture with Christian Pfeiffer, Germany"
-              value={formData.CollaborationName}
+              value={formData.CollaborationName ?? ""}
               onChange={(e) => {
                 const val = e.target.value;
                 handleInput("CollaborationName", val);
@@ -171,7 +173,7 @@ export default function AddUpdCollaborationData() {
             <label>Name URL*</label>
             <input
               type="text"
-              value={formData.CollaborationNameURL}
+              value={formData.CollaborationNameURL ?? ""}
               onChange={(e) => handleInput("CollaborationNameURL", e.target.value)}
             />
           </div>
@@ -205,7 +207,7 @@ export default function AddUpdCollaborationData() {
             <input
               type="number"
               placeholder="0"
-              value={formData.DisplayOrder || ""}
+              value={formData.DisplayOrder ?? ""}
               onChange={(e) =>
                 handleInput("DisplayOrder", e.target.value === "" ? "" : Number(e.target.value))
               }

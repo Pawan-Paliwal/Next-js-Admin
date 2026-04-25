@@ -18,8 +18,10 @@ export default function AddUpdBlogData() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const BlogID = searchParams.get("ID");
-  const { data: checkData, isSuccess } = useCheckLoginQuery();
+  const { data: checkData, isSuccess } = useCheckLoginQuery(undefined, { refetchOnMountOrArgChange: true, pollingInterval: 10000 });
   const pagePermission = usePagePermission(checkData);
+  const isPermissionsReady = checkData?.loggedIn && pagePermission?.PageID !== 0;
+
   const { data: maxOrderData } = useGetMaxDisplayOrderQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
@@ -31,11 +33,14 @@ export default function AddUpdBlogData() {
   }, [isSuccess, checkData, router]);
 
   useEffect(() => {
-    if (checkData?.loggedIn && pagePermission && pagePermission.CanWrite !== 1) {
-      toast.error("You do not have permission to access this page");
-      router.push("/chanderpur-admin/dashboard");
+    if (isPermissionsReady) {
+      const requiredPermission = BlogID ? pagePermission.CanWrite : pagePermission.CanAdd;
+      if (requiredPermission !== 1) {
+        toast.error(`You do not have permission to ${BlogID ? 'edit' : 'add'} blog post`);
+        router.push("/chanderpur-admin/manage-blog");
+      }
     }
-  }, [checkData, pagePermission, router]);
+  }, [isPermissionsReady, pagePermission, BlogID, router]);
 
   const { data: blogData } = useGetBlogByIdQuery(BlogID, {
     skip: !BlogID,
@@ -109,6 +114,12 @@ export default function AddUpdBlogData() {
   };
 
   const handleSubmit = async () => {
+    const requiredPermission = BlogID ? pagePermission.CanWrite : pagePermission.CanAdd;
+    if (requiredPermission !== 1) {
+      toast.error(`You do not have permission to ${BlogID ? 'edit' : 'add'} blog post`);
+      return;
+    }
+
     const errors = validateFields(formData, validationRules);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -165,13 +176,13 @@ export default function AddUpdBlogData() {
       <div className="form-box">
         <h1>Add/Update Blog</h1>
 
-        <div className="form-group-row file-uploade-sec" style={{ marginBottom: "18px", display: "flex", alignItems: "center", gap: "20px" }}>
-          <div className="form-group displayorder">
+        <div className="form-group-row">
+          <div className="form-group">
             <label>Blog Title*</label>
             <input
               type="text"
               placeholder="e.g. Industry Innovations 2024"
-              value={formData.BlogName}
+              value={formData.BlogName ?? ""}
               onChange={(e) => {
                 const val = e.target.value;
                 handleInput("BlogName", val);
@@ -184,8 +195,13 @@ export default function AddUpdBlogData() {
             />
             {formErrors.BlogName && <p className="error">{formErrors.BlogName}</p>}
           </div>
-
-          <div className="colA" style={{ width: "200px" }}>
+          <div className="form-group">
+            <label>Name URL*</label>
+            <input type="text" value={formData.BlogNameURL ?? ""} onChange={(e) => handleInput("BlogNameURL", e.target.value)} />
+          </div>
+        </div>
+        <div className="form-group-row file-uploade-sec" style={{ marginBottom: "18px", display: "flex", alignItems: "center", gap: "20px" }}>
+          <div className="colA" style={{ width: "43%" }}>
             <div className="form-group">
               <label>Thumbnail Image*</label>
               <input
@@ -206,7 +222,7 @@ export default function AddUpdBlogData() {
             <div className="image-preview"><img src={previewImage} alt="Preview" height={50} /></div>
           )}
 
-          <div className="colA" style={{ width: "200px" }}>
+          <div className="colA" style={{ width: "40%" }}>
             <div className="form-group">
               <label>Banner Image</label>
               <input
@@ -224,15 +240,9 @@ export default function AddUpdBlogData() {
           {previewBanner && (
             <div className="image-preview"><img src={previewBanner} alt="Banner Preview" height={50} /></div>
           )}
-
-          <div className="form-group" style={{ display: "none" }}>
-            <label>Name URL*</label>
-            <input type="text" value={formData.BlogNameURL} onChange={(e) => handleInput("BlogNameURL", e.target.value)} />
-          </div>
         </div>
-
         <div className="form-group" style={{ display: "block", width: "100%", marginBottom: "20px" }}>
-          <label style={{ display: "block", marginBottom: "10px" }}>Content</label>
+          <label style={{ display: "block", marginBottom: "10px" }}>Description</label>
           <div style={{ width: "100%", backgroundColor: "#fff" }}>
             <SunEditor
               lang="en"
@@ -245,14 +255,13 @@ export default function AddUpdBlogData() {
             />
           </div>
         </div>
-
         <div className="form-group-row">
           <div className="form-group displayorder">
             <label>Display Order</label>
             <input
               type="number"
               placeholder="0"
-              value={formData.DisplayOrder || ""}
+              value={formData.DisplayOrder ?? ""}
               onChange={(e) =>
                 handleInput("DisplayOrder", e.target.value === "" ? "" : Number(e.target.value))
               }
@@ -270,7 +279,7 @@ export default function AddUpdBlogData() {
           <label className="block-label">Meta Title</label>
           <input
             type="text"
-            value={formData.MetaTitle}
+            value={formData.MetaTitle ?? ""}
             onChange={(e) => handleInput("MetaTitle", e.target.value)}
           />
         </div>
@@ -278,7 +287,7 @@ export default function AddUpdBlogData() {
           <label className="block-label">Meta Keywords</label>
           <input
             type="text"
-            value={formData.MetaKeywords}
+            value={formData.MetaKeywords ?? ""}
             onChange={(e) => handleInput("MetaKeywords", e.target.value)}
           />
         </div>
@@ -286,7 +295,7 @@ export default function AddUpdBlogData() {
           <label className="block-label">Meta Descriptions</label>
           <input
             type="text"
-            value={formData.MetaDescriptions}
+            value={formData.MetaDescriptions ?? ""}
             onChange={(e) => handleInput("MetaDescriptions", e.target.value)}
           />
         </div>
@@ -294,7 +303,7 @@ export default function AddUpdBlogData() {
           <label className="block-label">Meta Schema</label>
           <input
             type="text"
-            value={formData.MetaSchema}
+            value={formData.MetaSchema ?? ""}
             onChange={(e) => handleInput("MetaSchema", e.target.value)}
           />
         </div>
