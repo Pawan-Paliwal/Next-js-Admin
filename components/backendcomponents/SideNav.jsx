@@ -16,6 +16,8 @@ const password = process.env.NEXT_PUBLIC_BASIC_AUTH_PASS;
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 const authHeader = "Basic " + btoa(`${username}:${password}`);
 
+
+
 export default function SideNav() {
   const [logout] = useLogoutMutation();
   const [openIndex, setOpenIndex] = useState(null);
@@ -30,11 +32,15 @@ export default function SideNav() {
     pollingInterval: 10000,
   });
 
+
+
   useEffect(() => {
     if (isSuccess && !checkData?.loggedIn) {
       router.push("/chanderpur-admin/login");
     }
   }, [isSuccess, checkData, router]);
+
+
 
   useEffect(() => {
     let hideBtn = document.querySelector('.hide_menu');
@@ -50,6 +56,8 @@ export default function SideNav() {
       hideBtn?.removeEventListener('click', menuToggle);
     };
   }, []);
+
+
 
   useEffect(() => {
     const storedPermissions = checkData?.permissions || [];
@@ -97,6 +105,10 @@ export default function SideNav() {
   }, [isSuccess, checkData, pathname]);
 
   const handleLogout = async () => {
+    const confirmed = window.confirm("Are you really want to logout?");
+    if (!confirmed) {
+      return;
+    }
     try {
       await logout().unwrap();
       router.push("/chanderpur-admin/login");
@@ -131,7 +143,6 @@ export default function SideNav() {
                     pathname === item.addurl ||
                     subUrls.includes(pathname);
                   const isDropdownOpen = openIndex === index;
-
                   return (
                     <li
                       key={index}
@@ -168,7 +179,7 @@ export default function SideNav() {
                 })}
               <li>
                 <a onClick={openPasswordPopup} style={{ cursor: "pointer" }}>
-                  <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path fill='currentColor' d='M7 14q-.825 0-1.412-.587T5 12t.588-1.412T7 10t1.413.588T9 12t-.587 1.413T7 14m0 4q-2.5 0-4.25-1.75T1 12t1.75-4.25T7 6q1.675 0 3.038.825T12.2 9h8.375q.2 0 .388.075t.337.225l2 2q.15.15.212.325t.063.375t-.063.375t-.212.325l-3.175 3.175q-.125.125-.3.2t-.35.1t-.35-.025t-.325-.175L17.5 15l-1.425 1.075q-.125.1-.275.15t-.3.05t-.313-.05t-.287-.15L13.375 15H12.2q-.8 1.35-2.163 2.175T7 18m0-2q1.4 0 2.463-.85T10.875 13H14l1.45 1.025v.013v-.013L17.5 12.5l1.775 1.375L21.15 12h-.012h.012l-1-1v-.012V11h-9.275q-.35-1.3-1.412-2.15T7 8Q5.35 8 4.175 9.175T3 12t1.175 2.825T7 16' /></svg>
+                  <svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 24 24'><path fill='currentColor' d='M7 14q-.825 0-1.412-.587T5 12t.588-1.412T7 10t1.413.588T9 12t-.587 1.413T7 14m0 4q-2.5 0-4.25-1.75T1 12t1.75-4.25T7 6q1.675 0 3.038.825T12.2 9h8.375q.2 0 .388.075t.337.225l2 2q.15.15.212.325t.063.375t-.063.375t-.212.325l-3.175 3.175q-.125.125-.3.2t-.35.1t-.35-.025t-.325-.175L17.5 15l-1.425 1.075q-.125.1-.275.15t-.3.05t-.313-.05t-.287-.15L13.375 15H12.2q-.8 1.35-2.163 2.175T7 18m0-2q1.4 0 2.463-.85T10.875 13H14l1.45 1.025v.013v-.013L17.5 12.5l1.775 1.375L21.15 12h-.012h.012l-1-1v-.012V11h-9.275q-.35-1.3-1.412-2.15T7 8Q5.35 8 4.175 9.175T3 12t1.175 2.825T7 16' /></svg>
                   Password
                 </a>
               </li>
@@ -196,6 +207,8 @@ export default function SideNav() {
     </>
   );
 }
+
+
 
 function PasswordChangePopup({ loginID, onClose, onSuccess }) {
   const [updatePassword, { isLoading }] = useUpdatePasswordMutation();

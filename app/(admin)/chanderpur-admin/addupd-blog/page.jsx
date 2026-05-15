@@ -64,43 +64,42 @@ export default function AddUpdBlogData() {
   });
 
   const [previewImage, setPreviewImage] = useState("");
-  const [previewBanner, setPreviewBanner] = useState("");
+  const [previewBanner, setPreviewBanner] = useState(""); +
 
-  useEffect(() => {
-    if (blogData?.success) {
-      const data = blogData.data;
-      setFormData({
-        BlogName: data.BlogName || "",
-        BlogNameURL: data.BlogNameURL || "",
-        BlogImage: null,
-        BlogBannerImage: null,
-        Description: data.Description || "",
-        MetaTitle: data.MetaTitle || "",
-        MetaKeywords: data.MetaKeywords || "",
-        MetaDescriptions: data.MetaDescriptions || "",
-        MetaSchema: data.MetaSchema || "",
-        ActiveStatus: data.ActiveStatus === 1,
-        DisplayOrder: data.DisplayOrder ?? 0,
-      });
-      if (data.BlogImage) setPreviewImage(`/OnlineImages/BlogImages/${data.BlogImage}`);
-      else setPreviewImage(null);
-      if (data.BlogBannerImage) setPreviewBanner(`/OnlineImages/BlogImages/${data.BlogBannerImage}`);
-      else setPreviewBanner(null);
-    }
-    else if (!BlogID && maxOrderData?.maxOrder !== undefined) {
-      setFormData((prev) => ({
-        ...prev,
-        DisplayOrder: maxOrderData.maxOrder + 1,
-      }));
-    }
-  }, [blogData, maxOrderData]);
+    useEffect(() => {
+      if (blogData?.success) {
+        const data = blogData.data;
+        setFormData({
+          BlogName: data.BlogName || "",
+          BlogNameURL: data.BlogNameURL || "",
+          BlogImage: null,
+          BlogBannerImage: null,
+          Description: data.Description || "",
+          MetaTitle: data.MetaTitle || "",
+          MetaKeywords: data.MetaKeywords || "",
+          MetaDescriptions: data.MetaDescriptions || "",
+          MetaSchema: data.MetaSchema || "",
+          ActiveStatus: data.ActiveStatus === 1,
+          DisplayOrder: data.DisplayOrder ?? 0,
+        });
+        if (data.BlogImage) setPreviewImage(`/OnlineImages/BlogImages/${data.BlogImage}`);
+        else setPreviewImage(null);
+        if (data.BlogBannerImage) setPreviewBanner(`/OnlineImages/BlogImages/${data.BlogBannerImage}`);
+        else setPreviewBanner(null);
+      }
+      else if (!BlogID && maxOrderData?.maxOrder !== undefined) {
+        setFormData((prev) => ({
+          ...prev,
+          DisplayOrder: maxOrderData.maxOrder + 1,
+        }));
+      }
+    }, [blogData, maxOrderData]);
 
   const handleInput = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const generateSlug = (text) => text.toLowerCase().replace(/[^a-z0-9\s-]/g, "").trim().replace(/\s+/g, "-");
-
   const handleFileRename = (file, nameSuffix) => {
     const ext = file.name.split(".").pop();
     const slug = formData.BlogNameURL?.replace(/\s+/g, "-") || "blog";
@@ -119,14 +118,12 @@ export default function AddUpdBlogData() {
       toast.error(`You do not have permission to ${BlogID ? 'edit' : 'add'} blog post`);
       return;
     }
-
     const errors = validateFields(formData, validationRules);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       return;
     }
     setFormErrors({});
-
     const data = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       if (key === "BlogImage" && value instanceof File) {
@@ -139,10 +136,8 @@ export default function AddUpdBlogData() {
         data.append(key, value.toString());
       }
     });
-
     data.append("UpdatedBy", "Admin Panel");
     if (BlogID) data.append("BlogID", BlogID);
-
     try {
       const res = await saveOrUpdateBlog(data).unwrap();
       if (res.success) {
@@ -221,7 +216,6 @@ export default function AddUpdBlogData() {
           {previewImage && (
             <div className="image-preview"><img src={previewImage} alt="Preview" height={50} /></div>
           )}
-
           <div className="colA" style={{ width: "40%" }}>
             <div className="form-group">
               <label>Banner Image</label>
@@ -272,7 +266,6 @@ export default function AddUpdBlogData() {
             <label htmlFor="chkActiveStatus">Status (Active/Inactive)</label>
           </div>
         </div>
-
         <h2>SEO Information</h2>
         <hr />
         <div className="form-group">
@@ -307,7 +300,6 @@ export default function AddUpdBlogData() {
             onChange={(e) => handleInput("MetaSchema", e.target.value)}
           />
         </div>
-
         <button className="submit-btn" onClick={handleSubmit} disabled={isLoading}>
           {isLoading && <Loader />} Submit
         </button>
@@ -316,3 +308,25 @@ export default function AddUpdBlogData() {
     </main>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

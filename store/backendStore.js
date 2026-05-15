@@ -12,6 +12,15 @@ import { companyAPISlice } from "./backendSlice/companyAPISlice";
 import { milestoneAPISlice } from "./backendSlice/milestoneAPISlice";
 import { blogAPISlice } from "./backendSlice/blogAPISlice";
 import { partnerLogoAPI } from "./backendSlice/partnerLogoAPISlice";
+import { manufacturingAPISlice } from "./backendSlice/manufacturingAPISlice";
+import { galleryAPISlice } from "./backendSlice/galleryAPISlice";
+import { careerAPISlice } from "./backendSlice/careerAPISlice";
+import { whatsNewAPISlice } from "./backendSlice/whatsNewAPISlice";
+import { facilityCategoryAPISlice } from "./backendSlice/facilityCategoryAPISlice";
+import { facilityProductAPISlice } from "./backendSlice/facilityProductAPISlice";
+import { clientTypeAPISlice } from "./backendSlice/clientTypeAPISlice";
+import { clientLogoMappingAPISlice } from "./backendSlice/clientLogoMappingAPISlice";
+
 
 export const backendStore = configureStore({
   reducer: {
@@ -26,8 +35,17 @@ export const backendStore = configureStore({
     [companyAPISlice.reducerPath]: companyAPISlice.reducer,
     [milestoneAPISlice.reducerPath]: milestoneAPISlice.reducer,
     [blogAPISlice.reducerPath]: blogAPISlice.reducer,
-    [partnerLogoAPI.reducerPath]: partnerLogoAPI.reducer
+    [partnerLogoAPI.reducerPath]: partnerLogoAPI.reducer,
+    [manufacturingAPISlice.reducerPath]: manufacturingAPISlice.reducer,
+    [galleryAPISlice.reducerPath]: galleryAPISlice.reducer,
+    [careerAPISlice.reducerPath]: careerAPISlice.reducer,
+    [whatsNewAPISlice.reducerPath]: whatsNewAPISlice.reducer,
+    [facilityCategoryAPISlice.reducerPath]: facilityCategoryAPISlice.reducer,
+    [facilityProductAPISlice.reducerPath]: facilityProductAPISlice.reducer,
+    [clientTypeAPISlice.reducerPath]: clientTypeAPISlice.reducer,
+    [clientLogoMappingAPISlice.reducerPath]: clientLogoMappingAPISlice.reducer
   },
+
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       authAPISlice.middleware,
@@ -41,5 +59,13 @@ export const backendStore = configureStore({
       milestoneAPISlice.middleware,
       blogAPISlice.middleware,
       partnerLogoAPI.middleware,
+      manufacturingAPISlice.middleware,
+      galleryAPISlice.middleware,
+      careerAPISlice.middleware,
+      whatsNewAPISlice.middleware,
+      facilityCategoryAPISlice.middleware,
+      facilityProductAPISlice.middleware,
+      clientTypeAPISlice.middleware,
+      clientLogoMappingAPISlice.middleware,
     ),
 });

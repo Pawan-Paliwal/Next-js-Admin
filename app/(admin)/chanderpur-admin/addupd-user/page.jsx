@@ -55,6 +55,7 @@ export default function AddUpdUser() {
       }
     }
   }, [isPermissionsReady, pagePermission, loginID, router]);
+
   useEffect(() => {
     if (loginID && userData) {
       if (userData.success) {
@@ -86,6 +87,7 @@ export default function AddUpdUser() {
       }
     }
   }, [loginID, userData]);
+
 
 
   useEffect(() => {
@@ -137,22 +139,17 @@ export default function AddUpdUser() {
   };
 
 
+
   const validateForm = () => {
     const errors = {};
-
-    // Role validation
     if (!formData.Role.trim()) {
       errors.Role = "Please select user type.";
     }
-
-    // Full name validation
     if (!formData.FullName.trim()) {
       errors.FullName = "Please enter full name.";
     } else if (formData.FullName.trim().length < 2) {
       errors.FullName = "Full name must be at least 2 characters.";
     }
-
-    // Email validation
     if (!formData.EmailID.trim()) {
       errors.EmailID = "Please enter email.";
     } else {
@@ -161,14 +158,10 @@ export default function AddUpdUser() {
         errors.EmailID = "Please enter a valid email address.";
       }
     }
-
-    // Phone number validation (8-14 digits)
     if (!formData.PhoneNumber.trim()) {
       errors.PhoneNumber = "Please enter phone number.";
     } else {
-      // Remove all non-digit characters for validation
       const digitsOnly = formData.PhoneNumber.replace(/\D/g, "");
-
       if (digitsOnly.length < 8) {
         errors.PhoneNumber = "Phone number must be at least 8 digits.";
       } else if (digitsOnly.length > 14) {
@@ -177,24 +170,18 @@ export default function AddUpdUser() {
         errors.PhoneNumber = "Phone number contains invalid characters.";
       }
     }
-
-    // Password validation
     if (!loginID && !formData.Passwords.trim()) {
-      // Auto-generate password for new users
     } else if (formData.Passwords.trim() && formData.Passwords.length < 6) {
       errors.Passwords = "Password must be at least 6 characters.";
     }
-
     return errors;
   };
-
   const handleSubmit = async () => {
     const requiredPermission = loginID ? pagePermission.CanWrite : pagePermission.CanAdd;
     if (requiredPermission !== 1) {
       toast.error(`You do not have permission to ${loginID ? 'edit' : 'add'} user`);
       return;
     }
-
     const errors = validateForm();
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -222,7 +209,7 @@ export default function AddUpdUser() {
     formDataToSend.append(
       "UserName",
       formData.FullName
-        ? `${formData.FullName.trim().replace(/\s+/g, ".")}.afford`
+        ? `${formData.FullName.trim().replace(/\s+/g, ".")}.chanderpur`
         : ""
     );
     formDataToSend.append("Passwords", finalPassword);
@@ -235,9 +222,9 @@ export default function AddUpdUser() {
     if (loginID) {
       formDataToSend.append("LoginID", loginID);
     }
+
     try {
       const result = await register(formDataToSend).unwrap();
-
       if (result.success) {
         toast.success(result.message || "User saved successfully");
         setFormData({
@@ -333,9 +320,7 @@ export default function AddUpdUser() {
             />
           </div>
           {previewImage && <img src={previewImage} alt="user" width={70} height={70} />}
-
         </div>
-
         <div className="form-group-row" style={{ display: "flex", gap: "1rem", marginBottom: "1rem", alignItems: "center" }}>
           {loginID && (
             <div className="form-group" style={{ flex: 1 }}>
@@ -425,7 +410,6 @@ export default function AddUpdUser() {
                 return (
                   <tr key={`${page.PageID}-${Math.random()}`}>
                     <td style={{ border: "1px solid #ccc", padding: "8px" }}>{page.PageName}</td>
-
                     <td style={{ border: "1px solid #ccc", padding: "8px", textAlign: "center" }}>
                       <input
                         type="checkbox"
@@ -435,7 +419,6 @@ export default function AddUpdUser() {
                         }
                       />
                     </td>
-
                     <td style={{ border: "1px solid #ccc", padding: "8px", textAlign: "center" }}>
                       <input
                         type="checkbox"
@@ -445,7 +428,6 @@ export default function AddUpdUser() {
                         }
                       />
                     </td>
-
                     <td style={{ border: "1px solid #ccc", padding: "8px", textAlign: "center" }}>
                       <input
                         type="checkbox"
@@ -455,7 +437,6 @@ export default function AddUpdUser() {
                         }
                       />
                     </td>
-
                     <td style={{ border: "1px solid #ccc", padding: "8px", textAlign: "center" }}>
                       <input
                         type="checkbox"
@@ -470,7 +451,7 @@ export default function AddUpdUser() {
               })}
           </tbody>
         </table>
-        <div >
+        <div>
           <button
             className="submit-btn"
             onClick={handleSubmit}

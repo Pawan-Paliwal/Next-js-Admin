@@ -135,7 +135,7 @@ export default function AddUpdTestimonialData() {
     data.append("UpdatedBy", "Admin Panel");
     data.append("type", "testimonial");
     if (TestimonialID) data.append("TestimonialID", TestimonialID);
-    
+
     try {
       const res = await saveOrUpdateTestimonial(data).unwrap();
       if (res.success) {
@@ -224,7 +224,6 @@ export default function AddUpdTestimonialData() {
             <label htmlFor="chkDisplayOnHome">Display On Home</label>
           </div>
         </div>
-
         <div className="form-group" style={{ display: "block", width: "100%", marginBottom: "20px" }}>
           <label style={{ display: "block", marginBottom: "10px" }}>Description*</label>
           <div style={{ width: "100%", backgroundColor: "#fff" }}>

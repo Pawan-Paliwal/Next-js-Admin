@@ -40,6 +40,8 @@ type Page = {
   PageRoute: string;
 };
 
+
+
 export default function ManageUserData() {
   const router = useRouter();
   const Menu = AdminStaticData.Menu.items;
@@ -244,7 +246,7 @@ export default function ManageUserData() {
           <span>{row.FullName}</span>
         </div>
       ),
-      width: "50%",
+      width: "55%",
     },
     {
       name: "User Type",
@@ -256,7 +258,7 @@ export default function ManageUserData() {
       name: "UserName",
       selector: (row) => row.UserName,
       sortable: true,
-      width: "150px",
+      width: "170px",
     },
     {
       name: "Permissions",
@@ -265,7 +267,7 @@ export default function ManageUserData() {
           View/Edit
         </button>
       ),
-      width: "120px",
+      width: "140px",
     },
     {
       name: "Status",

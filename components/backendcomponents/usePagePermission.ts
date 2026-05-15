@@ -25,6 +25,7 @@ export function usePagePermission() {
     CanDelete: 0,
     CanAdd: 0,
   });
+
   const getSlug = (url: string): string => {
     if (!url) return "";
     const clean = url.split("?")[0].replace(/\/$/, "");

@@ -33,7 +33,6 @@ exports.login = (req, res) => {
         maxAge: 2 * 60 * 60 * 1000,
         sameSite: 'lax'
       });
-
       return res.json({
         success: true,
         message: "Login successful",
@@ -45,11 +44,11 @@ exports.login = (req, res) => {
 };
 
 
+
 exports.saveOrUpdateUser = (req, res) => {
   const body = req.body || {};
   const { LoginID, FullName, EmailID, PhoneNumber, UserName, Role, Passwords, ActiveStatus, UpdatedBy, permissions = "{}", } = body;
   const numericLoginID = LoginID ? Number(LoginID) : null;
-
   let ProfileImage = null;
   if (req.files && req.files.ProfileImage && req.files.ProfileImage[0]) {
     ProfileImage = req.files.ProfileImage[0].filename;
@@ -74,7 +73,6 @@ exports.saveOrUpdateUser = (req, res) => {
       if (err) {
         return res.status(500).json({ success: false, message: "Failed to reset old permissions", error: err });
       }
-
       const insertPermissionSql = `
         INSERT INTO mst_userpagespermissions 
         (LoginID, PageID, CanRead, CanWrite, CanDelete, CanAdd)

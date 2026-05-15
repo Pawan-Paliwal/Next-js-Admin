@@ -4,7 +4,7 @@
       {
         "PageID": 1,
         "title": "Home",
-        "icon": "<svg xmlns='http://www.w3.org/2000/svg' xmlnsXlink='http://www.w3.org/1999/xlink' aria-hidden='true' role='img' className='iconify iconify--eva' width='24' height='24' preserveAspectRatio='xMidYMid meet' viewBox='0 0 24 24' data-icon='eva:home-outline'><path fill='currentColor' d='M20.42 10.18L12.71 2.3a1 1 0 0 0-1.42 0l-7.71 7.89A2 2 0 0 0 3 11.62V20a2 2 0 0 0 1.89 2h14.22A2 2 0 0 0 21 20v-8.38a2.07 2.07 0 0 0-.58-1.44M10 20v-6h4v6Zm9 0h-3v-7a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H5v-8.42l7-7.15l7 7.19Z'></path></svg>",
+        "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 24 24'><defs><path id='SVGEuPeJeiy' fill='currentColor' d='M10.75 9.5a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0'/></defs><path fill='currentColor' d='M18.5 3H16a.5.5 0 0 0-.5.5v.059l3.5 2.8V3.5a.5.5 0 0 0-.5-.5'/><use href='#SVGEuPeJeiy' fill-rule='evenodd' clip-rule='evenodd'/><path fill='currentColor' fill-rule='evenodd' d='m20.75 10.96l.782.626a.75.75 0 0 0 .936-1.172l-8.125-6.5a3.75 3.75 0 0 0-4.686 0l-8.125 6.5a.75.75 0 0 0 .937 1.172l.781-.626v10.29H2a.75.75 0 0 0 0 1.5h20a.75.75 0 0 0 0-1.5h-1.25zM9.25 9.5a2.75 2.75 0 1 1 5.5 0a2.75 2.75 0 0 1-5.5 0m2.8 3.75c.664 0 1.237 0 1.696.062c.492.066.963.215 1.345.597s.531.853.597 1.345c.058.43.062.96.062 1.573v4.423h-1.5V17c0-.728-.002-1.2-.048-1.546c-.044-.325-.114-.427-.172-.484s-.159-.128-.484-.172c-.347-.046-.818-.048-1.546-.048s-1.2.002-1.546.048c-.325.044-.427.115-.484.172s-.128.159-.172.484c-.046.347-.048.818-.048 1.546v4.25h-1.5v-4.3c0-.664 0-1.237.062-1.696c.066-.492.215-.963.597-1.345s.854-.531 1.345-.597c.459-.062 1.032-.062 1.697-.062z' clip-rule='evenodd'/><use href='#SVGEuPeJeiy' fill-rule='evenodd' clip-rule='evenodd'/></svg>",
         "url": "/chanderpur-admin/dashboard",
         "addurl": "",
         "Show": "1"
@@ -12,7 +12,7 @@
       {
         "PageID": 15,
         "title": "About Master",
-        "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><g fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5'><path d='M4 21.4V2.6a.6.6 0 0 1 .6-.6h11.652a.6.6 0 0 1 .424.176l3.148 3.148A.6.6 0 0 1 20 5.75V21.4a.6.6 0 0 1-.6.6H4.6a.6.6 0 0 1-.6-.6M8 10h8m-8 8h8m-8-4h4'/><path d='M16 2v3.4a.6.6 0 0 0 .6.6H20'/></g></svg>",
+        "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 48 48'><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' d='M39.226 25.999A16 16 0 0 0 39.37 24a16 16 0 0 0-.143-1.999l4.335-3.393a1.02 1.02 0 0 0 .246-1.312l-4.1-7.103a1.014 1.014 0 0 0-1.25-.44l-5.105 2.06a15.6 15.6 0 0 0-3.464-2.02l-.769-5.432a1.054 1.054 0 0 0-1.025-.861h-8.2a1.035 1.035 0 0 0-1.015.861l-.768 5.433a15.2 15.2 0 0 0-3.465 2.019l-5.104-2.06a1.025 1.025 0 0 0-1.251.44l-4.1 7.104a1.03 1.03 0 0 0 .246 1.312l4.326 3.393A16 16 0 0 0 8.62 24a16 16 0 0 0 .144 1.999l-4.326 3.393a1.02 1.02 0 0 0-.246 1.312l4.1 7.103a1.014 1.014 0 0 0 1.25.44l5.105-2.06a15.6 15.6 0 0 0 3.464 2.02l.769 5.432a1.035 1.035 0 0 0 1.015.861h8.2a1.035 1.035 0 0 0 1.015-.861l.768-5.432a15.2 15.2 0 0 0 3.465-2.02l5.104 2.06a1.025 1.025 0 0 0 1.25-.44l4.1-7.104a1.03 1.03 0 0 0-.246-1.312Z' stroke-width='2'/><circle cx='24' cy='24' r='5.625' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='2'/><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' d='M24 18.375A12.94 12.94 0 0 0 13.5 24A12.94 12.94 0 0 0 24 29.625A12.94 12.94 0 0 0 34.5 24A12.94 12.94 0 0 0 24 18.375' stroke-width='2'/><circle cx='24' cy='24' r='.75' fill='currentColor'/></svg>",
         "url": "#",
         "addurl": "#",
         "Show": "1",
@@ -62,39 +62,123 @@
       {
         "PageID": 6,
         "title": "Partners Logo",
-        "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path fill='currentColor' d='M19 5v14H5V5zm0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-4.86 8.86l-3 3.87L9 13.14L6 17h12z'/></svg>",
+        "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 24 24'><g fill='currentColor'><path d='M7.25 8a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0'/><path d='M9.367 2.25h5.266c1.092 0 1.958 0 2.655.057c.714.058 1.317.18 1.869.46a4.75 4.75 0 0 1 2.075 2.077c.281.55.403 1.154.461 1.868c.057.697.057 1.563.057 2.655v5.266c0 1.092 0 1.958-.057 2.655c-.058.714-.18 1.317-.46 1.869a4.75 4.75 0 0 1-2.076 2.075c-.552.281-1.155.403-1.869.461c-.697.057-1.563.057-2.655.057H9.367c-1.092 0-1.958 0-2.655-.057c-.714-.058-1.317-.18-1.868-.46a4.75 4.75 0 0 1-2.076-2.076c-.281-.552-.403-1.155-.46-1.869c-.058-.697-.058-1.563-.058-2.655V9.367c0-1.092 0-1.958.057-2.655c.058-.714.18-1.317.46-1.868a4.75 4.75 0 0 1 2.077-2.076c.55-.281 1.154-.403 1.868-.461c.697-.057 1.563-.057 2.655-.057M3.75 13.753v.847c0 1.133 0 1.937.052 2.566c.05.62.147 1.005.302 1.31a3.25 3.25 0 0 0 1.42 1.42c.305.155.69.251 1.31.302c.389.032.845.044 1.404.049c-.046-1.392.167-2.71.593-3.92c-1.12-1.606-2.98-2.641-5.08-2.574m16.5-3.084c-5.863-.493-10.727 3.874-10.511 9.581h4.86c1.133 0 1.937 0 2.566-.052c.62-.05 1.005-.147 1.31-.302a3.25 3.25 0 0 0 1.42-1.42c.155-.305.251-.69.302-1.31c.052-.63.052-1.434.052-2.566zM5.75 8a2.75 2.75 0 1 0 5.5 0a2.75 2.75 0 0 0-5.5 0m1.5 0a1.25 1.25 0 1 1 2.5 0a1.25 1.25 0 0 1-2.5 0'/></g></svg>",
         "url": "/chanderpur-admin/manage-partnerlogo",
         "addurl": "/chanderpur-admin/addupd-partnerlogo",
         "Show": "1"
       },
       {
-        "PageID": 18,
-        "title": "Testimonial",
-        "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path fill='currentColor' d='M3 20.59L6.59 17H18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2zM3 22H2V6a3 3 0 0 1 3-3h13a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H7z'/></svg>",
-        "url": "/chanderpur-admin/manage-testimonial",
-        "addurl": "/chanderpur-admin/addupd-testimonial",
+        "PageID": 30,
+        "title": "Website Master",
+        "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><g fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5'><path d='M19.5 5.25c2.071 0 3.75-1.007 3.75-2.25S21.571.75 19.5.75S15.75 1.757 15.75 3s1.679 2.25 3.75 2.25'/><path d='M15.75 3v4.5c0 1.242 1.679 2.25 3.75 2.25s3.75-1.008 3.75-2.25V3M19.5 18.75c2.071 0 3.75-1.007 3.75-2.25s-1.679-2.25-3.75-2.25s-3.75 1.007-3.75 2.25s1.679 2.25 3.75 2.25'/><path d='M15.75 16.5V21c0 1.242 1.679 2.25 3.75 2.25s3.75-1.008 3.75-2.25v-4.5M7.125 18.375a6.375 6.375 0 1 0 0-12.75a6.375 6.375 0 0 0 0 12.75M1.07 14H13M1.07 10H13'/><path d='M5.75 5.774a20.65 20.65 0 0 0 .482 12.539M8.5 5.774a20.5 20.5 0 0 1 .75 5.518a20.5 20.5 0 0 1-1.228 7.02M10 3V1.5h3M10 21v1.5h3'/></g></svg>",
+        "url": "#",
+        "addurl": "#",
+        "Show": "1",
+        "MoreItem": [
+          {
+            "PageID": 27,
+            "title": "Manufacturing Data",
+            "icon": "",
+            "url": "/chanderpur-admin/manage-manufacturing",
+            "addurl": "/chanderpur-admin/addupd-manufacturing",
+            "Show": "1"
+          },
+          {
+            "PageID": 18,
+            "title": "Testimonial Data",
+            "icon": "",
+            "url": "/chanderpur-admin/manage-testimonial",
+            "addurl": "/chanderpur-admin/addupd-testimonial",
+            "Show": "1"
+          },
+          {
+            "PageID": 10,
+            "title": "Blogs Data",
+            "icon": "",
+            "url": "/chanderpur-admin/manage-blog",
+            "addurl": "/chanderpur-admin/addupd-blog",
+            "Show": "1"
+          },
+          {
+            "PageID": 11,
+            "title": "Web Pages Data",
+            "icon": "",
+            "url": "/chanderpur-admin/manage-page",
+            "addurl": "/chanderpur-admin/addupd-page",
+            "Show": "1"
+          },
+          {
+            "PageID": 28,
+            "title": "Gallery Data",
+            "icon": "",
+            "url": "/chanderpur-admin/manage-gallery",
+            "addurl": "/chanderpur-admin/addupd-gallery",
+            "Show": "1"
+          },
+          {
+            "PageID": 29,
+            "title": "Career Data",
+            "icon": "",
+            "url": "/chanderpur-admin/manage-career",
+            "addurl": "/chanderpur-admin/addupd-career",
+            "Show": "1"
+          },
+          {
+            "PageID": 31,
+            "title": "Whats New Data",
+            "icon": "",
+            "url": "/chanderpur-admin/manage-whatsnew",
+            "addurl": "/chanderpur-admin/addupd-whatsnew",
+            "Show": "1"
+          }
+        ]
+      },
+      {
+        "PageID": 32,
+        "title": "Facilities Master",
+        "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24'><path fill='currentColor' d='M5 18a1 1 0 1 0 1 1a1 1 0 0 0-1-1m14-4h-7a1 1 0 0 0 0 2h7a1 1 0 0 1 0 2a1 1 0 0 0 0 2a3 3 0 0 0 0-6m-5-3a1 1 0 0 0 1 1h4a3 3 0 0 0 3-3a1 1 0 0 0-2 0a1 1 0 0 1-1 1h-4a1 1 0 0 0-1 1m-4 4a1 1 0 0 0-1-1H6a2 2 0 0 1 0-4a1 1 0 0 0 1-1a5 5 0 0 1 9.73-1.61a1 1 0 1 0 1.9-.64A7 7 0 0 0 5.06 8.11A4 4 0 0 0 6 16h3a1 1 0 0 0 1-1m0-4a1 1 0 1 0 1-1a1 1 0 0 0-1 1m4 7H9a1 1 0 0 0 0 2h5a1 1 0 0 1 1 1a1 1 0 0 0 2 0a3 3 0 0 0-3-3'/></svg>",
+        "url": "#",
+        "addurl": "#",
+        "Show": "1",
+        "MoreItem": [
+          {
+            "PageID": 33,
+            "title": "Facility Category",
+            "icon": "",
+            "url": "/chanderpur-admin/manage-facilitycategory",
+            "addurl": "/chanderpur-admin/addupd-facilitycategory",
+            "Show": "1"
+          },
+          {
+            "PageID": 34,
+            "title": "Facility Products",
+            "icon": "",
+            "url": "/chanderpur-admin/manage-facilityproduct",
+            "addurl": "/chanderpur-admin/addupd-facilityproduct",
+            "Show": "1"
+          }
+        ]
+      },
+      {
+        "PageID": 35,
+        "title": " Client Master",
+        "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 24 24'><g fill='none' stroke='currentColor' stroke-width='1.5'><path d='M6 17.975c.129 1.308.42 2.189 1.077 2.846C8.256 22 10.154 22 13.949 22s5.693 0 6.872-1.18C22 19.643 22 17.745 22 13.95s0-5.693-1.18-6.872c-.656-.657-1.537-.948-2.846-1.077'/><path d='M2 10c0-3.771 0-5.657 1.172-6.828S6.229 2 10 2s5.657 0 6.828 1.172S18 6.229 18 10s0 5.657-1.172 6.828S13.771 18 10 18s-5.657 0-6.828-1.172S2 13.771 2 10Z'/><path d='M5 18c3.42-4.751 7.265-11.052 13-6.327'/></g></svg>",
+        "url": "/chanderpur-admin/manage-clienttype",
+        "addurl": "/chanderpur-admin/addupd-clienttype",
         "Show": "1"
       },
       {
-        "PageID": 10,
-        "title": "Our Blogs",
-        "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='27' height='27' viewBox='0 0 24 24'><path fill='currentColor' d='M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27zm0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93z'/></svg>",
-        "url": "/chanderpur-admin/manage-blog",
-        "addurl": "/chanderpur-admin/addupd-blog",
-        "Show": "1"
-      },
-      {
-        "PageID": 11,
-        "title": "Web Pages",
-        "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 16 16'><path fill='currentColor' fill-rule='evenodd' d='M14 4.5V11h-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v9H2V2a2 2 0 0 1 2-2h5.5zm-9.736 7.35v3.999h-.791v-1.714H1.79v1.714H1V11.85h.791v1.626h1.682V11.85h.79Zm2.251.662v3.337h-.794v-3.337H4.588v-.662h3.064v.662zm2.176 3.337v-2.66h.038l.952 2.159h.516l.946-2.16h.038v2.661h.715V11.85h-.8l-1.14 2.596H9.93L8.79 11.85h-.805v3.999zm4.71-.674h1.696v.674H12.61V11.85h.79v3.325Z'/></svg>",
-        "url": "/chanderpur-admin/manage-page",
-        "addurl": "/chanderpur-admin/addupd-page",
+        "PageID": 38,
+        "title": "Visitor Enquiries",
+        "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='26px' height='26px' viewBox='0 0 24 24'> <path d='M0 0h24v24H0z' fill='none' /> <path fill='currentColor' d='M20 4H4v13.17L5.17 16H20zm-2 10H6v-2h12zm0-3H6V9h12zm0-3H6V6h12z' opacity='.3' /> <path fill='currentColor' d='M20 18c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4zm-16-.83V4h16v12H5.17zM6 12h12v2H6zm0-3h12v2H6zm0-3h12v2H6z' /> </svg>",
+        "url": "/chanderpur-admin/manage-visitor-enquiry",
+        "addurl": "",
         "Show": "1"
       },
       {
         "PageID": 19,
         "title": "Settings",
-        "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><path fill='currentColor' d='m9.25 22l-.4-3.2q-.325-.125-.612-.3t-.563-.375L4.7 19.375l-2.75-4.75l2.575-1.95Q4.5 12.5 4.5 12.338v-.675q0-.163.025-.338L1.95 9.375l2.75-4.75l2.975 1.25q.275-.2.575-.375t.6-.3l.4-3.2h5.5l.4 3.2q.325.125.613.3t.562.375l2.975-1.25l2.75 4.75l-2.575 1.95q.025.175.025.338v.674q0 .163-.05.338l2.575 1.95l-2.75 4.75l-2.95-1.25q-.275.2-.575.375t-.6.3l-.4 3.2zM11 20h1.975l.35-2.65q.775-.2 1.438-.587t1.212-.938l2.475 1.025l.975-1.7l-2.15-1.625q.125-.35.175-.737T17.5 12t-.05-.787t-.175-.738l2.15-1.625l-.975-1.7l-2.475 1.05q-.55-.575-1.212-.962t-1.438-.588L13 4h-1.975l-.35 2.65q-.775.2-1.437.588t-1.213.937L5.55 7.15l-.975 1.7l2.15 1.6q-.125.375-.175.75t-.05.8q0 .4.05.775t.175.75l-2.15 1.625l.975 1.7l2.475-1.05q.55.575 1.213.963t1.437.587zm1.05-4.5q1.45 0 2.475-1.025T15.55 12t-1.025-2.475T12.05 8.5q-1.475 0-2.488 1.025T8.55 12t1.013 2.475T12.05 15.5M12 12'/></svg>",
+        "icon": "<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 24 24'><path fill='currentColor' d='M10 13a1 1 0 1 0 1 1a1 1 0 0 0-1-1m0-4a1 1 0 1 0 1 1a1 1 0 0 0-1-1m4 0a1 1 0 1 0 1 1a1 1 0 0 0-1-1m7 4a1 1 0 0 0 0-2h-2V9h2a1 1 0 0 0 0-2h-2.18A3 3 0 0 0 17 5.18V3a1 1 0 0 0-2 0v2h-2V3a1 1 0 0 0-2 0v2H9V3a1 1 0 0 0-2 0v2.18A3 3 0 0 0 5.18 7H3a1 1 0 0 0 0 2h2v2H3a1 1 0 0 0 0 2h2v2H3a1 1 0 0 0 0 2h2.18A3 3 0 0 0 7 18.82V21a1 1 0 0 0 2 0v-2h2v2a1 1 0 0 0 2 0v-2h2v2a1 1 0 0 0 2 0v-2.18A3 3 0 0 0 18.82 17H21a1 1 0 0 0 0-2h-2v-2Zm-4 3a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1Zm-3-3a1 1 0 1 0 1 1a1 1 0 0 0-1-1'/></svg>",
         "url": "#",
         "addurl": "#",
         "Show": "1",

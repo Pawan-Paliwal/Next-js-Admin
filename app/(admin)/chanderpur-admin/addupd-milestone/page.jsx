@@ -21,7 +21,6 @@ export default function AddUpdMilestoneData() {
   const { data: checkData, isSuccess } = useCheckLoginQuery(undefined, { refetchOnMountOrArgChange: true, pollingInterval: 10000 });
   const pagePermission = usePagePermission(checkData);
   const isPermissionsReady = checkData?.loggedIn && pagePermission?.PageID !== 0;
-
   const { data: maxOrderData } = useGetMaxDisplayOrderQuery(undefined, { refetchOnMountOrArgChange: true });
 
   useEffect(() => {
@@ -104,14 +103,12 @@ export default function AddUpdMilestoneData() {
       toast.error(`You do not have permission to ${MilestoneID ? 'edit' : 'add'} milestone`);
       return;
     }
-
     const errors = validateFields(formData, validationRules);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       return;
     }
     setFormErrors({});
-
     const data = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       if (key === "MilestoneImage" && value instanceof File) {
@@ -122,10 +119,8 @@ export default function AddUpdMilestoneData() {
         data.append(key, value.toString());
       }
     });
-
     data.append("UpdatedBy", "Admin Panel");
     if (MilestoneID) data.append("MilestoneID", MilestoneID);
-
     try {
       const res = await saveOrUpdateMilestone(data).unwrap();
       if (res.success) {
@@ -139,6 +134,8 @@ export default function AddUpdMilestoneData() {
       toast.error("Something went wrong");
     }
   };
+
+
 
   const editorOptions = {
     buttonList: [
@@ -158,7 +155,6 @@ export default function AddUpdMilestoneData() {
     <main className="add_update container">
       <div className="form-box">
         <h1>Add/Update Milestone</h1>
-        
         <div className="form-group-row file-uploade-sec" style={{ marginBottom: "18px", display: "flex", alignItems: "center", gap: "20px" }}>
           <div className="form-group displayorder">
             <label>Title*</label>

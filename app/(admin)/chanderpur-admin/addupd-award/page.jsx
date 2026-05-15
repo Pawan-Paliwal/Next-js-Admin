@@ -20,7 +20,7 @@ export default function AddUpdAwardLogoData() {
 
     const { data: awardLogoData } = useGetAwardLogoByIdQuery(AwardLogoID, { skip: !AwardLogoID, refetchOnMountOrArgChange: true });
     const { data: maxOrderData } = useGetMaxDisplayOrderQuery(undefined, { refetchOnMountOrArgChange: true, });
-    
+
     useEffect(() => {
         if (isSuccess && !checkData?.loggedIn) {
             router.push("/chanderpur-admin/login");
@@ -89,14 +89,12 @@ export default function AddUpdAwardLogoData() {
             toast.error(`You do not have permission to ${AwardLogoID ? 'edit' : 'add'} award logo`);
             return;
         }
-
         const errors = validateFields(formData, validationRules);
         if (Object.keys(errors).length > 0) {
             setFormErrors(errors);
             return;
         }
         setFormErrors({});
-
         const data = new FormData();
         if (formData.AwardLogoImage instanceof File) {
             const renamedFile = handleFileRename(formData.AwardLogoImage);

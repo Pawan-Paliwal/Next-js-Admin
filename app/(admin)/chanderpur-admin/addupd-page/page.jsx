@@ -98,7 +98,6 @@ export default function AddUpdStaticData() {
         StaticImage: null,
         StaticBannerVideo: null,
       });
-
       if (data.StaticImage) setPreviewImage(`/OnlineImages/PageImages/${data.StaticImage}`);
       if (data.StaticBannerVideo) setPreviewBanner(data.StaticBannerVideo);
     }
@@ -124,11 +123,9 @@ export default function AddUpdStaticData() {
       toast.error(`You do not have permission to ${StaticID ? 'edit' : 'add'} page`);
       return;
     }
-
     const { StaticName, StaticNameURL } = formData;
     if (!StaticName.trim()) return toast.error("Please enter static title.");
     if (!StaticNameURL.trim()) return toast.error("Please enter static title url.");
-
     const data = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       if (key === "StaticImage" && value instanceof File) {
@@ -141,11 +138,9 @@ export default function AddUpdStaticData() {
         data.append(key, value.toString());
       }
     });
-
     data.append("UpdatedBy", "Admin Panel");
     data.append("type", "static");
     if (StaticID) data.append("StaticID", StaticID);
-
     try {
       const result = await saveOrUpdateStatic(data).unwrap();
       if (result.success) {

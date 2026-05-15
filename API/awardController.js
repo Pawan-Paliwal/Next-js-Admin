@@ -108,7 +108,6 @@ exports.saveOrUpdateAwardLogo = (req, res) => {
         if (AwardLogoImage && old.AwardLogoImage && AwardLogoImage !== old.AwardLogoImage) {
           deleteOldImage(old.AwardLogoImage);
         }
-
         const updateSql = `
           UPDATE mst_awarddata SET
             AwardLogoImage = ?,
@@ -118,7 +117,6 @@ exports.saveOrUpdateAwardLogo = (req, res) => {
             UpdatedOn = ?
           WHERE AwardLogoID = ?
         `;
-
         db.query(updateSql, [
           finalImage,
           ActiveStatus,
@@ -135,14 +133,12 @@ exports.saveOrUpdateAwardLogo = (req, res) => {
       if (!AwardLogoImage) {
         return res.status(400).json({ success: false, message: "Award Logo image is required" });
       }
-
       const insertSql = `
         INSERT INTO mst_awarddata (
           AwardLogoImage, ActiveStatus, 
           DisplayOrder, PostedDate, UpdatedBy, UpdatedOn
         ) VALUES (?, ?, ?, ?, ?, ?)
       `;
-
       db.query(insertSql, [
         AwardLogoImage,
         ActiveStatus,

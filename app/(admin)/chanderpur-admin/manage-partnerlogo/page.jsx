@@ -187,7 +187,7 @@ export default function ManagePartnerLogoData() {
 
   const columns = [
     {
-      name: "Partner Logo",
+      name: "Client Logo",
       selector: (row) => row.PartnerLogoID,
       sortable: true,
       cell: (row) =>
@@ -355,7 +355,7 @@ export default function ManagePartnerLogoData() {
   return (
     <main>
       <DataTable
-        title="Manage Partner Logos"
+        title="Manage Clients Logos"
         columns={columns}
         data={filteredData}
         striped

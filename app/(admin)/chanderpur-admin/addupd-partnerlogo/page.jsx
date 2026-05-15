@@ -107,10 +107,8 @@ export default function AddUpdPartnerLogo() {
         data.append(key, value.toString());
       }
     });
-
     data.append("UpdatedBy", "Admin Panel");
     if (PartnerLogoID) data.append("PartnerLogoID", PartnerLogoID);
-
     try {
       const res = await saveOrUpdatePartnerLogo(data).unwrap();
       if (res.success) {
@@ -125,15 +123,15 @@ export default function AddUpdPartnerLogo() {
     }
   };
 
+
   return (
     <main className="add_update container">
       <div className="form-box">
-        <h1>Add/Update Partner Logo</h1>
-
+        <h1>Add/Update Client Logo</h1>
         <div className="form-group-row file-uploade-sec" style={{ marginBottom: "18px", display: "flex", alignItems: "center", gap: "20px" }}>
           <div className="colA" style={{ width: "43%" }}>
             <div className="form-group">
-              <label>Partner Logo Image*</label>
+              <label>Client Logo Image*</label>
               <input
                 type="file"
                 onChange={(e) => {
@@ -152,7 +150,6 @@ export default function AddUpdPartnerLogo() {
             <div className="image-preview"><img src={previewImage} alt="Preview" height={80} style={{ borderRadius: "0" }} /></div>
           )}
         </div>
-
         <div className="form-group-row">
           <div className="form-group displayorder">
             <label>Display Order</label>

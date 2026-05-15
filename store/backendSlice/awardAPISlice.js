@@ -3,8 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const username = process.env.NEXT_PUBLIC_BASIC_AUTH_USER;
 const password = process.env.NEXT_PUBLIC_BASIC_AUTH_PASS;
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-const authHeader =
-  username && password ? "Basic " + btoa(`${username}:${password}`) : "";
+const authHeader = username && password ? "Basic " + btoa(`${username}:${password}`) : "";
 
 export const awardAPISlice = createApi({
   reducerPath: "AwardLogoAPI",

@@ -1,6 +1,5 @@
 'use client';
 export const dynamic = 'force-dynamic';
-
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
@@ -117,14 +116,12 @@ export default function AddUpdDirectorData() {
       toast.error(`You do not have permission to ${DirectorID ? 'edit' : 'add'} director`);
       return;
     }
-
     const errors = validateFields(formData, validationRules);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       return;
     }
     setFormErrors({});
-
     const data = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       if (key === "DirectorImage" && value instanceof File) {
@@ -151,11 +148,12 @@ export default function AddUpdDirectorData() {
     }
   };
 
+
+
   return (
     <main className="add_update container">
       <div className="form-box">
         <h1>Add/Update Director</h1>
-
         <div className="form-group-row file-uploade-sec" style={{ marginBottom: "18px", display: "flex", alignItems: "center" }}>
           <div className="form-group displayorder">
             <label>Director Name*</label>
@@ -186,7 +184,6 @@ export default function AddUpdDirectorData() {
             />
             {formErrors.DirectorDesignation && <p className="error">{formErrors.DirectorDesignation}</p>}
           </div>
-
           <div className="colA">
             <div className="form-group">
               <label>Image*</label>
@@ -210,7 +207,6 @@ export default function AddUpdDirectorData() {
             </div>
           )}
         </div>
-
         <div className="form-group-row">
           <div className="form-group displayorder">
             <label>Display Order</label>
@@ -228,7 +224,6 @@ export default function AddUpdDirectorData() {
             <label htmlFor="chkActiveStatus">Status (Active/Inactive)</label>
           </div>
         </div>
-
         <div className="form-group" style={{ display: "none", width: "100%", marginBottom: "20px" }}>
           <label style={{ display: "block", marginBottom: "10px" }}>Biography*</label>
           <div style={{ width: "100%", backgroundColor: "#fff" }}>
@@ -260,7 +255,6 @@ export default function AddUpdDirectorData() {
           </div>
           {formErrors.DirectorBio && <p className="error">{formErrors.DirectorBio}</p>}
         </div>
-
         <button className="submit-btn" onClick={handleSubmit} disabled={isLoading}>
           {isLoading && <Loader />} Submit
         </button>

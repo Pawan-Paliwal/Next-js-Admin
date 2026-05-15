@@ -59,7 +59,7 @@ exports.saveOrUpdateDirector = (req, res) => {
     const getOldSql = 'SELECT DirectorImage FROM mst_directordata WHERE DirectorID = ?';
     db.query(getOldSql, [DirectorID], (err, oldResults) => {
       if (err || oldResults.length === 0) return res.status(400).json({ success: false, message: "Invalid ID" });
-      
+
       const finalImage = DirectorImage || oldResults[0].DirectorImage;
       if (DirectorImage && oldResults[0].DirectorImage && DirectorImage !== oldResults[0].DirectorImage) {
         deleteOldImage(oldResults[0].DirectorImage);
@@ -100,14 +100,14 @@ exports.saveOrUpdateDirector = (req, res) => {
 exports.updateDisplayOrder = (req, res) => {
   const updates = req.body;
   if (!Array.isArray(updates)) return res.status(400).json({ success: false, message: "Invalid format" });
-  
+
   const queries = updates.map(item => {
     return new Promise((resolve, reject) => {
-      db.query('UPDATE mst_directordata SET DisplayOrder = ? WHERE DirectorID = ?', 
-      [item.DisplayOrder, item.DirectorID], (err, result) => {
-        if (err) return reject(err);
-        resolve(result);
-      });
+      db.query('UPDATE mst_directordata SET DisplayOrder = ? WHERE DirectorID = ?',
+        [item.DisplayOrder, item.DirectorID], (err, result) => {
+          if (err) return reject(err);
+          resolve(result);
+        });
     });
   });
 
@@ -130,7 +130,7 @@ exports.deleteDirector = (req, res) => {
   db.query(getImageSql, [DirectorID], (err, results) => {
     if (err) return res.status(500).json({ success: false, message: 'Database error' });
     if (results.length === 0) return res.status(404).json({ success: false, message: 'Not found' });
-    
+
     const { DirectorImage } = results[0];
     db.query('DELETE FROM mst_directordata WHERE DirectorID = ?', [DirectorID], (err, result) => {
       if (err) return res.status(500).json({ success: false, message: 'Database error' });
@@ -144,7 +144,7 @@ exports.deleteDirector = (req, res) => {
 exports.updateActiveStatus = (req, res) => {
   const { DirectorID, ActiveStatus } = req.body;
   if (!DirectorID || ActiveStatus === undefined) return res.status(400).json({ success: false, message: "Missing ID/Status" });
-  
+
   const sql = `UPDATE mst_directordata SET ActiveStatus = ?, UpdatedOn = NOW() WHERE DirectorID = ?`;
   db.query(sql, [ActiveStatus, DirectorID], (err, result) => {
     if (err) return res.status(500).json({ success: false, message: "Database error" });

@@ -49,7 +49,7 @@ exports.saveOrUpdateCompany = (req, res) => {
     CompanyID, CompanyName, CompanyNameURL, SmallDescription, Tagline, Description,
     ActiveStatus, DisplayOrder, MetaTitle, MetaKeywords, MetaDescriptions, MetaSchema, UpdatedBy
   } = req.body;
-  
+
   const currentTime = new Date();
   const CompanyImage = req?.files?.CompanyImage?.[0]?.filename || null;
   const CompanyBannerImage = req?.files?.CompanyBannerImage?.[0]?.filename || null;
@@ -71,7 +71,7 @@ exports.saveOrUpdateCompany = (req, res) => {
       const getOldSql = 'SELECT CompanyImage, CompanyBannerImage FROM mst_companydata WHERE CompanyID = ?';
       db.query(getOldSql, [CompanyID], (err, oldResults) => {
         if (err || oldResults.length === 0) return res.status(400).json({ success: false, message: "Invalid ID" });
-        
+
         const finalImage = CompanyImage || oldResults[0].CompanyImage;
         const finalBanner = CompanyBannerImage || oldResults[0].CompanyBannerImage;
 
@@ -81,7 +81,6 @@ exports.saveOrUpdateCompany = (req, res) => {
         if (CompanyBannerImage && oldResults[0].CompanyBannerImage && CompanyBannerImage !== oldResults[0].CompanyBannerImage) {
           deleteOldImage(oldResults[0].CompanyBannerImage);
         }
-
         const updateSql = `
           UPDATE mst_companydata SET
             CompanyName = ?, CompanyNameURL = ?, CompanyImage = ?, CompanyBannerImage = ?, 
@@ -126,14 +125,14 @@ exports.saveOrUpdateCompany = (req, res) => {
 exports.updateDisplayOrder = (req, res) => {
   const updates = req.body;
   if (!Array.isArray(updates)) return res.status(400).json({ success: false, message: "Invalid format" });
-  
+
   const queries = updates.map(item => {
     return new Promise((resolve, reject) => {
-      db.query('UPDATE mst_companydata SET DisplayOrder = ? WHERE CompanyID = ?', 
-      [item.DisplayOrder, item.CompanyID], (err, result) => {
-        if (err) return reject(err);
-        resolve(result);
-      });
+      db.query('UPDATE mst_companydata SET DisplayOrder = ? WHERE CompanyID = ?',
+        [item.DisplayOrder, item.CompanyID], (err, result) => {
+          if (err) return reject(err);
+          resolve(result);
+        });
     });
   });
 
@@ -156,15 +155,15 @@ exports.deleteCompany = (req, res) => {
   db.query(getImageSql, [CompanyID], (err, results) => {
     if (err) return res.status(500).json({ success: false, message: 'Database error' });
     if (results.length === 0) return res.status(404).json({ success: false, message: 'Not found' });
-    
+
     const { CompanyImage, CompanyBannerImage } = results[0];
     db.query('DELETE FROM mst_companydata WHERE CompanyID = ?', [CompanyID], (err, result) => {
       if (err) return res.status(500).json({ success: false, message: 'Database error' });
       if (result.affectedRows === 0) return res.status(404).json({ success: false, message: 'Not found' });
-      
+
       if (CompanyImage) deleteOldImage(CompanyImage);
       if (CompanyBannerImage) deleteOldImage(CompanyBannerImage);
-      
+
       res.json({ success: true, message: 'Company deleted successfully' });
     });
   });
@@ -173,7 +172,7 @@ exports.deleteCompany = (req, res) => {
 exports.updateActiveStatus = (req, res) => {
   const { CompanyID, ActiveStatus } = req.body;
   if (!CompanyID || ActiveStatus === undefined) return res.status(400).json({ success: false, message: "Missing ID/Status" });
-  
+
   const sql = `UPDATE mst_companydata SET ActiveStatus = ?, UpdatedOn = NOW() WHERE CompanyID = ?`;
   db.query(sql, [ActiveStatus, CompanyID], (err, result) => {
     if (err) return res.status(500).json({ success: false, message: "Database error" });

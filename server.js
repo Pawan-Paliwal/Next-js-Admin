@@ -19,6 +19,15 @@ const companyRoutes = require('./routes/companyRoutes');
 const milestoneRoutes = require('./routes/milestoneRoutes');
 const blogRoutes = require('./routes/blogRoutes');
 const partnerLogoRoutes = require('./routes/partnerLogoRoutes');
+const manufacturingRoutes = require('./routes/manufacturingRoutes');
+const galleryRoutes = require('./routes/galleryRoutes');
+const careerRoutes = require('./routes/careerRoutes');
+const whatsNewRoutes = require('./routes/whatsNewRoutes');
+const facilityCategoryRoutes = require('./routes/facilityCategoryRoutes');
+const facilityProductRoutes = require('./routes/facilityProductRoutes');
+const clientTypeRoutes = require('./routes/clientTypeRoutes');
+const clientLogoMappingRoutes = require('./routes/clientLogoMappingRoutes');
+
 
 // CORS Configuration
 app.use(
@@ -49,6 +58,15 @@ app.use('/api/company', companyRoutes);
 app.use('/api/milestone', milestoneRoutes);
 app.use('/api/blog', blogRoutes);
 app.use('/api/partnerlogo', partnerLogoRoutes);
+app.use('/api/manufacturing', manufacturingRoutes);
+app.use('/api/gallery', galleryRoutes);
+app.use('/api/career', careerRoutes);
+app.use('/api/whatsnew', whatsNewRoutes);
+app.use('/api/facilitycategory', facilityCategoryRoutes);
+app.use('/api/facilityproduct', facilityProductRoutes);
+app.use('/api/clienttype', clientTypeRoutes);
+app.use('/api/clientlogomapping', clientLogoMappingRoutes);
+
 
 
 app.listen(PORT, (err) => {

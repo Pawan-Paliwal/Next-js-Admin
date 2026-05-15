@@ -105,20 +105,19 @@ export default function AddUpdCollaborationData() {
     Description: { required: true, requiredMessage: "Please enter a description." }
   };
 
+
   const handleSubmit = async () => {
     const requiredPermission = CollaborationID ? pagePermission.CanWrite : pagePermission.CanAdd;
     if (requiredPermission !== 1) {
       toast.error(`You do not have permission to ${CollaborationID ? 'edit' : 'add'} collaboration`);
       return;
     }
-
     const errors = validateFields(formData, validationRules);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       return;
     }
     setFormErrors({});
-
     const data = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
       if (key === "CollaborationImage" && value instanceof File) {
@@ -129,10 +128,8 @@ export default function AddUpdCollaborationData() {
         data.append(key, value.toString());
       }
     });
-
     data.append("UpdatedBy", "Admin Panel");
     if (CollaborationID) data.append("CollaborationID", CollaborationID);
-
     try {
       const res = await saveOrUpdateCollaboration(data).unwrap();
       if (res.success) {
@@ -200,7 +197,6 @@ export default function AddUpdCollaborationData() {
             </div>
           )}
         </div>
-
         <div className="form-group-row">
           <div className="form-group displayorder">
             <label>Display Order</label>
@@ -218,7 +214,6 @@ export default function AddUpdCollaborationData() {
             <label htmlFor="chkActiveStatus">Status (Active/Inactive)</label>
           </div>
         </div>
-
         <div className="form-group" style={{ display: "block", width: "100%", marginBottom: "20px" }}>
           <label style={{ display: "block", marginBottom: "10px" }}>Description*</label>
           <div style={{ width: "100%", backgroundColor: "#fff" }}>
@@ -250,7 +245,6 @@ export default function AddUpdCollaborationData() {
           </div>
           {formErrors.Description && <p className="error">{formErrors.Description}</p>}
         </div>
-
         <button className="submit-btn" onClick={handleSubmit} disabled={isLoading}>
           {isLoading && <Loader />} Submit
         </button>
