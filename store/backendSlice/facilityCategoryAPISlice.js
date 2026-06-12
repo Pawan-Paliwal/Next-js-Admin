@@ -72,6 +72,14 @@ export const facilityCategoryAPISlice = createApi({
         { type: "FacilityCategory", id: CategoryID },
       ],
     }),
+    getActiveFacilityCategory: builder.query({
+      query: () => `/activefacility`,
+      providesTags: [{ type: "FacilityCategory", id: "LIST" }],
+    }),
+    getFacilityBySlug: builder.query({
+      query: (slug) => `/facility/${slug}`,
+      providesTags: (result, error, slug) => [{ type: "FacilityCategory", id: slug }],
+    }),
   }),
 });
 
@@ -83,4 +91,6 @@ export const {
   useUpdateFacilityCategoryDisplayOrderMutation,
   useGetFacilityCategoryMaxDisplayOrderQuery,
   useUpdateFacilityCategoryStatusMutation,
+  useGetActiveFacilityCategoryQuery,
+  useGetFacilityBySlugQuery,
 } = facilityCategoryAPISlice;

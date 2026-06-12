@@ -17,6 +17,8 @@ exports.getLogosWithAssignment = (req, res) => {
   });
 };
 
+
+
 exports.assignLogosToType = (req, res) => {
   const { ClientTypeID, PartnerLogoIDs } = req.body;
   if (!ClientTypeID) return res.status(400).json({ success: false, message: 'Missing ClientTypeID' });
@@ -33,3 +35,5 @@ exports.assignLogosToType = (req, res) => {
     });
   });
 };
+
+

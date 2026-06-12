@@ -3,25 +3,24 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const username = process.env.NEXT_PUBLIC_BASIC_AUTH_USER;
 const password = process.env.NEXT_PUBLIC_BASIC_AUTH_PASS;
-const apiUrl = process.env.NEXT_PUBLIC_API_URL; // e.g. http://localhost:3002
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-// Universal Basic Auth header
+
 function makeAuthHeader() {
   if (!username || !password) return "";
   const raw = `${username}:${password}`;
   if (typeof window === "undefined") {
-    // server
     return "Basic " + Buffer.from(raw).toString("base64");
   } else {
-    // browser
     return "Basic " + btoa(raw);
   }
 }
 
 const authHeader = makeAuthHeader();
-// Reusable baseQuery
+
+
 export const baseQueryWithAuth = fetchBaseQuery({
-  baseUrl: `${apiUrl}/page`, // match backend mounting
+  baseUrl: `${apiUrl}/page`,
   credentials: "include",
   prepareHeaders: (headers) => {
     if (authHeader) headers.set("Authorization", authHeader);
@@ -29,7 +28,7 @@ export const baseQueryWithAuth = fetchBaseQuery({
   },
 });
 
-// MetaData type
+
 export interface MetaDataType {
   StaticID: number;
   MetaTitle: string;
@@ -39,7 +38,7 @@ export interface MetaDataType {
   [key: string]: any;
 }
 
-// RTK Query slice
+
 export const metaAPISlice = createApi({
   reducerPath: "metaAPI",
   baseQuery: baseQueryWithAuth,
@@ -61,23 +60,18 @@ export const {
   useGetMetaDataByUrlQuery,
 } = metaAPISlice;
 
-// --------------------------------------------
-// Server-side helpers for SSR / generateMetadata
-// --------------------------------------------
 export async function fetchMetaDataById(id: number): Promise<MetaDataType> {
   const res = await baseQueryWithAuth(
     { url: `/meta_data/${id}`, method: "GET" },
     {} as any,
     {}
   );
-
   if ("error" in res) {
     throw new Error(
       `Meta API by ID failed (status: ${(res.error as any)?.status ?? "UNKNOWN"}) → ${(res.error as any)?.error || "Unknown error"
       }`
     );
   }
-
   const payload = res.data as { success: boolean; data?: MetaDataType };
   if (!payload?.success || !payload.data) {
     throw new Error(`Meta API returned empty/failed result for ID: ${id}`);
@@ -110,4 +104,3 @@ export async function fetchMetaDataByUrl(url: string): Promise<MetaDataType> {
     throw new Error("Meta API returned empty or failed result");
   return payload.data;
 }
-

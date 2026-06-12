@@ -140,7 +140,7 @@ export default function AddUpdManufacturingData() {
                 toast.error(res.message || "Save failed");
             }
         } catch (error) {
-            toast.error("Something went wrong");
+            toast.error(error?.data?.message);
         }
     };
 

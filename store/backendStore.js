@@ -20,7 +20,11 @@ import { facilityCategoryAPISlice } from "./backendSlice/facilityCategoryAPISlic
 import { facilityProductAPISlice } from "./backendSlice/facilityProductAPISlice";
 import { clientTypeAPISlice } from "./backendSlice/clientTypeAPISlice";
 import { clientLogoMappingAPISlice } from "./backendSlice/clientLogoMappingAPISlice";
-
+import { reportSummaryAPISlice } from "./backendSlice/reportSummaryAPISlice";
+import { productAPISlice } from "./backendSlice/productAPISlice";
+import modalReducer from "./slice/modalSlice";
+import { metaAPISlice } from "./frontendSlice/metaAPISlice";
+import { homePageAPISlice } from "./frontendSlice/homePageAPISlice";
 
 export const backendStore = configureStore({
   reducer: {
@@ -43,7 +47,12 @@ export const backendStore = configureStore({
     [facilityCategoryAPISlice.reducerPath]: facilityCategoryAPISlice.reducer,
     [facilityProductAPISlice.reducerPath]: facilityProductAPISlice.reducer,
     [clientTypeAPISlice.reducerPath]: clientTypeAPISlice.reducer,
-    [clientLogoMappingAPISlice.reducerPath]: clientLogoMappingAPISlice.reducer
+    [clientLogoMappingAPISlice.reducerPath]: clientLogoMappingAPISlice.reducer,
+    [reportSummaryAPISlice.reducerPath]: reportSummaryAPISlice.reducer,
+    [productAPISlice.reducerPath]: productAPISlice.reducer,
+    modal: modalReducer,
+    [metaAPISlice.reducerPath]: metaAPISlice.reducer,
+    [homePageAPISlice.reducerPath]: homePageAPISlice.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
@@ -65,7 +74,11 @@ export const backendStore = configureStore({
       whatsNewAPISlice.middleware,
       facilityCategoryAPISlice.middleware,
       facilityProductAPISlice.middleware,
+      productAPISlice.middleware,
       clientTypeAPISlice.middleware,
       clientLogoMappingAPISlice.middleware,
+      reportSummaryAPISlice.middleware,
+      metaAPISlice.middleware,
+      homePageAPISlice.middleware,
     ),
 });

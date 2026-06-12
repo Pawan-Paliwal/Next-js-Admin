@@ -179,3 +179,29 @@ exports.updateActiveStatus = (req, res) => {
     res.json({ success: true, message: "Status updated successfully" });
   });
 };
+
+
+
+exports.getCompanyBySlug = async (req, res) => {
+  const slug = req.params.slug;
+  try {
+    const company = await new Promise((resolve, reject) => {
+      db.query(
+        "SELECT * FROM mst_companydata WHERE CompanyNameURL = ? AND ActiveStatus = 1 LIMIT 1",
+        [slug],
+        (err, rows) => (err ? reject(err) : resolve(rows[0])),
+      );
+    });
+    if (!company) return res.status(404).json({ error: "Company not found" });
+    const otherCompanies = await new Promise((resolve, reject) => {
+      db.query(
+        "SELECT * FROM mst_companydata WHERE CompanyNameURL != ? AND ActiveStatus = 1 ORDER BY DisplayOrder ASC",
+        [slug],
+        (err, rows) => (err ? reject(err) : resolve(rows)),
+      );
+    });
+    res.json({ company, otherCompanies });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

@@ -217,32 +217,46 @@ exports.getMataDataById = (req, res) => {
   });
 };
 
-exports.getMataDataByUrl = (req, res) => {
+
+exports.getMataDataByUrl = async (req, res) => {
   const url = req.params.url;
   if (!url) {
     return res.status(400).json({ success: false, message: "Missing URL parameter" });
   }
-
-  const sql = `
-    SELECT 
-      StaticID,
-      MetaTitle, MetaDescriptions, MetaKeywords, MetaSchema,
-      'static' AS type
-    FROM mst_staticdata
-    WHERE StaticNameURL = ? AND ActiveStatus = 1
-    LIMIT 1
-  `;
-
-  db.query(sql, [url], (err, results) => {
-    if (err) {
-      console.error("Meta fetch error:", err);
-      return res.status(500).json({ success: false, message: "Internal server error" });
+  const queryOne = (sql, params) =>
+    new Promise((resolve, reject) => {
+      db.query(sql, params, (err, results) => (err ? reject(err) : resolve(results?.[0] ?? null)));
+    });
+  const queries = [
+    {
+      sql: "SELECT StaticID, MetaTitle, MetaDescriptions, MetaKeywords, MetaSchema, 'static' AS type FROM mst_staticdata WHERE StaticNameURL = ? AND ActiveStatus = 1 LIMIT 1",
+      type: "static",
+    },
+    {
+      sql: "SELECT ProductId AS StaticID, MetaTitle, MetaDescriptions, MetaKeywords, MetaSchema, 'product' AS type FROM mst_products WHERE ProductNameURL = ? AND ActiveStatus = 1 LIMIT 1",
+      type: "product",
+    },
+    {
+      sql: "SELECT CompanyID AS StaticID, MetaTitle, MetaDescriptions, MetaKeywords, MetaSchema, 'company' AS type FROM mst_companydata WHERE CompanyNameURL = ? AND ActiveStatus = 1 LIMIT 1",
+      type: "company",
+    },
+    {
+      sql: "SELECT CategoryID AS StaticID, MetaTitle, MetaDescriptions, MetaKeywords, MetaSchema, 'facility' AS type FROM mst_facilitycategory WHERE CategoryNameURL = ? AND ActiveStatus = 1 LIMIT 1",
+      type: "facility",
+    },
+    {
+      sql: "SELECT ClientTypeID AS StaticID, MetaTitle, MetaDescriptions, MetaKeywords, MetaSchema, 'clienttype' AS type FROM mst_clienttype WHERE TypeNameURL = ? AND ActiveStatus = 1 LIMIT 1",
+      type: "clienttype",
+    },
+  ];
+  try {
+    for (const { sql, type } of queries) {
+      const result = await queryOne(sql, [url]);
+      if (result) return res.json({ success: true, data: result });
     }
-
-    if (results?.length > 0) {
-      return res.json({ success: true, data: results[0] });
-    }
-
     return res.status(404).json({ success: false, message: "Meta data not found" });
-  });
+  } catch (err) {
+    console.error("Meta fetch error:", err);
+    return res.status(500).json({ success: false, message: "Internal server error" });
+  }
 };

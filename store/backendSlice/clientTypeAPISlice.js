@@ -15,7 +15,7 @@ export const clientTypeAPISlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ["ClientType"],
+  tagTypes: ["ClientType", "TurnkeyProject"],
   endpoints: (builder) => ({
     getAllClientTypes: builder.query({
       query: () => "/all",
@@ -60,6 +60,14 @@ export const clientTypeAPISlice = createApi({
       query: () => "/max-display-order",
       providesTags: ["ClientType"],
     }),
+    getTurnkeyProject: builder.query({
+      query: () => "/active-category",
+      providesTags: ["TurnkeyProject"],
+    }),
+    getTurnkeyProjectBySlug: builder.query({
+      query: (slug) => `/turnkey/${slug}`,
+      providesTags: (result, error, slug) => [{ type: "TurnkeyProject", id: slug }],
+    }),
   }),
 });
 
@@ -71,4 +79,6 @@ export const {
   useUpdateClientTypeDisplayOrderMutation,
   useDeleteClientTypeMutation,
   useGetClientTypeMaxDisplayOrderQuery,
+  useGetTurnkeyProjectQuery,
+  useGetTurnkeyProjectBySlugQuery
 } = clientTypeAPISlice;

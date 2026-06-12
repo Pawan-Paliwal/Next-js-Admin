@@ -178,3 +178,54 @@ exports.updateActiveStatus = (req, res) => {
     res.json({ success: true, message: "Status updated successfully" });
   });
 };
+
+
+
+exports.getAllActiveFacilityCategories = (req, res) => {
+  const sql = `
+    SELECT ROW_NUMBER() OVER (ORDER BY DisplayOrder ASC) AS SerialNo,
+           CategoryID,
+           CategoryName,
+           CategoryNameURL,
+           CategoryImage,
+           SmallDescription,
+           DisplayOrder,
+           ActiveStatus
+    FROM mst_facilitycategory
+    WHERE ActiveStatus = 1
+    ORDER BY DisplayOrder ASC
+  `;
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+};
+
+
+exports.getFacilityCategoryBySlug = async (req, res) => {
+  const slug = req.params.slug;
+  try {
+    const category = await new Promise((resolve, reject) => {
+      db.query(
+        "SELECT * FROM mst_facilitycategory WHERE CategoryNameURL = ? AND ActiveStatus = 1 LIMIT 1",
+        [slug],
+        (err, rows) => (err ? reject(err) : resolve(rows[0])),
+      );
+    });
+    if (!category) return res.status(404).json({ error: "Category not found" });
+    const products = await new Promise((resolve, reject) => {
+      db.query(
+        `SELECT fp.*, fc.CategoryName, fc.CategoryNameURL 
+         FROM mst_facilityproduct fp
+         JOIN mst_facilitycategory fc ON fp.CategoryID = fc.CategoryID
+         WHERE fp.CategoryID = ? AND fp.ActiveStatus = 1
+         ORDER BY fp.DisplayOrder ASC`,
+        [category.CategoryID],
+        (err, rows) => (err ? reject(err) : resolve(rows)),
+      );
+    });
+    res.json({ category, products });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

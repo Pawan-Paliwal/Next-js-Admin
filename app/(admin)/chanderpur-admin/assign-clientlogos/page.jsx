@@ -76,7 +76,7 @@ export default function AssignClientLogos() {
     <main className="add_update container">
       <div className="form-box" style={{ padding: "20px 30px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px", borderBottom: "1px solid #eaeaea", paddingBottom: "15px" }}>
-          <h1 style={{ color: "#1c2f63", margin: 0, fontSize: "20px" }}>Assign Link for Client Type</h1>
+          <h1 style={{ color: "#1c2f63", margin: 0, fontSize: "20px" }}>Assign Link for Turnkey Category</h1>
           <Link href="/chanderpur-admin/manage-partnerlogo" className="back-btn" style={{ background: "#e8f0fe", color: "#0056b3", border: "1px solid #c8dcfc", textDecoration: "none" }}>
             <span style={{ fontSize: "16px", fontWeight: "bold", marginRight: "4px" }}>+</span> Manage Master Logos
           </Link>

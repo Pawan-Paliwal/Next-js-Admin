@@ -1,0 +1,11 @@
+# Folders
+/node_modules
+/.next
+/.idea
+/.vscode
+/temp
+/uploads/OnlineImages
+
+# Files
+/.env
+/next-env.d.ts

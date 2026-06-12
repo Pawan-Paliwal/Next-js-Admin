@@ -19,5 +19,6 @@ router.post('/update-display-order', verifyToken, companyController.updateDispla
 router.get('/max-display-order', verifyToken, companyController.getMaxDisplayOrder);
 router.delete('/delete-company/:CompanyID', verifyToken, companyController.deleteCompany);
 router.post("/update-status", verifyToken, companyController.updateActiveStatus);
+router.get("/company/:slug", verifyToken, companyController.getCompanyBySlug);
 
 module.exports = router;

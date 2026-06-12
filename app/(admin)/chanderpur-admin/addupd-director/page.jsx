@@ -224,7 +224,7 @@ export default function AddUpdDirectorData() {
             <label htmlFor="chkActiveStatus">Status (Active/Inactive)</label>
           </div>
         </div>
-        <div className="form-group" style={{ display: "none", width: "100%", marginBottom: "20px" }}>
+        <div className="form-group" style={{ width: "100%", marginBottom: "20px" }}>
           <label style={{ display: "block", marginBottom: "10px" }}>Biography*</label>
           <div style={{ width: "100%", backgroundColor: "#fff" }}>
             <SunEditor

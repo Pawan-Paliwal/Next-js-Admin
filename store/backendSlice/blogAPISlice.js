@@ -4,7 +4,8 @@ const username = process.env.NEXT_PUBLIC_BASIC_AUTH_USER;
 const password = process.env.NEXT_PUBLIC_BASIC_AUTH_PASS;
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-const authHeader = username && password ? "Basic " + btoa(`${username}:${password}`) : "";
+const authHeader =
+  username && password ? "Basic " + btoa(`${username}:${password}`) : "";
 
 export const blogAPISlice = createApi({
   reducerPath: "blogAPI",
@@ -72,6 +73,14 @@ export const blogAPISlice = createApi({
         { type: "Blog", id: BlogID },
       ],
     }),
+    getAllActiveBlogs: builder.query({
+      query: () => `/blogs`,
+      providesTags: [{ type: "Blog", id: "LIST" }],
+    }),
+    getBlogBySlug: builder.query({
+      query: (slug) => `/blogs/${slug}`,
+      providesTags: (result, error, slug) => [{ type: "Blog", id: slug }],
+    }),
   }),
 });
 
@@ -83,4 +92,6 @@ export const {
   useUpdateDisplayOrderMutation,
   useGetMaxDisplayOrderQuery,
   useUpdateBlogStatusMutation,
+  useGetAllActiveBlogsQuery,
+  useGetBlogBySlugQuery,
 } = blogAPISlice;

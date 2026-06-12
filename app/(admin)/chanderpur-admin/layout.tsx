@@ -35,9 +35,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               style: {
                 background: "rgba(0,0,0,0.85)",
                 color: "#fff",
-                padding: "8px 12px",
+                padding: "4px 10px",
                 borderRadius: "4px",
-                fontSize: "14px",
+                fontSize: "12px",
                 boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
                 backdropFilter: "blur(6px)",
               },

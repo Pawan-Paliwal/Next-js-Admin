@@ -23,9 +23,9 @@ export const companyAPISlice = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ CompanyID }) => ({ type: "Company", id: CompanyID })),
-              { type: "Company", id: "LIST" },
-            ]
+            ...result.map(({ CompanyID }) => ({ type: "Company", id: CompanyID })),
+            { type: "Company", id: "LIST" },
+          ]
           : [{ type: "Company", id: "LIST" }],
     }),
     getCompanyById: builder.query({
@@ -72,6 +72,10 @@ export const companyAPISlice = createApi({
         { type: "Company", id: CompanyID },
       ],
     }),
+    getCompanyBySlug: builder.query({
+      query: (slug) => `/company/${slug}`,
+      providesTags: (result, error, slug) => [{ type: "Company", id: slug }],
+    }),
   }),
 });
 
@@ -83,4 +87,5 @@ export const {
   useUpdateDisplayOrderMutation,
   useGetMaxDisplayOrderQuery,
   useUpdateCompanyStatusMutation,
+  useGetCompanyBySlugQuery,
 } = companyAPISlice;

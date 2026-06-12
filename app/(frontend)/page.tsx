@@ -1,18 +1,24 @@
-// app/page.tsx
+export const dynamic = 'force-dynamic';
 import { Metadata } from "next";
 import { fetchMetaDataById } from "@/store/frontendSlice/metaAPISlice";
+import Home from "@/components/frontendcomponents/pages/home";
 const API_ID = 1;
-const CANONICAL_URL = process.env.NEXT_PUBLIC_CANONICAL_URL ?? "http://localhost:3000";
+const CANONICAL_URL = process.env.NEXT_PUBLIC_CANONICAL_URL ?? "http://localhost:3003";
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
     const meta = await fetchMetaDataById(API_ID);
-    const defaultTitle = "chanderpur";
+    const defaultTitle = "Quadeye";
+
     return {
       title: meta?.MetaTitle || defaultTitle,
       description: meta?.MetaDescriptions || "",
       keywords: meta?.MetaKeywords || "",
       alternates: { canonical: CANONICAL_URL },
+      robots: {
+        index: true,
+        follow: true,
+      },
       openGraph: {
         type: "website",
         url: CANONICAL_URL,
@@ -23,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
             url: "/logo.svg",
             width: 1200,
             height: 630,
-            alt: "chanderpur",
+            alt: "flextron",
           },
         ],
       },
@@ -38,19 +44,14 @@ export async function generateMetadata(): Promise<Metadata> {
       },
     };
   } catch (err) {
+    console.error("Meta fetch failed", err);
     return {
-      title: "chanderpur",
+      title: "Quadeye",
       description: "",
     };
   }
 }
 
-export default function Home() {
-  return (
-    <>
-      <h1>Home</h1>
-    </>
-  );
+export default function HomePage() {
+  return <Home />;
 }
-
-

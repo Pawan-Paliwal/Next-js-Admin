@@ -1,6 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+ images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "flagcdn.com",
+      },
+    ],
+  },
   async rewrites() {
     return [
       {
@@ -10,7 +18,7 @@ const nextConfig: NextConfig = {
       {
         source: "/OnlineImages/:path*",
         destination: "http://localhost:3012/OnlineImages/:path*",
-      },
+      }
     ];
   },
 

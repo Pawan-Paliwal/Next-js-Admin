@@ -1,6 +1,4 @@
 'use client';
-export const dynamic = 'force-dynamic';
-
 import { useEffect, useState } from "react";
 import dynamic from 'next/dynamic';
 import 'suneditor/dist/css/suneditor.min.css';

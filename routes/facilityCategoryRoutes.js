@@ -19,5 +19,7 @@ router.post('/update-display-order', verifyToken, facilityCategoryController.upd
 router.get('/max-display-order', verifyToken, facilityCategoryController.getMaxDisplayOrder);
 router.delete('/delete-category/:CategoryID', verifyToken, facilityCategoryController.deleteFacilityCategory);
 router.post("/update-status", verifyToken, facilityCategoryController.updateActiveStatus);
+router.get("/activefacility", verifyToken, facilityCategoryController.getAllActiveFacilityCategories);
+router.get("/facility/:slug", verifyToken, facilityCategoryController.getFacilityCategoryBySlug);
 
 module.exports = router;

@@ -1,0 +1,123 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "@fancyapps/ui/dist/fancybox/fancybox.css";
+
+@theme {
+  --color-primary: #0f8fc9;
+  --color-background: #f3f3f3;
+  --color-border: #dfdfdf;
+  --color-text: #666666;
+  --color-gray: #444444;
+
+  --color-red: #e9363a;
+  --color-yellow: #ffce28;
+  --color-green: #25a857;
+
+  --radius-sm: 5px;
+  --radius-md: 10px;
+
+  --font-red-hat-display: var(--font-red-hat-display);
+  --font-poppins: var(--font-poppins);
+
+  --animate-scale-pulse: scalePulse 1s ease-in-out infinite;
+
+  @keyframes scalePulse {
+    0%,
+    100% {
+      transform: scale(0.8);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+  }
+}
+
+@layer base {
+  :root {
+    --header-height: 90px;
+  }
+
+  html {
+    @apply scroll-pt-(--header-height) scroll-smooth;
+  }
+
+  body {
+    @apply font-poppins;
+  }
+
+  body.no-scroll {
+    @apply overflow-hidden lg:mr-[8px];
+  }
+
+  body::-webkit-scrollbar {
+    @apply w-[8px];
+  }
+
+  body::-webkit-scrollbar-track {
+    @apply shadow-none;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    @apply bg-primary;
+  }
+
+  h1,
+  h2 {
+    @apply font-red-hat-display;
+  }
+
+  p,
+  li {
+    @apply text-text font-poppins leading-6 font-normal;
+  }
+
+  p {
+    @apply text-justify  [word-spacing:-0.1rem];
+  }
+
+  .scroll::-webkit-scrollbar {
+    @apply w-[6px];
+  }
+
+  .scroll::-webkit-scrollbar-track {
+    @apply shadow-none;
+  }
+
+  .scroll::-webkit-scrollbar-thumb {
+    @apply bg-primary;
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .swiper-slide {
+    @apply transition-all duration-500 ease-in-out will-change-transform;
+  }
+
+  .swiper-button-disabled {
+    @apply pointer-events-none opacity-50;
+  }
+
+  .swiper-navigation-icon {
+    @apply hidden;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-transition-delay: 9999s;
+    transition-delay: 9999s;
+  }
+}
+
+@layer components {
+  
+}
+
+@layer utilities {
+  .container {
+    @apply mx-auto max-w-full px-[15px] sm:max-w-screen-sm sm:px-6 md:max-w-3xl lg:max-w-7xl;
+  }
+}

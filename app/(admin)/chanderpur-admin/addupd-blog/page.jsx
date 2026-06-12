@@ -13,6 +13,7 @@ import { useGetBlogByIdQuery, useSaveOrUpdateBlogMutation, useGetMaxDisplayOrder
 import { usePagePermission } from "../usePagePermission";
 import Loader from "@/app/loading";
 import { validateFields } from "@/utils/validateFields";
+import { fa } from "intl-tel-input/i18n";
 
 export default function AddUpdBlogData() {
   const router = useRouter();
@@ -21,6 +22,7 @@ export default function AddUpdBlogData() {
   const { data: checkData, isSuccess } = useCheckLoginQuery(undefined, { refetchOnMountOrArgChange: true, pollingInterval: 10000 });
   const pagePermission = usePagePermission(checkData);
   const isPermissionsReady = checkData?.loggedIn && pagePermission?.PageID !== 0;
+
 
   const { data: maxOrderData } = useGetMaxDisplayOrderQuery(undefined, {
     refetchOnMountOrArgChange: true,
@@ -60,6 +62,7 @@ export default function AddUpdBlogData() {
     MetaDescriptions: "",
     MetaSchema: "",
     ActiveStatus: false,
+    RecentActiveStatus: false,
     DisplayOrder: 0
   });
 
@@ -80,6 +83,7 @@ export default function AddUpdBlogData() {
           MetaDescriptions: data.MetaDescriptions || "",
           MetaSchema: data.MetaSchema || "",
           ActiveStatus: data.ActiveStatus === 1,
+          RecentActiveStatus: data.RecentActiveStatus === 1,
           DisplayOrder: data.DisplayOrder ?? 0,
         });
         if (data.BlogImage) setPreviewImage(`/OnlineImages/BlogImages/${data.BlogImage}`);
@@ -130,7 +134,7 @@ export default function AddUpdBlogData() {
         data.append("BlogImage", handleFileRename(value, ""));
       } else if (key === "BlogBannerImage" && value instanceof File) {
         data.append("BlogBannerImage", handleFileRename(value, "-banner"));
-      } else if (key === "ActiveStatus") {
+      } else if (key === "ActiveStatus" || key === 'RecentActiveStatus') {
         data.append(key, value ? "1" : "0");
       } else if (typeof value === "string" || typeof value === "number") {
         data.append(key, value.toString());
@@ -264,6 +268,10 @@ export default function AddUpdBlogData() {
           <div className="form-group-row statusac">
             <input type="checkbox" id="chkActiveStatus" checked={formData.ActiveStatus} onChange={(e) => handleInput("ActiveStatus", e.target.checked)} />
             <label htmlFor="chkActiveStatus">Status (Active/Inactive)</label>
+          </div>
+          <div className="form-group-row statusac">
+            <input type="checkbox" id="chkRecentActiveStatus" checked={formData.RecentActiveStatus} onChange={(e) => handleInput("RecentActiveStatus", e.target.checked)} />
+            <label htmlFor="chkRecentActiveStatus">Recent Blog Status (Active/Inactive)</label>
           </div>
         </div>
         <h2>SEO Information</h2>

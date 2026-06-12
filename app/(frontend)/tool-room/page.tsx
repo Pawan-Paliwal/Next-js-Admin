@@ -1,0 +1,47 @@
+export const dynamic = 'force-dynamic';
+import { Metadata } from "next";
+import { fetchMetaDataById } from "@/store/frontendSlice/metaAPISlice";
+
+const API_ID = 29;
+const CANONICAL_URL = process.env.NEXT_PUBLIC_CANONICAL_URL ?? "http://localhost:3003";
+
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const meta = await fetchMetaDataById(API_ID);
+    const defaultTitle = "Chanderpur Group";
+
+    return {
+      title: meta?.MetaTitle || defaultTitle,
+      description: meta?.MetaDescriptions || "",
+      keywords: meta?.MetaKeywords || "",
+      alternates: { canonical: CANONICAL_URL },
+      robots: { index: true, follow: true },
+      openGraph: {
+        type: "website",
+        url: CANONICAL_URL,
+        title: meta?.MetaTitle || defaultTitle,
+        description: meta?.MetaDescriptions || "",
+        images: [{ url: "/logo.svg", width: 1200, height: 630, alt: "Chanderpur Group" }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: meta?.MetaTitle || defaultTitle,
+        description: meta?.MetaDescriptions || "",
+        images: ["/logo.svg"],
+      },
+      icons: { icon: "/favicon.ico" },
+    };
+  } catch (err) {
+    console.error("Meta fetch failed", err);
+    return { title: "Chanderpur Group", description: "" };
+  }
+}
+
+export default function ToolRoomPage() {
+  return (
+    <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
+      <h1 className="text-primary text-4xl font-bold">Coming Soon</h1>
+      <p className="text-gray-500 text-lg">This page is under construction.</p>
+    </div>
+  );
+}

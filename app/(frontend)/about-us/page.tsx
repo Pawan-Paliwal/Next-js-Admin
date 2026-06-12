@@ -1,24 +1,28 @@
-// app/page.tsx
 export const dynamic = 'force-dynamic';
 import { Metadata } from "next";
 import { fetchMetaDataById } from "@/store/frontendSlice/metaAPISlice";
+import About from "@/components/frontendcomponents/pages/about";
 
-const API_ID = 2;
-const CANONICAL_URL =
-  process.env.NEXT_PUBLIC_CANONICAL_URL ?? "http://localhost:3000";
+const API_ID = 3;
+const CANONICAL_URL = process.env.NEXT_PUBLIC_CANONICAL_URL ?? "http://localhost:3003";
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
     const meta = await fetchMetaDataById(API_ID);
-    const defaultTitle = "chanderpur";
+    const defaultTitle = "Chanderpur Group";
+
     return {
       title: meta?.MetaTitle || defaultTitle,
       description: meta?.MetaDescriptions || "",
       keywords: meta?.MetaKeywords || "",
-      alternates: { canonical: `${CANONICAL_URL}/about-us` },
+      alternates: { canonical: CANONICAL_URL },
+      robots: {
+        index: true,
+        follow: true,
+      },
       openGraph: {
         type: "website",
-        url: `${CANONICAL_URL}/about-us`,
+        url: CANONICAL_URL,
         title: meta?.MetaTitle || defaultTitle,
         description: meta?.MetaDescriptions || "",
         images: [
@@ -26,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
             url: "/logo.svg",
             width: 1200,
             height: 630,
-            alt: "chanderpur",
+            alt: "Chanderpur Group",
           },
         ],
       },
@@ -41,17 +45,14 @@ export async function generateMetadata(): Promise<Metadata> {
       },
     };
   } catch (err) {
+    console.error("Meta fetch failed", err);
     return {
-      title: "chanderpur",
+      title: "Chanderpur Group",
       description: "",
     };
   }
 }
 
-export default function AboutUspage() {
-  return (
-    <>
-      <h1>About Us</h1>
-    </>
-  );
+export default function AboutPage() {
+  return <About />;
 }
